@@ -1,12 +1,11 @@
 import React from 'react';
-import logo from './UhOhLogo.png';
+import Home from './components/Home.js'
 
 
 function App() {
   return (
     <div>
-        <h1>Hello World!</h1>
-        <img alt="logo" src={logo} />
+        <Home />
     </div>
   );
 }
