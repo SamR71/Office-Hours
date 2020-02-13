@@ -1,12 +1,13 @@
 import React from 'react';
-import logo from './UhOhLogo.png';
+import Header from './components/Header.js';
+import Home from "./components/Home";
 
 
 function App() {
   return (
     <div>
-        <h1>Hello World!</h1>
-        <img alt="logo" src={logo} />
+        <Header />
+        <Home />
     </div>
   );
 }
