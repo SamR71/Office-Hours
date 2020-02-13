@@ -11,7 +11,7 @@ class Home extends React.Component{
         return (
             <div style={homePageStyle}>
                 <h1>My Schedule:</h1>
-                <p>NEED TO FIGURE OUT SCHEDULE DISPLAY</p>
+                <p>Put schedule component here when done</p>
                 <h2>My Courses:</h2>
                 <p>add courses to display here...</p>
             </div>
