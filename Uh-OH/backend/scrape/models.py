@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MinLengthValidator
 
 # Create your models here.
 class Search(models.Model):
@@ -11,4 +12,22 @@ class Search(models.Model):
     def __str__(self):
         return self.searchValue
 
+class Course(models.Model):
+	"""Course Class represents a single course as its courseName."""
+	courseName = models.CharField(max_length=128)
+
+	def __str__(self):
+		return self.courseName
+
+class CourseSection(models.Model):
+	"""
+	CourseSection Class represents a single section of a Course
+	by the Course, sectionID, and instructorName.
+	"""
+	course = models.ForeignKey(Course, on_delete=models.CASCADE)
+	sectionID = models.CharField(validators=[MinLengthValidator(2)], max_length = 2);
+	instructorName = models.CharField(max_length=128)
+
+	def __str__(self):
+		return str(self.course) + " w/ Section: " + str(self.sectionID) + " + Instructor: " + str(self.instructorName)
 
