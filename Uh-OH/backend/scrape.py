@@ -26,6 +26,8 @@ for currentTable in allTableLocations:
 	    if(len(currentData) != 0):
 	    	#print(len(currentData));
 	    	if(currentData[1] != "" and len(currentData) == 14):
+	    		if(currentData[1] == "MULTIVAR CALC & MATRIX ALG"):
+	    			currentData[1] = "MULTIVAR CALC & MATRIX ALGEBRA";
 	    		allCourseData.append(currentData);
 
 currentDataInDatabase = Course.objects.all();
