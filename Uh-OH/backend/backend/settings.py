@@ -127,4 +127,4 @@ STATIC_URL = '/static/'
 STATICFILES_DIR = (os.path.join(BASE_DIR, 'static'),)
 
 #change local host to 3000 since thats where the frontend will be
-CORS_ORIGIN_WHITELIST = ['https://localhost:3000']
+CORS_ORIGIN_WHITELIST = ['http://localhost:3000']

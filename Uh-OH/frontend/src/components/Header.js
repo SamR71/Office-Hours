@@ -71,7 +71,7 @@ class Header extends React.Component
                            style={searchBarStyle}
                            type="text"
                            placeholder="Search for your courses ..."
-                           name="course search bar"
+                           name="course_search_bar"
                     />
 				</form>
 			</div>
