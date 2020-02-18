@@ -48,9 +48,9 @@ class Header extends React.Component
 
     	const searchBarStyle =
         {
-            width: "70%",
-            marginTop: "20px",
-            marginLeft: "100px",
+            width: "90%",
+            marginTop: "5px",
+            marginLeft: "70px",
             padding: "5px",
         };
 
@@ -63,18 +63,31 @@ class Header extends React.Component
         };
 
         return (
-            <div style={headerStyle}>
-                <img onClick={this.redirectHome} style={logoStyle} src={logo} alt="Uh-OH! Logo" height="75" width="75" />
-                <button onClick={this.redirectLogIn} style={logInStyle} type="button" className="btn btn-light">Log-In</button>
-            	<form>
-					<input onClick={this.redirectSearch}
-                           style={searchBarStyle}
-                           type="text"
-                           placeholder="Search for your courses ..."
-                           name="course search bar"
-                    />
-				</form>
-			</div>
+             <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style={headerStyle}>
+                <a class="navbar-brand" href=""><img onClick={this.redirectHome} style={logoStyle} src={logo} alt="Uh-OH! Logo" height="75" width="75" /></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="navbar-collapse collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                    </ul>
+                    <form class="mx-2 my-auto d-inline w-100">
+                        <div class="input-group">
+                            <input class="form-control" type="search" placeholder="Search for your courses..." aria-label="Search" onClick={this.redirectSearch} name="course search bar"/>
+                            <span class="input-group-append">
+                                <button onClick={this.redirectLogIn} class="btn btn-light ml-3" type="button">Log In</button>
+                            </span>
+                        </div>
+                    </form>
+                </div>
+            </nav> 
         );
     }
 }
