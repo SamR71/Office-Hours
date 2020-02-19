@@ -14,7 +14,12 @@ class Search(models.Model):
 
 class Course(models.Model):
 	"""Course Class represents a single course as its courseName."""
+	#courseName = Listed Name of Course. 
 	courseName = models.CharField(max_length=128)
+	#courseValue = CRN Number.
+	courseValue = models.CharField(validators=[MinLengthValidator(5)], max_length=5);
+	#courseAbbrev = Abbreviation For Course Name.
+	courseAbbrev = models.CharField(max_length=128)
 
 	def __str__(self):
 		return self.courseName
