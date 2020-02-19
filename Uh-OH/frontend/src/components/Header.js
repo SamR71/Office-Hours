@@ -80,7 +80,7 @@ class Header extends React.Component
                     </ul>
                     <form class="mx-2 my-auto d-inline w-100">
                         <div class="input-group">
-                            <input class="form-control" type="search" placeholder="Search for your courses..." aria-label="Search" onClick={this.redirectSearch} name="course search bar"/>
+                            <input class="form-control" type="search" placeholder="Search for your courses..." aria-label="Search" onClick={this.redirectSearch} name="course_search_bar"/>
                             <span class="input-group-append">
                                 <button onClick={this.redirectLogIn} class="btn btn-light ml-3" type="button">Log In</button>
                             </span>
