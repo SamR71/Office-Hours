@@ -9,18 +9,17 @@ class Search extends React.Component {
 	
 	async componentDidMount() {
 		try {
+			//get url to send to backend
 			var url = 'http://localhost:8000/courses/?search=';
 			let searchURL = this.props.location.search;
 			let params = queryString.parse(searchURL);
 			var query = params["course_search_bar"];
 			
-			console.log(url+query);
-			
+			//get response, convert to JSON
 			const res = await fetch(url+query);
-			
-			console.log(res);
 			const coursesjson = await res.json();
-			console.log(coursesjson);
+			
+			//set state
 			this.setState({
 				courses: coursesjson
 			});
