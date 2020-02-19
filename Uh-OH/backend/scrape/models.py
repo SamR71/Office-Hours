@@ -24,6 +24,10 @@ class CourseSection(models.Model):
 	CourseSection Class represents a single section of a Course
 	by the Course, sectionID, and instructorName.
 	"""
+	class Meta:
+		verbose_name = 'Course Section'
+		verbose_name_plural = 'Course Sections'
+        
 	course = models.ForeignKey(Course, on_delete=models.CASCADE)
 	sectionID = models.CharField(validators=[MinLengthValidator(2)], max_length = 2);
 	instructorName = models.CharField(max_length=128)

@@ -12,7 +12,7 @@ class Home extends React.Component
         };
 
         return(
-            <div style={homePageStyle}>
+            <div style={homePageStyle} class="container">
                 <h1>My Schedule:</h1>
                 <p>Put schedule component here when done</p>
                 <h2>My Courses:</h2>
