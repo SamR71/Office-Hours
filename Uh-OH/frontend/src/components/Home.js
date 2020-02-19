@@ -1,4 +1,5 @@
 import React from 'react';
+import Schedule from "./Schedule";
 
 class Home extends React.Component
 {
@@ -14,7 +15,7 @@ class Home extends React.Component
         return(
             <div style={homePageStyle} class="container">
                 <h1>My Schedule:</h1>
-                <p>Put schedule component here when done</p>
+                <Schedule />
                 <h2>My Courses:</h2>
                 <p>add courses to display here...</p>
             </div>
