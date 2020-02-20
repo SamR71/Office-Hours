@@ -11,12 +11,14 @@ class Schedule extends React.Component
         return(
             <div>
                 <WeekCalendar
+                    firstDay = {moment().day(1)}
                     startTime = {moment({h: 8, m: 0})}
-                    endTime = {moment({h: 21, m: 0})}
-                    scaleUnit ={60}
-                    scaleHeaderTitle="Time"
+                    endTime = {moment({h: 20, m: 0})}
+                    scaleUnit = {60}
+                    dayFormat = {'dd.'}
                     cellHeight = {50}
-                    numberOfDays= {7}
+                    numberOfDays = {7}
+                    useModal = {false}
                     />
             </div>
         );
