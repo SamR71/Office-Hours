@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 #Necessary Setup To Import Models:
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "backend.settings")
 django.setup()
-from scrape.models import Course, CourseSection
+from scrape.models import Course, CourseSection, CourseMeetingTime
 
 #Scrape Class For All Formats:
 class Scrape(object):
@@ -48,25 +48,47 @@ class Scrape(object):
 			currentDataInDatabase.delete();
 
 		#Populate All Spring 2020 Course Data:
-		for currentCourse in allCourseData:
-			currentNewCourse = Course.objects.filter(courseName = currentCourse[1]);
-			if(len(currentNewCourse) == 0):
-				currentName = currentCourse[1];
-				currentValue, currentAbbrev = currentCourse[0][0:5], currentCourse[0][6:15];
+		for currentRow in allCourseData:
+			allExistingCourses = Course.objects.filter(courseName = currentRow[1]);
+			if(len(allExistingCourses) == 0):
+				currentName = currentRow[1];
+				currentValue, currentAbbrev = currentRow[0][0:5], currentRow[0][6:15];
 				currentNewCourse = Course(courseName = currentName, 
 												courseValue = currentValue,
 												courseAbbrev = currentAbbrev);
 				currentNewCourse.save();
-				currentSection = CourseSection(course = currentNewCourse, 
-												sectionID = currentCourse[0][-2:],
-												instructorName = currentCourse[8]);
+				currentSection = CourseSection(currentCourse = currentNewCourse, 
+												sectionID = currentRow[0][-2:]);
 				currentSection.save();
+				currentMeeting = CourseMeetingTime(meetSection = currentSection,
+												meetType = currentRow[2],
+												meetDates = currentRow[5].replace(" ", ""),
+												meetStartTime = currentRow[6],
+												meetEndTime = currentRow[7],
+												meetInstructor = currentRow[8]);
+				currentMeeting.save();
 			else:
-				currentNewCourse = currentNewCourse[0];
-				currentSection = CourseSection(course = currentNewCourse, 
-												sectionID = currentCourse[0][-2:],
-												instructorName = currentCourse[8]);
-				currentSection.save();
+				allExistingSections = CourseSection.objects.filter(currentCourse = allExistingCourses[0]).filter(sectionID = currentRow[0][-2:]);
+				if(len(allExistingSections) == 0):
+					currentSection = CourseSection(currentCourse = allExistingCourses[0], 
+													sectionID = currentRow[0][-2:]);	
+					currentSection.save();
+					currentMeeting = CourseMeetingTime(meetSection = currentSection,
+												meetType = currentRow[2],
+												meetDates = currentRow[5],
+												meetStartTime = currentRow[6],
+												meetEndTime = currentRow[7],
+												meetInstructor = currentRow[8]);
+					currentMeeting.save();
+				else:
+					currentMeeting = CourseMeetingTime(meetSection = allExistingSections[0],
+												meetType = currentRow[2],
+												meetDates = currentRow[5].replace(" ", ""),
+												meetStartTime = currentRow[6],
+												meetEndTime = currentRow[7],
+												meetInstructor = currentRow[8]);
+					currentMeeting.save();
+
 
 def main():
     if(len(sys.argv) < 2):
@@ -106,3 +128,4 @@ if __name__ == "__main__":
 # 		print(child)
 # 	#allCurrentChildren = currentTitle.
 # 	#print(allCurrentChildren)
+
