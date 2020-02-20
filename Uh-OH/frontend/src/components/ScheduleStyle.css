@@ -1,0 +1,8 @@
+@import "~react-week-calendar/dist/style.css";
+
+.dayCell:hover {
+    cursor: pointer;
+    background-color: #ffffff;
+    border-color: #b7b7b7;
+}
+
