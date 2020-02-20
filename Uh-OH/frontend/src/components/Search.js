@@ -34,7 +34,7 @@ class Search extends React.Component {
 			<div>
 				{this.state.courses.map(item => (
 					<div key={item.id}>
-						<CourseDropDown />
+						<CourseDropDown course = {item} />
 					</div>
 				))}
 			</div>
