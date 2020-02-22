@@ -9,5 +9,5 @@ Prerequisites: Python 3, pipenv, node/npm, react, django
 
 # Additional Required Software
 To display schedule viewer:
-	1. npm install react-week-calendar --save
-	2. npm install moment --save
+1. run 'npm install react-week-calendar --save'
+2. run 'npm install moment --save'
