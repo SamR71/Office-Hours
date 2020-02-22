@@ -1,56 +1,113 @@
 import requests
 import re
-from bs4 import BeautifulSoup
-
 import os
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "backend.settings")
+import sys
 import django
+from bs4 import BeautifulSoup
+#Necessary Setup To Import Models:
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "backend.settings")
 django.setup()
+from scrape.models import Course, CourseSection, CourseMeetingTime
 
-from scrape.models import Course, CourseSection
+#Scrape Class For All Formats:
+class Scrape(object):
 
-currentPageData = requests.get("https://sis.rpi.edu/reg/zs202001.htm");
-currentSoup = BeautifulSoup(currentPageData.text, "lxml");
+	#Scrape All Spring 2020 Courses:
+	def scrapeSpring2020Courses(self):
+		currentPageData = requests.get("https://sis.rpi.edu/reg/zs202001.htm");
+		currentSoup = BeautifulSoup(currentPageData.text, "lxml");
 
-allCourseData = [];
-allTableLocations = currentSoup.find_all('table');
-for currentTable in allTableLocations:
-	#Find New Row:
-	allTableRows = currentTable.find_all('tr');
-	for currentRow in allTableRows:
-		#Read Each Column Value From Row:
-	    allTableColumns = currentRow.find_all('td');
-	    allTableColumns = [currentColumn.text.strip() for currentColumn in allTableColumns]
-	    currentData = [currentColumn for currentColumn in allTableColumns];
+		prevCourseData = None;
+		allCourseData = [];
+		allTableLocations = currentSoup.find_all('table');
+		for currentTable in allTableLocations:
+			#Find New Row:
+			allTableRows = currentTable.find_all('tr');
+			for currentRow in allTableRows:
+				#Read Each Column Value From Row:
+			    allTableColumns = currentRow.find_all('td');
+			    allTableColumns = [currentColumn.text.strip() for currentColumn in allTableColumns]
+			    currentData = [currentColumn for currentColumn in allTableColumns];
 
-	    if(len(currentData) != 0):
-	    	#print(len(currentData));
-	    	if(currentData[1] != "" and len(currentData) == 14):
-	    		if(currentData[1] == "MULTIVAR CALC & MATRIX ALG"):
-	    			currentData[1] = "MULTIVAR CALC & MATRIX ALGEBRA";
-	    		allCourseData.append(currentData);
+			    if(len(currentData) != 0):
+			    	if(len(currentData) == 14):
+				    	if(currentData[1] != ""):
+				    		#Special Case Accounting For Error In Website Format:
+					    	if(currentData[1] == "MULTIVAR CALC & MATRIX ALG"):
+					    		currentData[1] = "MULTIVAR CALC & MATRIX ALGEBRA";
+					    	prevCourseData = currentData;
+				    	else:
+				    		if(prevCourseData != None):
+				    			currentData[0] = prevCourseData[0]
+				    			currentData[1] = prevCourseData[1]
+				    	allCourseData.append(currentData);
 
-currentDataInDatabase = Course.objects.all();
-if(len(currentDataInDatabase) != 0):
-	#print(currentDataInDatabase)
-	currentDataInDatabase.delete();
+		#Clear Database Prior To Population:
+		currentDataInDatabase = Course.objects.all();
+		if(len(currentDataInDatabase) != 0):
+			currentDataInDatabase.delete();
 
-for currentCourse in allCourseData:
-	currentNewCourse = Course.objects.filter(courseName = currentCourse[1]);
-	if(len(currentNewCourse) == 0):
-		currentNewCourse = Course(courseName = currentCourse[1]);
-		currentNewCourse.save();
-		currentSection = CourseSection(course = currentNewCourse, 
-										sectionID = currentCourse[0][-2:],
-										instructorName = currentCourse[8]);
-		currentSection.save();
-	else:
-		currentNewCourse = currentNewCourse[0];
-		currentSection = CourseSection(course = currentNewCourse, 
-										sectionID = currentCourse[0][-2:],
-										instructorName = currentCourse[8]);
-		currentSection.save();
-	#print(currentCourse[1])
+		#Populate All Spring 2020 Course Data:
+		for currentRow in allCourseData:
+			allExistingCourses = Course.objects.filter(courseName = currentRow[1]);
+			if(len(allExistingCourses) == 0):
+				currentName = currentRow[1];
+				currentValue, currentAbbrev = currentRow[0][0:5], currentRow[0][6:15];
+				currentNewCourse = Course(courseName = currentName, 
+												courseValue = currentValue,
+												courseAbbrev = currentAbbrev);
+				currentNewCourse.save();
+				currentSection = CourseSection(currentCourse = currentNewCourse, 
+												sectionID = currentRow[0][-2:]);
+				currentSection.save();
+				currentMeeting = CourseMeetingTime(meetSection = currentSection,
+												meetType = currentRow[2],
+												meetDates = currentRow[5].replace(" ", ""),
+												meetStartTime = currentRow[6],
+												meetEndTime = currentRow[7],
+												meetInstructor = currentRow[8]);
+				currentMeeting.save();
+			else:
+				allExistingSections = CourseSection.objects.filter(currentCourse = allExistingCourses[0]).filter(sectionID = currentRow[0][-2:]);
+				if(len(allExistingSections) == 0):
+					currentSection = CourseSection(currentCourse = allExistingCourses[0], 
+													sectionID = currentRow[0][-2:]);	
+					currentSection.save();
+					currentMeeting = CourseMeetingTime(meetSection = currentSection,
+												meetType = currentRow[2],
+												meetDates = currentRow[5],
+												meetStartTime = currentRow[6],
+												meetEndTime = currentRow[7],
+												meetInstructor = currentRow[8]);
+					currentMeeting.save();
+				else:
+					currentMeeting = CourseMeetingTime(meetSection = allExistingSections[0],
+												meetType = currentRow[2],
+												meetDates = currentRow[5].replace(" ", ""),
+												meetStartTime = currentRow[6],
+												meetEndTime = currentRow[7],
+												meetInstructor = currentRow[8]);
+					currentMeeting.save();
+
+
+def main():
+    if(len(sys.argv) < 2):
+    	print("Incorrect Number of Arguments.");
+    	return;
+    else:
+    	scrapeValue = int(sys.argv[1]);
+    	if(scrapeValue == 0):
+    		print("Start of Scrape Spring 2020 Course Data.")
+    		currentScrape = Scrape();
+    		currentScrape.scrapeSpring2020Courses();
+    		print("Termination of Scrape Spring 2020 Course Data.")
+
+if __name__ == "__main__":
+    main()
+
+#Unused Possibly Useful Code:
+#Should Probably Delete.
+#print(currentCourse[1])
 #print(len(allCourseData))
 
 #Not Used Beautiful Soup Code:
@@ -71,3 +128,4 @@ for currentCourse in allCourseData:
 # 		print(child)
 # 	#allCurrentChildren = currentTitle.
 # 	#print(allCurrentChildren)
+
