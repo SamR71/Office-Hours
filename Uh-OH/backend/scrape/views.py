@@ -4,7 +4,7 @@ from rest_framework import generics
 from rest_framework import filters
 
 from .models import Course
-from .serializers import CourseSerializer
+from .serializers import CourseSerializer, CourseSectionSerializer
 
 
 # Create your views here.
