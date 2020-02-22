@@ -10,7 +10,7 @@ class CourseDropDown extends React.Component {
 	
 	constructor(props) {
 		super(props);
-		this.state = {name: props.course.courseName, course: props.course, sections: []};
+		this.state = {name: props.course.courseName, course: props.course, /*sections: props.course.getSections()*/};
 	}
 
 	//async componentDidMount() {
@@ -31,7 +31,7 @@ class CourseDropDown extends React.Component {
 								<CourseDropDown course = {item} />
 							</div>
 						))*/}
-						{this.state.name}
+						{this.state.name + " <SECTION>"/*sections[0]*/}
 					</div>
 				</div>
 			</div>

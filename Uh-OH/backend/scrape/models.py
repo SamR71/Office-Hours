@@ -19,6 +19,9 @@ class Course(models.Model):
 	def __str__(self):
 		return self.courseName
 
+	def getSections():
+		return self.CourseSection_set
+
 class CourseSection(models.Model):
 	"""
 	CourseSection Class represents a single section of a Course
