@@ -16,9 +16,3 @@ class CourseAPIView(generics.ListCreateAPIView):
     filter_backends = (filters.SearchFilter,)
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
-
-class CourseSectionAPIView(generics.ListCreateAPIView):
-    search_fields = ['currentCourse']
-    filter_backends = (filters.SearchFilter,)
-    queryset = CourseSection.objects.all()
-    serializer_class = CourseSectionSerializer

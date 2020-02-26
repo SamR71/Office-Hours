@@ -61,7 +61,7 @@ class CourseDropDown extends React.Component {
 						))*/}
 						{this.state.sections.map(item => (
 							<div key={item.id}>
-								<h2>{item.id}</h2>
+								<h2>{"Section " + item.sectionID}</h2>
 								<br></br>
 							</div>
 						))}
