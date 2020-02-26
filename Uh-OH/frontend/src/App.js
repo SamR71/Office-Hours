@@ -1,9 +1,9 @@
-import React from 'react';
+import React from "react";
 import {BrowserRouter as Router,Switch, Route} from "react-router-dom";
 import Search from "./components/Search";
-import LogIn from "./components/LogIn";
 import Home from "./components/Home";
 import Header from "./components/Header";
+import LogInApp from "./components/SignIn/SignInApp";
 
 function App()
 {
@@ -16,7 +16,7 @@ function App()
               </Route>
               <Route path="/LogIn">
                   <Header/>
-                  <LogIn/>
+                  <LogInApp/>
               </Route>
               <Route path="/">
                   <Header/>
