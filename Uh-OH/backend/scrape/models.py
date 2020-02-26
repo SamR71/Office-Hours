@@ -28,9 +28,6 @@ class Course(models.Model):
 	def __str__(self):
 		return self.courseName
 
-	def getSections():
-		return self.CourseSection_set
-
 class CourseSection(models.Model):
 	"""
 	CourseSection Class represents a single section of a Course
@@ -40,7 +37,7 @@ class CourseSection(models.Model):
 		verbose_name = 'Course Section'
 		verbose_name_plural = 'Course Sections'
         
-	currentCourse = models.ForeignKey(Course, on_delete=models.CASCADE)
+	currentCourse = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='sections')
 	sectionID = models.CharField(validators=[MinLengthValidator(2)], max_length = 2);
 
 	def __str__(self):

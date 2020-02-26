@@ -1,22 +1,44 @@
 import React from 'react';
+import queryString from 'query-string';
 import {withRouter} from 'react-router-dom';
 
 class CourseDropDown extends React.Component {
 	state = {
 		name: "",
-		course: "",
+		//course: "",
 		sections: [],
 	};
 	
+	
 	constructor(props) {
 		super(props);
-		this.state = {name: props.course.courseName, course: props.course, /*sections: props.course.getSections()*/};
+		this.state = {name: props.course.courseName, /*course: props.course,*/ sections: props.course.sections/*props.course.getSections()*/};
 	}
-
-	//async componentDidMount() {
-		
-	//}
-
+	
+/*
+	async componentDidMount() {
+		try {
+			//get url to send to backend
+			var url = 'http://localhost:8000/coursesections/?search=';
+			let searchURL = this.props.course;
+			let params = queryString.parse(searchURL);
+			var query = this.props.course;
+			
+			//get response, convert to JSON
+			const res = await fetch(url+query);
+			const sectionsjson = await res.json();
+			
+			//set state
+			this.setState({
+				name: this.props.course.name,
+				//course: this.props.course,
+				sections: sectionsjson
+			});
+		} catch (e) {
+			console.log(e);
+		}	
+	}
+*/
 	render() {
 		return (
 			<div>
@@ -31,7 +53,19 @@ class CourseDropDown extends React.Component {
 								<CourseDropDown course = {item} />
 							</div>
 						))*/}
-						{this.state.name + " <SECTION>"/*sections[0]*/}
+
+						{/*this.props.course.coursesection_set.all().map(item => (
+							<div key={item.id}>
+								<CourseDropDown course = {item} />
+							</div>
+						))*/}
+						{this.state.sections.map(item => (
+							<div key={item.id}>
+								<h2>{item.id}</h2>
+								<br></br>
+							</div>
+						))}
+						{/*this.state.name*/}
 					</div>
 				</div>
 			</div>
