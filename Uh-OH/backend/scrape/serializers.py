@@ -5,7 +5,7 @@ class CourseSectionSerializer(serializers.ModelSerializer):
 	course_id = serializers.PrimaryKeyRelatedField(queryset=Course.objects.all(),source='currentCourse.id')
 	class Meta:
 		model = CourseSection
-		fields = ('id', 'currentCourse', 'course_id')
+		fields = ('id', 'currentCourse', 'sectionID', 'course_id')
 
 class CourseSerializer(serializers.ModelSerializer):
 	sections = CourseSectionSerializer(many=True, read_only=True)
