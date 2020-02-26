@@ -1,0 +1,59 @@
+/*create rounded square around the sign in */
+.signin {
+    border-radius: 25px;
+    border: 2px solid #000000;
+    padding: 20px;
+    width: 425px;
+    height: 350px;
+    margin: 20px auto;
+}
+
+.signup {
+    border-radius: 25px;
+    border: 2px solid #000000;
+    padding: 20px;
+    width: 425px;
+    height: 500px;
+    margin: 20px auto;
+}
+
+.password
+{
+    border-radius: 25px;
+    border: 2px solid #000000;
+    padding: 20px;
+    width: 425px;
+    height: 200px;
+    margin: 20px auto;
+}
+
+/* Full-width inputs */
+input[type=text], input[type=password] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+/* Set a style for all buttons */
+.signinbutton {
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+.password-input {
+	outline: 0;
+	padding: 7px;
+	font-size: 1.0em;
+	min-width: 250px;
+	border-radius: 5px;
+	margin-left: 15px;
+	padding-left: 30px;
+}

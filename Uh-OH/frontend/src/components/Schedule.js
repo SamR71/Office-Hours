@@ -17,7 +17,7 @@ class Schedule extends React.Component
                     endTime = {moment({h:20, m:0})}
                     scaleUnit = {60}
                     scaleFormat = {"h:mm a"}
-                    dayFormat = {'dd.'}
+                    dayFormat = {"dd."}
                     cellHeight = {40}
                     numberOfDays = {7}
                     useModal = {false}

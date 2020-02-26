@@ -1,6 +1,6 @@
-import React from 'react';
-import logo from './UhOhLogo.png';
-import {withRouter} from 'react-router-dom'
+import React from "react";
+import logo from "./UhOhLogo.png";
+import {withRouter} from "react-router-dom";
 
 
 class Header extends React.Component
@@ -16,31 +16,31 @@ class Header extends React.Component
 
     redirectHome()
     {
-        this.props.history.push('/')
+        this.props.history.push("/")
     }
 
     redirectLogIn()
     {
-        this.props.history.push('/LogIn')
+        this.props.history.push("/LogIn")
     }
 
     redirectSearch()
     {
-        this.props.history.push('/Search')
+        this.props.history.push("/Search")
     }
 
     render()
     {
         const headerStyle =
         {
-		    backgroundColor: "Grey",
-		    padding: "5px",
-			overflow: "hidden",
-	    };
+            backgroundColor: "Grey",
+            padding: "5px",
+            overflow: "hidden",
+        };
 
-    	const logoStyle =
+        const logoStyle =
         {
-    	    float: "left",
+            float: "left",
             display: "block",
             marginLeft: "20px",
             href: "/",
@@ -63,12 +63,7 @@ class Header extends React.Component
 
                 <div class="navbar-collapse collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">About</a>
-                    </li>
+                    
                     </ul>
                     <form class="mx-2 my-auto d-inline w-100">
                         <div class="input-group">
@@ -79,7 +74,7 @@ class Header extends React.Component
                                    onClick={this.redirectSearch}
                                    name="course_search_bar"/>
                             <span class="input-group-append">
-                                <button onClick={this.redirectLogIn} class="btn btn-light ml-3" type="button">Log In</button>
+                                <button onClick={this.redirectLogIn} className="btn btn-light ml-3" type="button">Log In</button>;
                             </span>
                         </div>
                     </form>
