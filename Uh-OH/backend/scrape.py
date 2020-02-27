@@ -88,7 +88,21 @@ class Scrape(object):
 												meetEndTime = currentRow[7],
 												meetInstructor = currentRow[8]);
 					currentMeeting.save();
+	#Scrape All Spring 2019 Office Hours:
 
+	def my_filter(self, tag):
+		if("Office" in tag.text):
+			return True;
+		return False;
+			
+
+	def scrapeSpring2019OfficeHours(self):
+		with open("prevSyllabus.html", "r") as currentFileReader:
+			currentPDFData = currentFileReader.read()
+			currentSoup = BeautifulSoup(currentPDFData, "html.parser")
+			for child in currentSoup.recursiveChildGenerator():
+				if child.name:
+					print(child.name)
 
 def main():
     if(len(sys.argv) < 2):
@@ -96,12 +110,15 @@ def main():
     	return;
     else:
     	scrapeValue = int(sys.argv[1]);
+    	currentScrape = Scrape();
     	if(scrapeValue == 0):
     		print("Start of Scrape Spring 2020 Course Data.")
-    		currentScrape = Scrape();
     		currentScrape.scrapeSpring2020Courses();
     		print("Termination of Scrape Spring 2020 Course Data.")
-
+    	else:
+    		print("Start of Scrape Spring 2019 Office Hours Data.")
+    		currentScrape.scrapeSpring2019OfficeHours();
+    		print("Termination of Scrape Spring 2019 Office Hours Data.")
 if __name__ == "__main__":
     main()
 
