@@ -11,7 +11,9 @@ class SectionModal extends React.Component {
 	
 	constructor(props) {
 		super(props);
-		this.state = {name: props.course.courseName, id: props.section.sectionID, sections: props.course.sections};
+		this.state = {name: props.course.courseName,
+						id: props.section.sectionID,
+						meetingTimes: props.section.meetingTimes};
 	}
 	
 	render() {
@@ -45,7 +47,15 @@ class SectionModal extends React.Component {
 								</button>
 							</div>
 							<div class="modal-body">
-								...
+								{/*this.state.meetingTimes.map(item => (
+									<div key={item.id}>
+										Test
+										{/*item.meetType + " | " +
+										 item.meetDates + " | " +
+										 item.meetStartTime + " to " + item.meetEndTime////}
+									</div>
+								))*/}
+								Temp
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

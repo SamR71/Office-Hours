@@ -40,16 +40,3 @@ class CourseDropDown extends React.Component {
 
 }
 export default withRouter(CourseDropDown);
-
-/**
-	<div>
-		<a class="btn btn-link" data-toggle="collapse" href={"#collapseCourse"+item.courseName} role="button" aria-expanded="false" aria-controls={"collapseCourse"+item.courseName}>
-			{item.courseName}
-		</a>
-		<br></br>
-		<div class="collapse" id={"collapseCourse"+item.courseName}>
-			<div class="card card-body">
-				{item.courseName}
-			</div>
-	</div>
-*/

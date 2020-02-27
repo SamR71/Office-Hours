@@ -3,8 +3,8 @@ from django.shortcuts import render
 from rest_framework import generics
 from rest_framework import filters
 
-from .models import Course, CourseSection
-from .serializers import CourseSerializer, CourseSectionSerializer
+from .models import Course
+from .serializers import CourseSerializer
 
 
 # Create your views here.

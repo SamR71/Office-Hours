@@ -7,11 +7,11 @@ class MeetingTimeSerializer(serializers.ModelSerializer):
 		model = CourseMeetingTime
 		fields = 	('id',
 					'meetSection',
-					'meetType',
-					'meetDates',
-					'meetStartTime',
-					'meetEndTime',
-					'meetInstructor',
+					#'meetType',
+					#'meetDates',
+					#'meetStartTime',
+					#'meetEndTime',
+					#'meetInstructor',
 					'coursesection_id')
 
 class CourseSectionSerializer(serializers.ModelSerializer):
