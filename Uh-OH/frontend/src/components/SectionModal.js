@@ -5,7 +5,7 @@ class SectionModal extends React.Component {
 	state = {
 		name: "",
 		id: "",
-		meetingTimes: [],
+		courseMeetingTimes: [],
 	};
 	
 	
@@ -13,7 +13,7 @@ class SectionModal extends React.Component {
 		super(props);
 		this.state = {name: props.course.courseName,
 						id: props.section.sectionID,
-						meetingTimes: props.section.meetingTimes};
+						courseMeetingTimes: props.section.courseMeetingTimes};
 	}
 	
 	render() {
@@ -47,15 +47,14 @@ class SectionModal extends React.Component {
 								</button>
 							</div>
 							<div class="modal-body">
-								{/*this.state.meetingTimes.map(item => (
+								{this.state.courseMeetingTimes.map(item => (
 									<div key={item.id}>
-										Test
-										{/*item.meetType + " | " +
+										{item.meetType + " | " +
 										 item.meetDates + " | " +
-										 item.meetStartTime + " to " + item.meetEndTime////}
+										 item.meetInstructor + " | " +
+										 item.meetStartTime + " to " + item.meetEndTime}
 									</div>
-								))*/}
-								Temp
+								))}
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
