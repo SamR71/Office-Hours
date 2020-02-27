@@ -17,7 +17,11 @@ class CourseDropDown extends React.Component {
 	render() {
 		return (
 			<div>
-				<a class="btn btn-link" data-toggle="collapse" href={"#collapseCourse"+this.state.name} role="button" aria-expanded="false" aria-controls={"collapseCourse"+this.state.name}>
+				<a  class="btn btn-link"
+					data-toggle="collapse"
+					href={"#collapseCourse"+this.state.name}
+					role="button" aria-expanded="false"
+					aria-controls={"collapseCourse"+this.state.name}>
 					{this.state.name}
 				</a>
 				<br></br>
