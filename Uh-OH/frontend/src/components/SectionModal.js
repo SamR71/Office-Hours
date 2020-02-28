@@ -1,4 +1,5 @@
 import React from 'react';
+import MeetingTime from "./MeetingTime";
 import {withRouter} from 'react-router-dom';
 
 class SectionModal extends React.Component {
@@ -48,11 +49,16 @@ class SectionModal extends React.Component {
 							</div>
 							<div class="modal-body">
 								{this.state.courseMeetingTimes.map(item => (
+									<div key = {item.id}>
+										<MeetingTime meeting={item} />
+									{/*
 									<div key={item.id}>
 										{item.meetType + " | " +
 										 item.meetDates + " | " +
 										 item.meetInstructor + " | " +
 										 item.meetStartTime + " to " + item.meetEndTime}
+									</div>
+									*/}
 									</div>
 								))}
 							</div>
