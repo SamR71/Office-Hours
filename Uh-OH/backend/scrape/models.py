@@ -37,7 +37,7 @@ class CourseSection(models.Model):
 		verbose_name = 'Course Section'
 		verbose_name_plural = 'Course Sections'
         
-	currentCourse = models.ForeignKey(Course, on_delete=models.CASCADE)
+	currentCourse = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='sections')
 	sectionID = models.CharField(validators=[MinLengthValidator(2)], max_length = 2);
 
 	def __str__(self):
@@ -52,7 +52,7 @@ class CourseMeetingTime(models.Model):
 		verbose_name = 'Course Meeting Time'
 		verbose_name_plural = 'Course Meeting Times'
         
-	meetSection = models.ForeignKey(CourseSection, on_delete=models.CASCADE)
+	meetSection = models.ForeignKey(CourseSection, on_delete=models.CASCADE, related_name='courseMeetingTimes')
 	meetType = models.CharField(max_length=3)
 	meetDates = models.CharField(max_length=7)
 	meetStartTime = models.CharField(max_length=7)
