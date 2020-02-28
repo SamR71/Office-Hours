@@ -1,9 +1,10 @@
 import React from 'react';
 import queryString from 'query-string';
+import CourseDropDown from "./CourseDropDown";
 import {withRouter} from 'react-router-dom';
 
 class Search extends React.Component {
-    state = {
+	state = {
 		courses: []
 	};
 	
@@ -29,18 +30,16 @@ class Search extends React.Component {
 	}
 	
 	render() {
-
-        return (
-            <div>
+		return (
+			<div>
+				{/* Display each course as a drop down */}
 				{this.state.courses.map(item => (
 					<div key={item.id}>
-						<h2>{item.courseName}</h2>
-						<br></br>
+						<CourseDropDown course = {item} />
 					</div>
 				))}
-            </div>
-        );
-    }
+			</div>
+		);
+	}
 }
-
 export default withRouter(Search);
