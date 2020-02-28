@@ -9,17 +9,17 @@ class SectionModal extends React.Component {
 		courseMeetingTimes: [],
 	};
 	
-	
 	constructor(props) {
 		super(props);
-		this.state = {name: props.course.courseName,
+		this.state = {name: props.name,
 						id: props.section.sectionID,
 						courseMeetingTimes: props.section.courseMeetingTimes};
 	}
-	
+
 	render() {
 		return (
 			<div>
+				{/* The button for the modal, labeled by the section number */}
 				<a class="btn btn-link"
 					data-toggle="modal"
 					href={"#sectionModal"+this.state.name+this.state.id}
@@ -29,6 +29,7 @@ class SectionModal extends React.Component {
 					{" Section #" +this.state.id}
 				</a>
 				<br></br>
+				{/* The Modal itself */}
 				<div class="modal fade"
 					id={"sectionModal"+this.state.name+this.state.id}
 					tabindex="-1"
@@ -37,8 +38,9 @@ class SectionModal extends React.Component {
 					aria-hidden="true">
 					<div class="modal-dialog modal-dialog-centered" role="document">
 						<div class="modal-content">
+							{/* The Modal Header Content */}
 							<div class="modal-header">
-								<h5 class="modal-title" id="exampleModalLongTitle">
+								<h5 class="modal-title" id={"ModalHeader"+this.state.name+this.state.id}>
 									{this.state.name}
 									<br></br>
 									{"Section #" + this.state.id}
@@ -47,21 +49,15 @@ class SectionModal extends React.Component {
 									<span aria-hidden="true">&times;</span>
 								</button>
 							</div>
+							{/* The Modal Body Content */}
 							<div class="modal-body">
 								{this.state.courseMeetingTimes.map(item => (
 									<div key = {item.id}>
 										<MeetingTime meeting={item} />
-									{/*
-									<div key={item.id}>
-										{item.meetType + " | " +
-										 item.meetDates + " | " +
-										 item.meetInstructor + " | " +
-										 item.meetStartTime + " to " + item.meetEndTime}
-									</div>
-									*/}
 									</div>
 								))}
 							</div>
+							{/* The Modal Footer Content: Holds buttons to interact with the section */}
 							<div class="modal-footer">
 								<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 								<button type="button" class="btn btn-primary">Add to Schedule</button>

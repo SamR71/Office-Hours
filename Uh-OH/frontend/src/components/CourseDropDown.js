@@ -17,6 +17,7 @@ class CourseDropDown extends React.Component {
 	render() {
 		return (
 			<div>
+				{/* The DropDown button labeled as the name of the course */}
 				<a  class="btn btn-link"
 					data-toggle="collapse"
 					href={"#collapseCourse"+this.state.name}
@@ -25,11 +26,12 @@ class CourseDropDown extends React.Component {
 					{this.state.name}
 				</a>
 				<br></br>
+				{/* The DropDown Content that displays each section of the course */}
 				<div class="collapse" id={"collapseCourse"+this.state.name}>
 					<div class="card card-body">
 						{this.state.sections.map(item => (
 							<div key={item.id}>
-								<SectionModal course={this.props.course} section={item} />
+								<SectionModal name={this.state.name} section={item} />
 							</div>
 						))}
 					</div>

@@ -23,6 +23,7 @@ class MeetingTime extends React.Component {
 	render() {
 		return (
 			<div>
+			{/* The Body Content of the MeetingTime, currently displays just as text */}
 				{this.state.type + " | " +
 				this.state.dates + " | " +
 				this.state.instructor + " | " +

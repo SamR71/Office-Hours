@@ -32,6 +32,7 @@ class Search extends React.Component {
 	render() {
 		return (
 			<div>
+				{/* Display each course as a drop down */}
 				{this.state.courses.map(item => (
 					<div key={item.id}>
 						<CourseDropDown course = {item} />
