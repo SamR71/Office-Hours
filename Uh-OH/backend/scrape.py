@@ -103,99 +103,107 @@ class Scrape(object):
 			currentSoup = BeautifulSoup(currentPDFData, 'html.parser')
 			#Find All Subsections For Course Information:
 			allSectionValues = currentSoup.find_all("div")
-			print(len(allSectionValues))
 			#Loop Through All Course Descriptions:
-			count = 0;
 			prevCourseAbbrev = "";
+			allPrevInformation = [];
 			foundCourse = True;
 			for currentSection in allSectionValues:
 				#Check If Current Section Contains Instructor Information:
 				if(currentSection.find_all("p", string=re.compile("Instructor")) != None):
 					currentChildren = currentSection.findChildren();
-
-					#Find Start Index of "Instructor" Information:
+					#Find Start Index of First "Instructor" Information:
 					startValue = None;
 					for k in range(0, len(currentChildren)):
 						if("Instructor" in str(currentChildren[k])):
 							startValue = k;
-					
-					#Obtain Only Instructor Information:
+							break;
 					computeI = False;
-					if(startValue != None):
-						computeI = True;
-					else:
-						startValue = 0;
 					computeT = False;
 					allProfessorData = [];
 					allTAData = [];
 					singleTAData = [];
+					#Case 1: Current Section Contains "Instructor" Information:
+					if(startValue != None):
+						computeI = True;
+					#Case 2: No "Instructor" Information
+					else:
+						startValue = 0;
+						#Special Case:
+						#We May Have Already Seen "Instructor" In Previous Section.
+						#But Not The Interesting Data.
+						if(not(foundCourse)):
+							computeI = True;
+							#Initialize Data For Professor.
+							allProfessorData = allPrevInformation;
+					#Append Appropriate Values allProfessorData/allTAData.
 					for k in range(startValue, len(currentChildren)):
+						#Termination Condition For Professor Data.	
+						#Start Condition For TA Data.
 						if("Teaching" in str(currentChildren[k])):	
 							computeI = False;
 							computeT = True;
 							singleTAData = [];
+						#Termination Condition For A Single TA Information.
 						if(computeI == False and computeT == True and "@rpi.edu" in str(currentChildren[k])):
 							singleTAData.append(currentChildren[k])
 							allTAData.append(singleTAData);
 							singleTAData = [];
 						else:
+							#Append Professor Data.
 							if(computeI):
 								allProfessorData.append(currentChildren[k]);
+							#Append TA Data.
 							if(computeT):
 								singleTAData.append(currentChildren[k]);
-
-					#Account For The Format of Instructor Information:
-					#That is, if invalid, continue.
-					#Example: Random Course Information Text That Contains 
-					#The Word "Instructor" ...
-					#print(currentSection)
-
+					#Find Course Abbreviation:
+					for k in range(0, len(currentChildren)):
+						if(currentChildren[k] != None):
+							currentLineString = currentChildren[k].get_text()
+							isCourseValue, currentAbbrev = self.detectCourseAbbrev(currentLineString);
+							if(isCourseValue):
+								#Append Professor Office Hours Now:
+								if(not(self.appendProfessorOfficeHours(currentAbbrev, allProfessorData, allPrevInformation))):
+									prevCourseAbbrev = currentAbbrev;
+									foundCourse = False;
+								else:
+									foundCourse = True;
+									allPrevInformation = [];
+								#Append TA Office Hours Now:
+								self.appendTAOfficeHours(allTAData);
+					#Optimization: Account For Data Spread Across Multiple Sections.
 					if(not(foundCourse)):
 						prevCourseAbbrev = self.formatCourseAbbrevWithoutHypen(prevCourseAbbrev)
 						isCourseValue, currentAbbrev = self.detectCourseAbbrev(prevCourseAbbrev);
 						if(isCourseValue):
-							print(currentAbbrev)
-							count += 1;
 							#Append Professor Office Hours Now:
-							if(self.appendProfessorOfficeHours(allProfessorData)):
+							if(self.appendProfessorOfficeHours(currentAbbrev, allProfessorData, allPrevInformation)):
 								foundCourse = True;
+								allPrevInformation = [];
 							#Append TA Office Hours Now:
 							self.appendTAOfficeHours(allTAData);
-					else:		
-						for k in range(0, len(currentChildren)):
-							if(currentChildren[k] != None):
-								currentLineString = currentChildren[k].get_text()
-								if(currentLineString != None):
-									isCourseValue, currentAbbrev = self.detectCourseAbbrev(currentLineString);
-									if(isCourseValue):
-										print(currentAbbrev)
-										count += 1;
-										#Append Professor Office Hours Now:
-										if(not(self.appendProfessorOfficeHours(allProfessorData))):
-											prevCourseAbbrev = currentAbbrev;
-											foundCourse = False;
-											break;
-										#Append TA Office Hours Now:
-										self.appendTAOfficeHours(allTAData);
 					
-			print(count)
-
 	def detectCourseAbbrev(self, currentAbbrev):
+		#Simply Invalid Input
 		if(len(currentAbbrev) < 10):
 			return (False, currentAbbrev);
-		#Optimization To Filter Oddly Formatted Course Name Values
+		#Optimization: To Filter Oddly Formatted Course Name Values
 		if(len(currentAbbrev) > 10):
 			currentAbbrev = currentAbbrev[-10:]
+		#Sanity Check After Setting currentAbbrev To Only 10 Characters.
 		if(len(currentAbbrev) != 10):
 			return (False, currentAbbrev);
+		#Check For Four Alpha Characters:
 		for k in range(0, 4):
 			if(not(currentAbbrev[k].isalpha() and currentAbbrev[k].isupper())):
 				return (False, currentAbbrev);
+		#Check For Middle Space:
 		if(not(currentAbbrev[4].isspace())):
 			return (False, currentAbbrev);
+		#Check For Four Digits:
 		for k in range(5, 9):
 			if(not(currentAbbrev[k].isnumeric())):
 				return (False, currentAbbrev);
+		#Check For Last Space:
 		if(not(currentAbbrev[9].isspace())):
 			return (False, currentAbbrev);
 		currentAbbrev = self.formatCourseAbbrevWithHypen(currentAbbrev);
@@ -205,41 +213,57 @@ class Scrape(object):
 		return (returnValue, currentAbbrev);
 
 	def formatCourseAbbrevWithHypen(self, currentAbbrev):
+		#Append Hypen To Existing Abbrev + Remove Last Space Character
 		return currentAbbrev[:4] + "-" + currentAbbrev[5:9];
 
 	def formatCourseAbbrevWithoutHypen(self, currentAbbrev):
+		#Remove Hypen From Existing Abbrev + Append Last Space Character
 		return currentAbbrev[:4] + " " + currentAbbrev[5:9] + " ";
 
-	def appendProfessorOfficeHours(self, allProfessorData):
-		computeOfficeHours = False;
+	def appendProfessorOfficeHours(self, currentAbbrev, allProfessorData, allPrevInformation):
+		#Email Data:
 		currentEmail = "";
+		currentEmailHTML = None;
+		#OH Data:
+		computeOfficeHours = False;
 		currentOfficeHours = [];
 		for k in range(0, len(allProfessorData)):
-			print(allProfessorData[k])
-			if("@rpi.edu" in str(allProfessorData[k])):
+			#Case 1: Email.
+			if("rpi.edu" in str(allProfessorData[k]) or "RPI.EDU" in str(allProfessorData[k]) or "@" in str(allProfessorData[k])):
 				currentEmail = allProfessorData[k].get_text().replace('\xa0','')
+				currentEmailHTML = allProfessorData[k];
+			#Case 2: First Instance of Office Hours.
 			if("Office" in str(allProfessorData[k]) and not("Location") in str(allProfessorData[k])):
-				computeOfficeHours = True;
-				currentOH = allProfessorData[k].get_text().replace('\xa0', '')
-				currentOH = currentOH.strip("Office ").strip("Hours:")
 				noLower = True;
-				for currentChar in currentOH:
-					if(currentChar.isalpha() and currentChar.islower()):
-						noLower = False;
-				if(len(currentOH) != 0 and noLower):
-					currentOfficeHours.append(currentOH)
-			elif(computeOfficeHours):
-				currentOH = allProfessorData[k].get_text().replace('\xa0', '')
+				#Set computeOfficeHours Flag To True For Next Iteration.
+				computeOfficeHours = True;
+				currentOH = allProfessorData[k].get_text().replace('\xa0', ' ')
 				currentOH = currentOH.strip("Office ").strip("Hours:")
-				noLower = True
+				#Check For Invalid Data:
 				for currentChar in currentOH:
 					if(currentChar.isalpha() and currentChar.islower()):
 						noLower = False;
+				#Append Valid + Non-Empty Data
 				if(len(currentOH) != 0 and noLower):
 					currentOfficeHours.append(currentOH)
-		print(currentOfficeHours)
+			#Case 3: All Other Instances of Office Hours:
+			elif(computeOfficeHours):
+				noLower = True
+				currentOH = allProfessorData[k].get_text().replace('\xa0', ' ')
+				currentOH = currentOH.strip("Office ").strip("Hours:")
+				#Check For Invalid Data:
+				for currentChar in currentOH:
+					if(currentChar.isalpha() and currentChar.islower()):
+						noLower = False;
+				#Append Valid + Non-Empty Data
+				if(len(currentOH) != 0 and noLower):
+					currentOfficeHours.append(currentOH)
 		if(len(currentOfficeHours) == 0):
+			if(currentEmail != ""):
+				allPrevInformation.append(currentEmailHTML);
 			return False
+		print(currentAbbrev, currentEmail, currentOfficeHours)
+		#self.populateProfessorData(currentAbbrev, currentEmail, currentOfficeHours)
 		return True
 
 	def appendTAOfficeHours(self, allTAData):
