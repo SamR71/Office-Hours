@@ -14,7 +14,16 @@ class Search(models.Model):
 
 class Course(models.Model):
 	"""Course Class represents a single course as its courseName."""
+	#courseName = Listed Name of Course. 
 	courseName = models.CharField(max_length=128)
+	#courseValue = CRN Number.
+	courseValue = models.CharField(validators=[MinLengthValidator(5)], max_length=5);
+	#courseAbbrev = Abbreviation For Course Name.
+	courseAbbrev = models.CharField(max_length=128)
+
+	class Meta:
+		verbose_name = 'Course'
+		verbose_name_plural = 'Courses'
 
 	def __str__(self):
 		return self.courseName
@@ -28,10 +37,27 @@ class CourseSection(models.Model):
 		verbose_name = 'Course Section'
 		verbose_name_plural = 'Course Sections'
         
-	course = models.ForeignKey(Course, on_delete=models.CASCADE)
+	currentCourse = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='sections')
 	sectionID = models.CharField(validators=[MinLengthValidator(2)], max_length = 2);
-	instructorName = models.CharField(max_length=128)
 
 	def __str__(self):
-		return str(self.course) + " w/ Section: " + str(self.sectionID) + " + Instructor: " + str(self.instructorName)
+		return str(self.currentCourse) + " + " + str(self.sectionID);
 
+class CourseMeetingTime(models.Model):
+	"""
+	CourseMeetingTime Class represents a specific meeting time 
+	of a CourseSection.
+	"""
+	class Meta:
+		verbose_name = 'Course Meeting Time'
+		verbose_name_plural = 'Course Meeting Times'
+        
+	meetSection = models.ForeignKey(CourseSection, on_delete=models.CASCADE, related_name='courseMeetingTimes')
+	meetType = models.CharField(max_length=3)
+	meetDates = models.CharField(max_length=7)
+	meetStartTime = models.CharField(max_length=7)
+	meetEndTime = models.CharField(max_length=7)
+	meetInstructor = models.CharField(max_length=128, default = "")
+
+	def __str__(self):
+		return str(self.meetSection) + " + " + str(self.meetType) + " + " + str(self.meetInstructor);
