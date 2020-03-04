@@ -19,7 +19,9 @@ class SignUp extends React.Component{
 
     handleClick()
     {
-        this.props.history.push("/LogIn");
+        var url = 'http://localhost:8000/login/registeruser/';
+        const res = fetch(url+this.state.fullName+"/"+this.state.email+"/"+this.state.password+"/"+this.state.repeatPassword);
+   
     }
 
     handleChange(event)
