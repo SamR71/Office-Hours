@@ -43,10 +43,13 @@ class Scrape(object):
 				    	allCourseData.append(currentData)
 
 		#Clear Database Prior To Population:
-		currentDataInDatabase = Course.objects.all()
-		if(len(currentDataInDatabase) != 0):
-			currentDataInDatabase.delete()
-
+		currentDataInDatabase = Course.objects.all();
+		try:
+			if(len(currentDataInDatabase) != 0):
+				currentDataInDatabase.delete()
+		except django.db.utils.OperationalError:
+			print("Empty Database To Be Populated")
+			
 		#Populate All Spring 2020 Course Data:
 		for currentRow in allCourseData:
 			allExistingCourses = Course.objects.filter(courseName = currentRow[1])
