@@ -110,7 +110,8 @@ class Scrape(object):
 			# prevCourseAbbrev = "";
 			# allPrevInformation = [];
 			countFoundData = 0;
-			for k in range(0, len(allSectionValues)):
+			k = 0;
+			while(k < len(allSectionValues)):
 				currentSection = allSectionValues[k];
 				#Check If Current Section Contains Instructor Information:
 				if(currentSection.find_all("p", string=re.compile("Instructor")) != None):
@@ -118,58 +119,14 @@ class Scrape(object):
 					if(currentCourseAbbrev != None):
 						print(currentCourseAbbrev)
 						allProfessorData, sIndex = self.computeAllProfessorData(allSectionValues, k);
+						allProfessorData = self.formatProfessorData(allProfessorData);
 						print(allProfessorData)
 						k = sIndex;
 						countFoundData += 1;
 						print()
+				k += 1;
 			print(countFoundData);
 		
-	def computeAllProfessorData(self, allSectionValues, sIndex):
-		#Find Start Index of First "Instructor" Information:
-		allProfessorData = [];
-		startValue = self.getProfessorStartValue(allSectionValues, sIndex);
-		currentChildren = allSectionValues[sIndex].findChildren();
-		#Current Section Does Not Contains "Instructor" Information:
-		if(startValue == None):
-			allProfessorDataFound = False;
-		#Append Appropriate Values allProfessorData.
-		else:
-			allProfessorDataFound = self.populateAllProfessorData(startValue, currentChildren, allProfessorData);
-		if(not(allProfessorDataFound)):
-			sIndex += 1; 
-			if(sIndex < len(allSectionValues)):
-				startValue = self.getProfessorStartValue(allSectionValues, sIndex);
-				if(startValue == None):
-					startValue = 0;
-				currentChildren = allSectionValues[sIndex].findChildren();
-				allProfessorDataFound = self.populateAllProfessorData(startValue, currentChildren, allProfessorData);
-				if(not(allProfessorDataFound)):
-					print("Fatal Error In Finding Missing Data In Conseuctive Section.")
-					return (None, sIndex);
-			else:
-				print("Fatal Error In Optimization For Missing Data.");
-				return (None, sIndex);
-		return (allProfessorData, sIndex);
-
-	def getProfessorStartValue(self, allSectionValues, sIndex):
-		startValue = None;
-		currentChildren = allSectionValues[sIndex].findChildren();
-		for k in range(0, len(currentChildren)):
-			if("Instructor" in currentChildren[k].get_text() and len(currentChildren[k].get_text()) == 11):
-				startValue = k;
-				break;
-		return startValue;
-
-	def populateAllProfessorData(self, startValue, currentChildren, allProfessorData):
-		for k in range(startValue, len(currentChildren)):
-			if("Teaching" in str(currentChildren[k])):
-				return True;
-			else:
-				currentInformation = currentChildren[k].get_text().replace('\xa0', ' ');
-				if(currentInformation != '' and currentInformation != ' '):
-					allProfessorData.append(currentInformation);
-		return False;
-
 	def computeCourseAbbrevName(self, allSectionValues, sIndex):
 		#Find Course Abbreviation:
 		currentChildren = allSectionValues[sIndex].findChildren();
@@ -217,7 +174,113 @@ class Scrape(object):
 	def formatCourseAbbrevWithHypen(self, currentAbbrev):
 		#Append Hypen To Existing Abbrev + Remove Last Space Character
 		return currentAbbrev[:4] + "-" + currentAbbrev[5:9];
-	
+
+	def computeAllProfessorData(self, allSectionValues, sIndex):
+		#Find Start Index of First "Instructor" Information:
+		allProfessorData = [];
+		startValue = self.getProfessorStartValue(allSectionValues, sIndex);
+		currentChildren = allSectionValues[sIndex].findChildren();
+		#Current Section Does Not Contains "Instructor" Information:
+		if(startValue == None):
+			allProfessorDataFound = False;
+		#Append Appropriate Values allProfessorData.
+		else:
+			allProfessorDataFound = self.populateAllProfessorData(startValue, currentChildren, allProfessorData);
+		if(not(allProfessorDataFound)):
+			sIndex += 1; 
+			if(sIndex < len(allSectionValues)):
+				startValue = self.getProfessorStartValue(allSectionValues, sIndex);
+				if(startValue == None):
+					startValue = 0;
+				currentChildren = allSectionValues[sIndex].findChildren();
+				allProfessorDataFound = self.populateAllProfessorData(startValue, currentChildren, allProfessorData);
+				if(not(allProfessorDataFound)):
+					print("Fatal Error In Finding Missing Data In Conseuctive Section.")
+					return (None, sIndex);
+			else:
+				print("Fatal Error In Optimization For Missing Data.");
+				return (None, sIndex);
+		return (allProfessorData, sIndex);
+
+	def getProfessorStartValue(self, allSectionValues, sIndex):
+		startValue = None;
+		currentChildren = allSectionValues[sIndex].findChildren();
+		for k in range(0, len(currentChildren)):
+			currentInformation = currentChildren[k].get_text().replace('\xa0', ' ');
+			if("Instructor " == currentInformation):
+				startValue = k;
+				break;
+		return startValue;
+
+	def populateAllProfessorData(self, startValue, currentChildren, allProfessorData):
+		for k in range(startValue, len(currentChildren)):
+			currentInformation = currentChildren[k].get_text().replace('\xa0', ' ');
+			if("Teaching Assistant(s) " == currentInformation):
+				return True;
+			else:
+				if(currentInformation != '' and currentInformation != ' '):
+					allProfessorData.append(currentInformation);
+		return False;
+
+	def formatProfessorData(self, allProfessorData):
+		if(allProfessorData == None):
+			return None;
+		for k in range(0, len(allProfessorData)):
+			allProfessorData[k] = allProfessorData[k][:-1];
+		pName = allProfessorData[1];
+		pEmail = allProfessorData[2].lower();
+		pLocation = self.getProfessorLocationValue(allProfessorData[3:]);
+		pOfficeHours = self.getProfessorOfficeHours(allProfessorData[3:]);
+		return allProfessorData;
+
+	def getProfessorLocationValue(self, allProfessorData):
+		for k in range(0, len(allProfessorData)):
+			if("Office Location: " in allProfessorData[k]):
+				return allProfessorData[k][17:];
+		return "Currently To Be Determined.";
+
+	def getProfessorOfficeHours(self, allProfessorData):
+		#Find Start of Office Hours Data:
+		startValue = None;
+		currentOfficeHours = [];
+		for k in range(0, len(allProfessorData)):
+			if("Office Hours: " in allProfessorData[k]):
+				startValue = k;
+				allProfessorData[k] = allProfessorData[k][14:];
+		#Case 1: No Office Data.
+		if(startValue == None):
+			return [("Not Applicable.","Currently To Be Determined.")];
+		#Combine All Office Hours Data Into A Single.
+		allDataInSingleStr = "";
+		for k in range(startValue, len(allProfessorData)):
+			allDataInSingleStr += allProfessorData[k];
+			#Do Not Append Space To Very End of Data.
+			if(k != len(allProfessorData)-1):
+				allDataInSingleStr += " ";
+		#Split By Spaces To Extract Date + Time Components.
+		tempParserForOfficeHours = allDataInSingleStr.split();
+		#Extract Date + Time Components + Populate Into currentOfficeHours.
+		for k in range(0, len(tempParserForOfficeHours), 2):
+			firstValue = tempParserForOfficeHours[k];
+			secondValue = None;
+			if(k+1 < len(tempParserForOfficeHours)):
+				secondValue = tempParserForOfficeHours[k+1];
+			#Case 1: No Date Specified + Just Time
+			if(any(currentChar.isdigit() for currentChar in firstValue)):
+				secondValue = firstValue;
+				firstValue = "Not Specified By Instructor."
+				currentOfficeHours.append((firstValue, secondValue));
+				k -= 1;
+			#Case 2: Date Specified
+			else:
+				#Case 3: Time Specified
+				if(secondValue != None):
+					currentOfficeHours.append((firstValue, secondValue));
+		#No Correct Office Hours Data Found:
+		if(len(currentOfficeHours) == 0):
+			return [("Not Applicable.","Currently To Be Determined.")];
+		return currentOfficeHours;
+
 def main():
     if(len(sys.argv) < 2):
     	print("Incorrect Number of Arguments.")
