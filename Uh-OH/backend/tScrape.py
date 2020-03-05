@@ -160,6 +160,7 @@ class Scrape(object):
 		for k in range(0, len(currentChildren)):
 			if("Instructor" in currentChildren[k].get_text() and len(currentChildren[k].get_text()) == 11):
 				startValue = k;
+				break;
 		return startValue;
 
 	def populateAllProfessorData(self, startValue, currentChildren, allProfessorData):
