@@ -28,6 +28,73 @@ class Course(models.Model):
 	def __str__(self):
 		return self.courseName
 
+class Professor(models.Model):
+	"""
+	CourseSection Class represents a single section of a Course
+	by the Course, sectionID, and instructorName.
+	"""
+	class Meta:
+		verbose_name = 'Professor'
+		verbose_name_plural = 'Professors'
+
+	pName = models.CharField(max_length=128)
+	pEmail = models.CharField(max_length=128)
+	currentCourse = models.ForeignKey(Course, on_delete=models.CASCADE)
+
+	def __str__(self):
+		return str(self.currentCourse) + " + " + str(self.pName) + " + " + str(self.pEmail);
+
+class ProfessorOfficeHours(models.Model):
+	"""
+	CourseSection Class represents a single section of a Course
+	by the Course, sectionID, and instructorName.
+	"""
+	class Meta:
+		verbose_name = 'Professor Office Hour'
+		verbose_name_plural = 'Professor Office Hours'
+        
+	meetProfessor = models.ForeignKey(Professor, on_delete=models.CASCADE)
+	meetStartTime = models.CharField(max_length=7)
+	meetEndTime = models.CharField(max_length=7)
+	meetLocation = models.CharField(max_length=23)
+	meetDates = models.CharField(max_length=7)
+
+	def __str__(self):
+		return str(self.meetProfessor) + " + " + str(self.meetLocation) + " + " + str(self.meetDates) + " + " + str(self.meetStartTime) + " + " + str(self.meetEndTime);
+
+class TeachingAssistant(models.Model):
+	"""
+	CourseSection Class represents a single section of a Course
+	by the Course, sectionID, and instructorName.
+	"""
+	class Meta:
+		verbose_name = 'Teaching Assistant'
+		verbose_name_plural = 'Teaching Assistants'
+
+	tName = models.CharField(max_length=128)
+	tEmail = models.CharField(max_length=128)
+	currentCourse = models.ForeignKey(Course, on_delete=models.CASCADE)
+
+	def __str__(self):
+		return str(self.currentCourse) + " + " + str(self.tName) + " + " + str(self.tEmail);
+
+class TeachingAssistantOfficeHours(models.Model):
+	"""
+	CourseSection Class represents a single section of a Course
+	by the Course, sectionID, and instructorName.
+	"""
+	class Meta:
+		verbose_name = 'Teaching Assistant Office Hours'
+
+	meetTA = models.ForeignKey(TeachingAssistant, on_delete=models.CASCADE)
+	meetStartTime = models.CharField(max_length=7)
+	meetEndTime = models.CharField(max_length=7)
+	meetLocation = models.CharField(max_length=23)
+	meetDates = models.CharField(max_length=7)
+
+	def __str__(self):
+		return str(self.meetTA) + " + " + str(self.meetStartTime) + " + " + str(self.meetEndTime) + " + " + str(self.meetLocation);
+
 class CourseSection(models.Model):
 	"""
 	CourseSection Class represents a single section of a Course
