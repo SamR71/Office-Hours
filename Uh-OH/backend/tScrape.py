@@ -109,9 +109,7 @@ class Scrape(object):
 			#Loop Through All Course Descriptions:
 			# prevCourseAbbrev = "";
 			# allPrevInformation = [];
-			countFoundProfessorData = 0;
-			countFoundTAData = 0;
-			totalFoundData = 0;
+			countFoundData = 0;
 			for k in range(0, len(allSectionValues)):
 				currentSection = allSectionValues[k];
 				#Check If Current Section Contains Instructor Information:
@@ -120,12 +118,11 @@ class Scrape(object):
 					if(currentCourseAbbrev != None):
 						print(currentCourseAbbrev)
 						allProfessorData, sIndex = self.computeAllProfessorData(allSectionValues, k);
-						if(allProfessorData != None):
-							print(allProfessorData)
-							print()
+						print(allProfessorData)
 						k = sIndex;
-				k += 1;
-			print(countFoundTAData, totalFoundData)
+						countFoundData += 1;
+						print()
+			print(countFoundData);
 		
 	def computeAllProfessorData(self, allSectionValues, sIndex):
 		#Find Start Index of First "Instructor" Information:
@@ -180,7 +177,6 @@ class Scrape(object):
 			currentInformation = currentChildren[k].get_text().replace('\xa0', ' ');
 			isRealCourse, currentAbbrev = self.detectCourseAbbrev(currentInformation);
 			if(isRealCourse):
-				#print(allSectionValues[sIndex])
 				return currentAbbrev;
 		return None;
 
