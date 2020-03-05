@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 #Necessary Setup To Import Models:
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "backend.settings")
 django.setup()
-from scrape.models import Course, CourseSection, CourseMeetingTime
+from scrape.models import Course, CourseSection, CourseMeetingTime, Professor, ProfessorOfficeHours
 
 #Scrape Class For All Formats:
 class Scrape(object):
@@ -92,9 +92,9 @@ class Scrape(object):
 	#Scrape All Spring 2019 Office Hours:
 	def scrapeSpring2019OfficeHours(self):
 		#Reset Database Values Prior To Population:
-		# currentProfessorDataInDatabase = Professor.objects.all()
-		# if(len(currentProfessorDataInDatabase) != 0):
-		# 	currentProfessorDataInDatabase.delete()
+		currentProfessorDataInDatabase = Professor.objects.all()
+		if(len(currentProfessorDataInDatabase) != 0):
+			currentProfessorDataInDatabase.delete()
 		# currentTADataInDatabase = TeachingAssistant.objects.all()
 		# if(len(currentTADataInDatabase) != 0):
 		# 	currentTADataInDatabase.delete()
@@ -121,7 +121,7 @@ class Scrape(object):
 						print(currentCourseAbbrev)
 						allProfessorData, sIndex = self.computeAllProfessorData(allSectionValues, k);
 						allProfessorData = self.formatProfessorData(allProfessorData);
-						#print(allProfessorData)
+						self.populateDatabaseWithProfessorData(currentCourseAbbrev, allProfessorData);
 						k = sIndex;
 						countFoundData += 1;
 						print()
@@ -253,10 +253,13 @@ class Scrape(object):
 		pLocation = self.getProfessorLocationValue(allProfessorData[3:]);
 		#Obtain Professor Office Hour Data:
 		pOfficeHours = self.getProfessorOfficeHours(allProfessorData[3:]);	
-		print(pName)
-		print(pEmail)
-		print(pLocation)
-		print(pOfficeHours)
+		
+		allProfessorData = [];
+		allProfessorData.append(pName);
+		allProfessorData.append(pEmail);
+		allProfessorData.append(pLocation);
+		allProfessorData.append(pOfficeHours);
+		
 		return allProfessorData;
 
 	def getProfessorLocationValue(self, allProfessorData):
@@ -317,6 +320,52 @@ class Scrape(object):
 				#Compute Start + End Time + Return Pair of Them
 				return (currentCombinedTime[:k], currentCombinedTime[k+1:]);
 		return (None, None);
+
+	def populateDatabaseWithProfessorData(self, currentCourseAbbrev, allProfessorData):
+		#Checks/Asserts That Course Truly Exists When Called By scrapeSpring2019OfficeHours()
+		allExistingCourses = Course.objects.filter(courseAbbrev = currentCourseAbbrev);
+		#Since courseAbbrev = Unique Course Attribute, len(allExistingCourses) Must Be 1.
+		currentCourseObject = allExistingCourses[0];
+		allExistingProfessors = Professor.objects.filter(currentCourse = currentCourseObject).filter(pName = allProfessorData[0]);
+		#Professor For PArticular Course Does Not Exist
+		if(len(allExistingProfessors) == 0):
+			currentProfessor = Professor(pName = allProfessorData[0], 
+											pEmail = allProfessorData[1], 
+											currentCourse = currentCourseObject);
+			currentProfessor.save();
+			#Loop Through All Professor Office Hours:
+			for k in range(0, len(allProfessorData[3])):
+				#Check That Specific Office Hours Do Not Yet Exist:
+				allExistingOfficeHours = ProfessorOfficeHours.objects.filter(meetProfessor = currentProfessor)
+				allExistingOfficeHours = allExistingOfficeHours.filter(meetLocation = allProfessorData[2])
+				allExistingOfficeHours = allExistingOfficeHours.filter(meetDates = allProfessorData[3][k][0])
+				allExistingOfficeHours = allExistingOfficeHours.filter(meetStartTime = allProfessorData[3][k][1])
+				allExistingOfficeHours = allExistingOfficeHours.filter(meetEndTime = allProfessorData[3][k][2]);
+				if(len(allExistingOfficeHours) == 0):
+					newOfficeHours = ProfessorOfficeHours(meetProfessor = currentProfessor,
+															meetLocation = allProfessorData[2],
+															meetDates = allProfessorData[3][k][0],
+															meetStartTime = allProfessorData[3][k][1],
+															meetEndTime = allProfessorData[3][k][2]);
+					newOfficeHours.save();
+		else:
+			currentProfessor = allExistingProfessors[0];
+			#Loop Through All Professor Office Hours:
+			for k in range(0, len(allProfessorData[3])):
+				#Check That Specific Office Hours Do Not Yet Exist:
+				allExistingOfficeHours = ProfessorOfficeHours.objects.filter(meetProfessor = currentProfessor)
+				allExistingOfficeHours = allExistingOfficeHours.filter(meetLocation = allProfessorData[2])
+				allExistingOfficeHours = allExistingOfficeHours.filter(meetDates = allProfessorData[3][k][0])
+				allExistingOfficeHours = allExistingOfficeHours.filter(meetStartTime = allProfessorData[3][k][1])
+				allExistingOfficeHours = allExistingOfficeHours.filter(meetEndTime = allProfessorData[3][k][2]);
+				if(len(allExistingOfficeHours) == 0):
+					newOfficeHours = ProfessorOfficeHours(meetProfessor = currentProfessor,
+															meetLocation = allProfessorData[2],
+															meetDates = allProfessorData[3][k][0],
+															meetStartTime = allProfessorData[3][k][1],
+															meetEndTime = allProfessorData[3][k][2]);
+					newOfficeHours.save();
+
 
 def main():
     if(len(sys.argv) < 2):

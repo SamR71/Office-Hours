@@ -37,12 +37,12 @@ class Professor(models.Model):
 		verbose_name = 'Professor'
 		verbose_name_plural = 'Professors'
 
-	iName = models.CharField(max_length=128)
-	iEmail = models.CharField(max_length=128)
+	pName = models.CharField(max_length=128)
+	pEmail = models.CharField(max_length=128)
 	currentCourse = models.ForeignKey(Course, on_delete=models.CASCADE)
 
 	def __str__(self):
-		return str(self.currentCourse) + " + " + str(self.iName) + " + " + str(self.iEmail);
+		return str(self.currentCourse) + " + " + str(self.pName) + " + " + str(self.pEmail);
 
 class ProfessorOfficeHours(models.Model):
 	"""
@@ -50,7 +50,8 @@ class ProfessorOfficeHours(models.Model):
 	by the Course, sectionID, and instructorName.
 	"""
 	class Meta:
-		verbose_name = 'Professor Office Hours'
+		verbose_name = 'Professor Office Hour'
+		verbose_name_plural = 'Professor Office Hours'
         
 	meetProfessor = models.ForeignKey(Professor, on_delete=models.CASCADE)
 	meetStartTime = models.CharField(max_length=7)
