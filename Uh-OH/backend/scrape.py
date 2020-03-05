@@ -127,11 +127,12 @@ class Scrape(object):
 						computeI = True;
 					#Case 2: No "Instructor" Information
 					else:
-						startValue = 0;
+						startValue = len(currentChildren);
 						#Special Case:
 						#We May Have Already Seen "Instructor" In Previous Section.
 						#But Not The Interesting Data.
 						if(not(foundCourse)):
+							startValue = 0;
 							computeI = True;
 							#Initialize Data For Professor.
 							allProfessorData = allPrevInformation;
@@ -155,21 +156,7 @@ class Scrape(object):
 							#Append TA Data.
 							if(computeT):
 								singleTAData.append(currentChildren[k]);
-					#Find Course Abbreviation:
-					for k in range(0, len(currentChildren)):
-						if(currentChildren[k] != None):
-							currentLineString = currentChildren[k].get_text()
-							isCourseValue, currentAbbrev = self.detectCourseAbbrev(currentLineString);
-							if(isCourseValue):
-								#Append Professor Office Hours Now:
-								if(not(self.appendProfessorOfficeHours(currentAbbrev, allProfessorData, allPrevInformation))):
-									prevCourseAbbrev = currentAbbrev;
-									foundCourse = False;
-								else:
-									foundCourse = True;
-									allPrevInformation = [];
-								#Append TA Office Hours Now:
-								self.appendTAOfficeHours(allTAData);
+
 					#Optimization: Account For Data Spread Across Multiple Sections.
 					if(not(foundCourse)):
 						prevCourseAbbrev = self.formatCourseAbbrevWithoutHypen(prevCourseAbbrev)
@@ -181,6 +168,23 @@ class Scrape(object):
 								allPrevInformation = [];
 							#Append TA Office Hours Now:
 							self.appendTAOfficeHours(allTAData);
+					else:		
+						#Find Course Abbreviation:
+						for k in range(0, len(currentChildren)):
+							if(currentChildren[k] != None):
+								currentLineString = currentChildren[k].get_text()
+								isCourseValue, currentAbbrev = self.detectCourseAbbrev(currentLineString);
+								if(isCourseValue):
+									#Append Professor Office Hours Now:
+									if(not(self.appendProfessorOfficeHours(currentAbbrev, allProfessorData, allPrevInformation))):
+										prevCourseAbbrev = currentAbbrev;
+										foundCourse = False;
+									else:
+										foundCourse = True;
+										allPrevInformation = [];
+									#Append TA Office Hours Now:
+									self.appendTAOfficeHours(allTAData);
+					
 					
 	def detectCourseAbbrev(self, currentAbbrev):
 		#Simply Invalid Input
