@@ -186,26 +186,37 @@ class Scrape(object):
 		#Append Appropriate Values allProfessorData.
 		else:
 			allProfessorDataFound = self.populateAllProfessorData(startValue, currentChildren, allProfessorData);
+		#Try Again If Data Not Found:
 		if(not(allProfessorDataFound)):
+			#Specifically, Look In Next Section.
 			sIndex += 1; 
+			#If sIndex Within Bounds:
 			if(sIndex < len(allSectionValues)):
+				#Get Start of Instructor Data:
 				startValue = self.getProfessorStartValue(allSectionValues, sIndex);
+				#"Instructor" Was In Previous Section, 
+				#...Start Looking From First Piece of Information.
 				if(startValue == None):
 					startValue = 0;
+				#Find Children + Pass To Populate Appropriate Data to allProfessorData
 				currentChildren = allSectionValues[sIndex].findChildren();
 				allProfessorDataFound = self.populateAllProfessorData(startValue, currentChildren, allProfessorData);
+				#Error Check If Not Found In Consecutive Section.
 				if(not(allProfessorDataFound)):
 					print("Fatal Error In Finding Missing Data In Conseuctive Section.")
 					return (None, sIndex);
 			else:
+				#Could Not Ever Find Data.
 				print("Fatal Error In Optimization For Missing Data.");
 				return (None, sIndex);
 		return (allProfessorData, sIndex);
 
 	def getProfessorStartValue(self, allSectionValues, sIndex):
+		#Obtain Start of Keyword "Instructor":
 		startValue = None;
 		currentChildren = allSectionValues[sIndex].findChildren();
 		for k in range(0, len(currentChildren)):
+			#Replace '\xa0' with ' '
 			currentInformation = currentChildren[k].get_text().replace('\xa0', ' ');
 			if("Instructor " == currentInformation):
 				startValue = k;
@@ -213,23 +224,33 @@ class Scrape(object):
 		return startValue;
 
 	def populateAllProfessorData(self, startValue, currentChildren, allProfessorData):
+		#Terminate w/ Keyword "Teaching Assistant(s)":
 		for k in range(startValue, len(currentChildren)):
+			#Replace '\xa0' with ' '
 			currentInformation = currentChildren[k].get_text().replace('\xa0', ' ');
 			if("Teaching Assistant(s) " == currentInformation):
 				return True;
 			else:
+				#Populate Professor Data If Non-Empty:
 				if(currentInformation != '' and currentInformation != ' '):
 					allProfessorData.append(currentInformation);
+		#Never Found "Teaching Assistant(s)" => Need To Look In Next Section For Missing Data.
 		return False;
 
 	def formatProfessorData(self, allProfessorData):
+		#Format Professor Data Prior To Entry Into SQLite3 Database.
 		if(allProfessorData == None):
 			return None;
+		#Remove Trailing ' ' From All Instructor Data.
 		for k in range(0, len(allProfessorData)):
 			allProfessorData[k] = allProfessorData[k][:-1];
+		#Name of Professor:
 		pName = allProfessorData[1];
+		#Convert Email To @rpi.edu Instead of @RPI.EDU By Converting To Lowecase:
 		pEmail = allProfessorData[2].lower();
+		#Obtain Professor Office Hour Location:
 		pLocation = self.getProfessorLocationValue(allProfessorData[3:]);
+		#Obtain Professor Office Hour Data:
 		pOfficeHours = self.getProfessorOfficeHours(allProfessorData[3:]);
 		return allProfessorData;
 
@@ -323,4 +344,6 @@ if __name__ == "__main__":
 # 		print(child)
 # 	#allCurrentChildren = currentTitle.
 # 	#print(allCurrentChildren)
+
+
 
