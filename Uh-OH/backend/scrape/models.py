@@ -60,7 +60,7 @@ class ProfessorOfficeHours(models.Model):
 	meetDates = models.CharField(max_length=7)
 
 	def __str__(self):
-		return str(self.meetProfessor) + " + " + str(self.meetStartTime) + " + " + str(self.meetEndTime) + " + " + str(self.meetLocation);
+		return str(self.meetProfessor) + " + " + str(self.meetLocation) + " + " + str(self.meetDates) + " + " + str(self.meetStartTime) + " + " + str(self.meetEndTime);
 
 class TeachingAssistant(models.Model):
 	"""
