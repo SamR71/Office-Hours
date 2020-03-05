@@ -116,11 +116,12 @@ class Scrape(object):
 				#Check If Current Section Contains Instructor Information:
 				if(currentSection.find_all("p", string=re.compile("Instructor")) != None):
 					currentCourseAbbrev = self.computeCourseAbbrevName(allSectionValues, k);
+					#Assert Current Section Describes A Valid Section:
 					if(currentCourseAbbrev != None):
 						print(currentCourseAbbrev)
 						allProfessorData, sIndex = self.computeAllProfessorData(allSectionValues, k);
 						allProfessorData = self.formatProfessorData(allProfessorData);
-						print(allProfessorData)
+						#print(allProfessorData)
 						k = sIndex;
 						countFoundData += 1;
 						print()
@@ -251,7 +252,11 @@ class Scrape(object):
 		#Obtain Professor Office Hour Location:
 		pLocation = self.getProfessorLocationValue(allProfessorData[3:]);
 		#Obtain Professor Office Hour Data:
-		pOfficeHours = self.getProfessorOfficeHours(allProfessorData[3:]);
+		pOfficeHours = self.getProfessorOfficeHours(allProfessorData[3:]);	
+		print(pName)
+		print(pEmail)
+		print(pLocation)
+		print(pOfficeHours)
 		return allProfessorData;
 
 	def getProfessorLocationValue(self, allProfessorData):
@@ -290,17 +295,28 @@ class Scrape(object):
 			if(any(currentChar.isdigit() for currentChar in firstValue)):
 				secondValue = firstValue;
 				firstValue = "Not Specified By Instructor."
-				currentOfficeHours.append((firstValue, secondValue));
+				(startTime, endTime) = self.getStartEndTimes(secondValue);
+				if(startTime != None and endTime != None):
+					currentOfficeHours.append((firstValue, startTime, endTime))
 				k -= 1;
 			#Case 2: Date Specified
 			else:
 				#Case 3: Time Specified
 				if(secondValue != None):
-					currentOfficeHours.append((firstValue, secondValue));
+					(startTime, endTime) = self.getStartEndTimes(secondValue);
+					if(startTime != None and endTime != None):
+						currentOfficeHours.append((firstValue, startTime, endTime))
 		#No Correct Office Hours Data Found:
 		if(len(currentOfficeHours) == 0):
 			return [("Not Applicable.","Currently To Be Determined.")];
 		return currentOfficeHours;
+
+	def getStartEndTimes(self, currentCombinedTime):
+		for k in range(0, len(currentCombinedTime)):
+			if(currentCombinedTime[k] == "-"):
+				#Compute Start + End Time + Return Pair of Them
+				return (currentCombinedTime[:k], currentCombinedTime[k+1:]);
+		return (None, None);
 
 def main():
     if(len(sys.argv) < 2):
