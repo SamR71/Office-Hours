@@ -30,21 +30,40 @@ class SignIn extends React.Component{
 
     render() {
         return(
-            <div className="signin">
-                <form>
-                    <label htmlFor="userName"><b>Username/E-mail: </b></label>
-                    <input type="text" onChange={this.handleChange} placeholder="Enter Username" name="userName" required />
-                    <br/>
-                    <label htmlFor="password"><b>Password: </b></label>
-                    <input type="password" onChange={this.handleChange} placeholder="Enter password" name="password" required />
-                    <br/>
-                    <Link to="/LogIn/ResetPassword">Forgot Password</Link>
-                    <br/>
-                    <Link to="/LogIn/CreateAccount">Don't have an account Sign-up</Link>
-                    <br/>
-                    <button className="signinbutton" onClick={this.handleClick}>Log-in</button>
-                </form>
-            </div>
+			<div class="container">
+				<div class="row">
+					<div class="col-md-5 mx-auto">
+						<div class="myform form ">
+							<div class="logo mb-3">
+								<div class="col-md-12 text-center">
+									<h1>Login</h1>
+								</div>
+							</div>
+							<form action="" method="post" name="login">
+								<div class="form-group">
+									<label for="exampleInputEmail1">Email address</label>
+									<input type="email" name="userName"  class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email" onChange={this.handleChange}/>
+								</div>
+								<div class="form-group">
+									<label for="exampleInputEmail1">Password</label>
+									<input type="password" name="password" id="password"  class="form-control" aria-describedby="emailHelp" placeholder="Enter Password" onChange={this.handleChange}/>
+								</div>
+								<div class="col-md-12 text-center ">
+									<button onClick={this.handleClick} class=" btn btn-block mybtn btn-primary tx-tfm">Login</button>
+								</div>
+								<div class="col-md-12 ">
+									<div class="login-or">
+										<hr class="hr-or"/>
+									</div>
+								</div>
+								<div class="form-group">
+									<p class="text-center">Don't have account? <a href="/LogIn/CreateAccount" id="signup">Sign up here</a></p>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
         )
     }
 }

@@ -1,59 +1,53 @@
-/*create rounded square around the sign in */
-.signin {
-    border-radius: 25px;
-    border: 2px solid #000000;
-    padding: 20px;
-    width: 425px;
-    height: 350px;
-    margin: 20px auto;
+a{
+	text-decoration:none !important;
 }
 
-.signup {
-    border-radius: 25px;
-    border: 2px solid #000000;
-    padding: 20px;
-    width: 425px;
-    height: 500px;
-    margin: 20px auto;
-}
-
-.password
-{
-    border-radius: 25px;
-    border: 2px solid #000000;
-    padding: 20px;
-    width: 425px;
-    height: 200px;
-    margin: 20px auto;
-}
-
-/* Full-width inputs */
-input[type=text], input[type=password] {
-  width: 100%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  display: inline-block;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-}
-
-/* Set a style for all buttons */
-.signinbutton {
-  background-color: #4CAF50;
-  color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-}
-
-.password-input {
+.myform{
+	position: absolute;
+	margin-top: 50px;
+	padding: 1rem;
+	-ms-flex-direction: column;
+	flex-direction: column;
+	width: 100%;
+	pointer-events: auto;
+	background-color: #fff;
+	background-clip: padding-box;
+	border: 1px solid rgba(0,0,0,.2);
+	border-radius: 1.1rem;
 	outline: 0;
-	padding: 7px;
-	font-size: 1.0em;
-	min-width: 250px;
-	border-radius: 5px;
-	margin-left: 15px;
-	padding-left: 30px;
+	max-width: 500px;
+}
+
+.tx-tfm{
+	text-transform:uppercase;
+}
+
+.mybtn{
+	border-radius:50px;
+}
+
+.login-or {
+	position: relative;
+	color: #aaa;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.span-or {
+	display: block;
+	position: absolute;
+	left: 50%;
+	top: -2px;
+	margin-left: -25px;
+	background-color: #fff;
+	width: 50px;
+	text-align: center;
+}
+
+.hr-or {
+	height: 1px;
+	margin-top: 0px !important;
+	margin-bottom: 0px !important;
 }

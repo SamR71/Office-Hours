@@ -11,7 +11,6 @@ class SignInApp extends React.Component{
             <Switch>
                 <Route exact path="/LogIn" component={SignIn}/>
                 <Route path="/LogIn/CreateAccount" component={SignUp}/>
-                <Route path="/LogIn/ResetPassword" component={ForgotPassword}/>
             </Switch>
         )
     }
