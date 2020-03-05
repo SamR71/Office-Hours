@@ -47,7 +47,7 @@ class Scrape(object):
 		try:
 			if(len(currentDataInDatabase) != 0):
 				currentDataInDatabase.delete()
-		except django.db.utils.OperationalError:
+		except:
 			print("Empty Database To Be Populated")
 
 		#Populate All Spring 2020 Course Data:
