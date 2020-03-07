@@ -14,7 +14,7 @@ from scrape.models import Course, CourseSection, CourseMeetingTime, Professor, P
 
 #This Class Is Used To Parse All Course + Course-Related Information 
 #From The Spring 2020 SIS Public Website. 
-class ParseForCourse(object):
+class ParserForCourse(object):
 	#Constructor:
 	#Stores self.allCourseData 
 	#So That Client Can Access After computeAllCourseData().
@@ -130,7 +130,7 @@ def getStartEndTimes(currentCombinedTime):
 
 #This Class Is Used To Compute The Current Course Abbreviation 
 #From A Particular Section of the Spring 2019 Syllabus PDF. 
-class ParseForCourseAbbrev(object):
+class ParserForCourseAbbrev(object):
 
 	#Constructor:
 	#Only Holds Identity/Course Abbreviation.
@@ -201,7 +201,7 @@ class ParseForCourseAbbrev(object):
 
 #This Class Is Used To Parse The Current Professor Data + Office Hours 
 #From A Particular Section/Course Of The Spring 2019 Syllabus PDF. 		
-class ParseForProfessor(object):
+class ParserForProfessor(object):
 	
 	#Constructor:
 	#Client Will Access self.allProfessorData After Invoking computeAllProfessorData().
@@ -237,11 +237,11 @@ class ParseForProfessor(object):
 				allProfessorDataFound = self.__putAllProfessorData(startValue, currentChildren);
 				#Error Check If Not Found In Consecutive Section.
 				if(not(allProfessorDataFound)):
-					print("Fatal Error In Finding Missing Data In Conseuctive Section.")
+					print("Fatal Error In Finding Missing Professor Data In Conseuctive Section.")
 					return (None, sIndex);
 			else:
 				#Could Not Ever Find Data.
-				print("Fatal Error In Optimization For Missing Data.");
+				print("Fatal Error In Optimization For Missing Professor Data.");
 				return (None, sIndex);
 		#Return Correctly Formatted/Reformatted Professor Data.
 		return (self.__formatProfessorData(), sIndex);
@@ -370,7 +370,7 @@ class ParseForProfessor(object):
 
 #This Class Is Used To Populate The Current Professor Data + Office Hours 
 #From A Particular Section/Course Into Our Backend Django SQLite3 Database. 	
-class PopulateForProfessor(object):
+class PopulaterForProfessor(object):
 	
 	#Constructor:
 	#Contains Data To Be Populated:
@@ -379,7 +379,7 @@ class PopulateForProfessor(object):
 	
 	#Public Function:
 	#Runs Population of self.allProfessorData Into Database.
-	def runPopulateProfessorData(self, currentCourseAbbrev):
+	def runPopulatationProfessorData(self, currentCourseAbbrev):
 		#Checks/Asserts That Course Truly Exists When Called By scrapeSpring2019OfficeHours()
 		allExistingCourses = Course.objects.filter(courseAbbrev = currentCourseAbbrev);
 		#Since courseAbbrev = Unique Course Attribute, len(allExistingCourses) Must Be 1.
@@ -426,6 +426,199 @@ class PopulateForProfessor(object):
 
 #---------------------------------------------------------------------------------------------------
 
+class ParserForTeachingAssistant(object):
+	#Constructor:
+	def __init__(self):
+		self.allTAData = [];
+
+	#Public Function:
+	#Calculates Correct Data For Prfoessor Specified By Current Section of PDF.
+	def computeAllTAData(self, allSectionValues, sIndex):
+		#Find Start Index of First "Instructor" Information:
+		startValue = self.__getTACurrentStartValue(allSectionValues, sIndex);
+		currentChildren = allSectionValues[sIndex].findChildren();
+		#Current Section Does Not Contains "Instructor" Information:
+		if(startValue == None):
+			allTADataFound = False;
+		#Append Appropriate Values allTAData.
+		else:
+			allTADataFound = self.__putAllTAData(startValue, currentChildren);
+		#Try Again If Data Not Found:
+		if(not(allTADataFound)):
+			#Specifically, Look In Next Section.
+			sIndex += 1; 
+			#If sIndex Within Bounds:
+			if(sIndex < len(allSectionValues)):
+				#Get Start of Instructor Data:
+				startValue = self.__getTACurrentStartValue(allSectionValues, sIndex);
+				#"Instructor" Was In Previous Section, 
+				#...Start Looking From First Piece of Information.
+				if(startValue == None):
+					startValue = self.__getTANextPageStartValue(allSectionValues, sIndex);
+				#Find Children + Pass To Populate Appropriate Data to allTAData
+				currentChildren = allSectionValues[sIndex].findChildren();
+				allTADataFound = self.__putAllTAData(startValue, currentChildren);
+				#Error Check If Not Found In Consecutive Section.
+				if(not(allTADataFound)):
+					print("Fatal Error In Finding Missing TA Data In Conseuctive Section.")
+					print(self.allTAData)
+					return (None, sIndex);
+			else:
+				#Could Not Ever Find Data.
+				print("Fatal Error In Optimization For Missing TA Data.");
+				return (None, sIndex);
+		#Return Correctly Formatted/Reformatted TA Data.
+		return (self.__formatTAData(), sIndex);
+
+	#Private Function:
+	#Determines The Start Index of "Instructor" Data From A Particular Section.
+	def __getTACurrentStartValue(self, allSectionValues, sIndex):
+		#Obtain Start of Keyword "Instructor":
+		startValue = None;
+		currentChildren = allSectionValues[sIndex].findChildren();
+		for k in range(0, len(currentChildren)):
+			#Replace '\xa0' with ' '
+			currentInformation = currentChildren[k].get_text().replace('\xa0', ' ');
+			if("Teaching Assistant(s) " == currentInformation):
+				startValue = k;
+				break;
+		return startValue;
+
+
+	#Private Function:
+	#Determines The Start Index of "Instructor" Data For The Next Setion.
+	def __getTANextPageStartValue(self, allSectionValues, sIndex):
+		#Obtain Start of Keyword "Instructor":
+		startValue = None;
+		currentChildren = allSectionValues[sIndex].findChildren();
+		for k in range(0, len(currentChildren)):
+			#Replace '\xa0' with ' '
+			currentInformation = currentChildren[k].get_text().replace('\xa0', ' ');
+			if("Syllabus " == currentInformation):
+				startValue = k;
+				break;
+		#Find True Start of Next Page Data:
+		k = startValue+1;
+		while(k < len(currentChildren)):
+			currentInformation = currentChildren[k].get_text().replace('\xa0', ' ');
+			if(not(any(currentChar.isnumeric() for currentChar in currentInformation))):
+				print(currentInformation)
+				startValue = k;
+				break;
+			k += 1;
+		print(startValue)
+		return startValue;
+
+
+	#Private Function:
+	#Puts All TA Data From Current Section Into self.allTAData. 
+	#If Found All Information, Then Return True.
+	#Else, Return False.
+	def __putAllTAData(self, startValue, currentChildren):
+		#Terminate w/ Keyword "Teaching Assistant(s)":
+		for k in range(startValue, len(currentChildren)):
+			#Replace '\xa0' with ' '
+			currentInformation = currentChildren[k].get_text().replace('\xa0', ' ');
+			if("Course Description " == currentInformation 
+				or "Course Text(s) " == currentInformation):
+				return True;
+			else:
+				#Populate TA Data If Non-Empty:
+				if(currentInformation != '' and currentInformation != ' '):
+					self.allTAData.append(currentInformation);
+		#Never Found "Teaching Assistant(s)" => Need To Look In Next Section For Missing Data.
+		return False;
+	
+	#Private Function:
+	#Formats All TA Data After Computed In Its Entirity.
+	#Invoked By computeallTAData To Reset TA Data
+	#To Only Contain Needed/Necessary Data For Client.
+	def __formatTAData(self):
+		#Format TA Data Prior To Entry Into SQLite3 Database.
+		if(self.allTAData == None):
+			return None;
+		#Remove Trailing ' ' From All Instructor Data.
+		for k in range(0, len(self.allTAData)):
+			self.allTAData[k] = self.allTAData[k][:-1];
+		# #Name of TA:
+		# tName = self.allTAData[1];
+		# #Convert Email To @rpi.edu Instead of @RPI.EDU By Converting To Lowecase:
+		# tEmail = self.allTAData[2].lower();
+		# #Obtain TA Office Hour Location:
+		# tLocation = self.__getTALocationValue(self.allTAData[3:]);
+		# #Obtain TA Office Hour Data:
+		# tOfficeHours = self.__getTAOfficeHours(self.allTAData[3:]);	
+		
+		# #Standardize/Normalize TA Data:
+		# self.allTAData = [];
+		# self.allTAData.append(tName);
+		# self.allTAData.append(tEmail);
+		# self.allTAData.append(tLocation);
+		# self.allTAData.append(tOfficeHours);
+		
+		return self.allTAData;
+
+	#Private Function:
+	#Called By __formatTAData.
+	#Determines The Office Location For The TA.
+	# def __getTALocationValue(self, currentDataToExamine):
+	# 	for k in range(0, len(currentDataToExamine)):
+	# 		if("Office Location: " in currentDataToExamine[k]):
+	# 			return currentDataToExamine[k][17:];
+	# 	return "Currently To Be Determined.";
+
+	# #Private Function:
+	# #Called By __formatTAData.
+	# #Determines All Office Hours For The TA.
+	# #Returns List of Formatted Office Hours Data For TA.  
+	# def __getTAOfficeHours(self, currentDataToExamine):
+	# 	#Find Start of Office Hours Data:
+	# 	startValue = None;
+	# 	currentOfficeHours = [];
+	# 	for k in range(0, len(currentDataToExamine)):
+	# 		if("Office Hours: " in currentDataToExamine[k]):
+	# 			startValue = k;
+	# 			currentDataToExamine[k] = currentDataToExamine[k][14:];
+	# 	#Case 1: No Office Data.
+	# 	if(startValue == None):
+	# 		return [("Not Applicable.","Currently To Be Determined.")];
+	# 	#Combine All Office Hours Data Into A Single STR.
+	# 	allDataInSingleStr = "";
+	# 	for k in range(startValue, len(currentDataToExamine)):
+	# 		allDataInSingleStr += currentDataToExamine[k];
+	# 		#Do Not Append Space To Very End of Data.
+	# 		if(k != len(currentDataToExamine)-1):
+	# 			allDataInSingleStr += " ";
+	# 	#Split By Spaces To Extract Date + Time Components.
+	# 	tempParserForOfficeHours = allDataInSingleStr.split();
+	# 	#Extract Date + Time Components + Populate Into currentOfficeHours.
+	# 	for k in range(0, len(tempParserForOfficeHours), 2):
+	# 		firstValue = tempParserForOfficeHours[k];
+	# 		secondValue = None;
+	# 		if(k+1 < len(tempParserForOfficeHours)):
+	# 			secondValue = tempParserForOfficeHours[k+1];
+	# 		#Case 1: No Date Specified + Just Time
+	# 		if(any(currentChar.isdigit() for currentChar in firstValue)):
+	# 			secondValue = firstValue;
+	# 			firstValue = "Not Specified By Instructor."
+	# 			(startTime, endTime) = getStartEndTimes(secondValue);
+	# 			if(startTime != None and endTime != None):
+	# 				currentOfficeHours.append((firstValue, startTime, endTime))
+	# 			k -= 1;
+	# 		#Case 2: Date Specified.
+	# 		else:
+	# 			#Case 3: Time Specified
+	# 			if(secondValue != None):
+	# 				(startTime, endTime) = getStartEndTimes(secondValue);
+	# 				if(startTime != None and endTime != None):
+	# 					currentOfficeHours.append((firstValue, startTime, endTime))
+	# 	#No Correct Office Hours Data Found:
+	# 	if(len(currentOfficeHours) == 0):
+	# 		return [("Not Applicable.","Currently To Be Determined.")];
+	# 	return currentOfficeHours;		
+
+#---------------------------------------------------------------------------------------------------
+
 #Main Driver Scrape Class For All Formats:
 class Scrape(object):
 
@@ -441,7 +634,7 @@ class Scrape(object):
 		currentPopForCourse = PopulateForCourse(allCourseData);
 		currentPopForCourse.runPopulateCourseData();
 
-	#Scrape All Spring 2019 Professor + TA Office Hours:
+	#Scrape All Spring 2019 Prfoessor + TA Office Hours:
 	def scrapeSpring2019OfficeHours(self):
 		#Clear/Flush Database Objects Prior To Population.
 		currentProfessorDataInDatabase = Professor.objects.all()
@@ -461,17 +654,23 @@ class Scrape(object):
 				currentSection = allSectionValues[k];
 				#Check If Current Section Contains Instructor Information:
 				if(currentSection.find_all("p", string=re.compile("Instructor")) != None):
-					currentParserForCourse = ParseForCourseAbbrev();
+					currentParserForCourse = ParserForCourseAbbrev();
 					currentParserForCourse.computeCourseAbbrevName(allSectionValues, k);
 					currentCourseAbbrev = currentParserForCourse.currentIdentityValue;
 					#Assert Current Section Describes A Valid Section:
 					if(currentCourseAbbrev != None):
 						print(currentCourseAbbrev)
-						currentParserForProfessor = ParseForProfessor();
+						#Parse Professor Data w/ ParserForProfessor:
+						currentParserForProfessor = ParserForProfessor();
 						allProfessorData, sIndex = currentParserForProfessor.computeAllProfessorData(allSectionValues, k);
-						print(allProfessorData)
-						currentPopForProfessor = PopulateForProfessor(allProfessorData);
-						currentPopForProfessor.runPopulateProfessorData(currentCourseAbbrev);
+						#Populate Professor Data w/ PopulaterForProfessor:
+						#currentPopForProfessor = PopulaterForProfessor(allProfessorData);
+						#currentPopForProfessor.runPopulatationProfessorData(currentCourseAbbrev);
+						#Parse TA Data w/ ParserForTA:
+						currentParserForTA = ParserForTeachingAssistant();
+						allTAData, sIndex = currentParserForTA.computeAllTAData(allSectionValues, sIndex);
+						if(len(allTAData) != 5):
+							print(allTAData)
 						k = sIndex;
 						countFoundData += 1;
 						print()
