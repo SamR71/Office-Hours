@@ -502,11 +502,9 @@ class ParserForTeachingAssistant(object):
 		while(k < len(currentChildren)):
 			currentInformation = currentChildren[k].get_text().replace('\xa0', ' ');
 			if(not(any(currentChar.isnumeric() for currentChar in currentInformation))):
-				print(currentInformation)
 				startValue = k;
 				break;
 			k += 1;
-		print(startValue)
 		return startValue;
 
 
@@ -540,6 +538,8 @@ class ParserForTeachingAssistant(object):
 		#Remove Trailing ' ' From All Instructor Data.
 		for k in range(0, len(self.allTAData)):
 			self.allTAData[k] = self.allTAData[k][:-1];
+
+		currentTAData = self.__detectNoData();
 		# #Name of TA:
 		# tName = self.allTAData[1];
 		# #Convert Email To @rpi.edu Instead of @RPI.EDU By Converting To Lowecase:
@@ -555,9 +555,23 @@ class ParserForTeachingAssistant(object):
 		# self.allTAData.append(tEmail);
 		# self.allTAData.append(tLocation);
 		# self.allTAData.append(tOfficeHours);
-		
+
 		return self.allTAData;
 
+	def __detectNoData(self):
+		noCount = 0;
+		for k in range(5,len(self.allTAData)):
+			currentInformation = self.allTAData[k].lower()
+			if("no " in currentInformation
+				or "tba" in currentInformation 
+				or currentInformation == "none" 
+				or currentInformation == "n/a"
+				or currentInformation == "na"):
+				noCount += 1;
+		if(noCount == len(self.allTAData)-5):
+
+			return self.allTAData[:5];
+		return self.allTAData;
 	#Private Function:
 	#Called By __formatTAData.
 	#Determines The Office Location For The TA.
@@ -659,7 +673,7 @@ class Scrape(object):
 					currentCourseAbbrev = currentParserForCourse.currentIdentityValue;
 					#Assert Current Section Describes A Valid Section:
 					if(currentCourseAbbrev != None):
-						print(currentCourseAbbrev)
+						#print(currentCourseAbbrev)
 						#Parse Professor Data w/ ParserForProfessor:
 						currentParserForProfessor = ParserForProfessor();
 						allProfessorData, sIndex = currentParserForProfessor.computeAllProfessorData(allSectionValues, k);
@@ -670,10 +684,10 @@ class Scrape(object):
 						currentParserForTA = ParserForTeachingAssistant();
 						allTAData, sIndex = currentParserForTA.computeAllTAData(allSectionValues, sIndex);
 						if(len(allTAData) != 5):
+							print(currentCourseAbbrev)
 							print(allTAData)
 						k = sIndex;
 						countFoundData += 1;
-						print()
 				k += 1;
 			print(countFoundData);
 
