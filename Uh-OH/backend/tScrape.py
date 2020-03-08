@@ -461,7 +461,6 @@ class ParserForTeachingAssistant(object):
 				#Error Check If Not Found In Consecutive Section.
 				if(not(allTADataFound)):
 					print("Fatal Error In Finding Missing TA Data In Conseuctive Section.")
-					print(self.allTAData)
 					return (None, sIndex);
 			else:
 				#Could Not Ever Find Data.
@@ -555,8 +554,52 @@ class ParserForTeachingAssistant(object):
 		# self.allTAData.append(tEmail);
 		# self.allTAData.append(tLocation);
 		# self.allTAData.append(tOfficeHours);
+		singleTAData = [];
+		self.allTAData = [];
+		currentDataCount = 0;
+		for k in range(5, len(currentTAData)):
+			currentInformation = currentTAData[k]
+			if("@" in currentInformation):
+				#Case 1: Only Email Data.
+				if(not " " in currentInformation):
+					singleTAData.append(currentInformation);
+					self.allTAData.append(singleTAData);
+					print(singleTAData)
+					singleTAData = [];
+					currentDataCount = 0;
+				#Case 2: Contains Office Hour Times + 
+				else:
+					currentInformation = currentInformation.replace("  ", "*");
+					extractDataFound, singleTAData = self.__extractRelevantInformation(currentInformation, singleTAData);
+					if(extractDataFound):
+						self.allTAData.append(singleTAData);
+						print(singleTAData);
+					singleTAData = [];
+					currentDataCount = 0;
+			elif(currentDataCount == 0):
+				countSpaces = 0; 
+				for currentChar in currentInformation:
+					if(currentChar == " "):
+						countSpaces += 1;
+				if(countSpaces <= 1):
+					singleTAData.append(currentInformation);
+				else:
+					currentInformation = currentInformation.replace("  ", "*");
+					extractDataFound, singleTAData = self.__extractRelevantInformation(currentInformation, singleTAData);
+					if(extractDataFound):
+						currentDataCount += 1;
+			elif(currentDataCount == 1):
+				if(not(":" in currentInformation)):
+					singleTAData.append(currentInformation);
+				else:
+					currentInformation = currentInformation.replace(", ", "");
+					print("1", currentInformation);
+			else:
+				singleTAData.append(currentInformation);
+			
+			currentDataCount += 1;
 
-		return self.allTAData;
+		return currentTAData;
 
 	def __detectNoData(self):
 		noCount = 0;
@@ -569,9 +612,16 @@ class ParserForTeachingAssistant(object):
 				or currentInformation == "na"):
 				noCount += 1;
 		if(noCount == len(self.allTAData)-5):
-
 			return self.allTAData[:5];
 		return self.allTAData;
+
+	def __extractRelevantInformation(self, currentInformation, singleTAData):
+		for k in range(0, len(currentInformation)):
+			if(currentInformation[k] == "*"):
+				singleTAData.append(currentInformation[:k]);
+				singleTAData.append(currentInformation[k+1:]);
+				return (True, singleTAData);
+		return (False, singleTAData);
 	#Private Function:
 	#Called By __formatTAData.
 	#Determines The Office Location For The TA.
@@ -685,7 +735,8 @@ class Scrape(object):
 						allTAData, sIndex = currentParserForTA.computeAllTAData(allSectionValues, sIndex);
 						if(len(allTAData) != 5):
 							print(currentCourseAbbrev)
-							print(allTAData)
+							print(allTAData[5:])
+							print()
 						k = sIndex;
 						countFoundData += 1;
 				k += 1;
