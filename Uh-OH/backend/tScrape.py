@@ -151,6 +151,7 @@ class ParserForCourseAbbrev(object):
 			isRealCourse, currentAbbrev = self.__detectCourseAbbrev(currentInformation);
 			if(isRealCourse):
 				self.currentIdentityValue = currentAbbrev;
+				break;
 
 	#Private Function:
 	#Detects If Current Line = Valid Course Abbreviation.
@@ -558,7 +559,7 @@ class ParserForTeachingAssistant(object):
 		self.allTAData = [];
 		currentDataCount = 0;
 		for k in range(5, len(currentTAData)):
-			currentInformation = currentTAData[k]
+			currentInformation = self.__replaceCurrentData(currentTAData[k]);
 			if("@" in currentInformation):
 				#Case 1: Only Email Data.
 				if(not " " in currentInformation):
@@ -567,7 +568,7 @@ class ParserForTeachingAssistant(object):
 					print(singleTAData)
 					singleTAData = [];
 					currentDataCount = 0;
-				#Case 2: Contains Office Hour Times + 
+				#Case 2: Contains Office Hour Times + Email Data
 				else:
 					currentInformation = currentInformation.replace("  ", "*");
 					extractDataFound, singleTAData = self.__extractRelevantInformation(currentInformation, singleTAData);
@@ -577,11 +578,11 @@ class ParserForTeachingAssistant(object):
 					singleTAData = [];
 					currentDataCount = 0;
 			elif(currentDataCount == 0):
-				countSpaces = 0; 
+				countDoubleSpaces = 0; 
 				for currentChar in currentInformation:
-					if(currentChar == " "):
-						countSpaces += 1;
-				if(countSpaces <= 1):
+					if(currentChar == "  "):
+						countDoubleSpaces += 1;
+				if(countDoubleSpaces == 0):
 					singleTAData.append(currentInformation);
 				else:
 					currentInformation = currentInformation.replace("  ", "*");
@@ -592,8 +593,10 @@ class ParserForTeachingAssistant(object):
 				if(not(":" in currentInformation)):
 					singleTAData.append(currentInformation);
 				else:
-					currentInformation = currentInformation.replace(", ", "");
-					print("1", currentInformation);
+					currentInformation = currentInformation.replace("  ", "*");
+					extractDataFound, singleTAData = self.__extractRelevantInformation(currentInformation, singleTAData);
+					if(extractDataFound):
+						currentDataCount += 1;
 			else:
 				singleTAData.append(currentInformation);
 			
@@ -615,13 +618,46 @@ class ParserForTeachingAssistant(object):
 			return self.allTAData[:5];
 		return self.allTAData;
 
+	def __replaceCurrentData(self, currentInformation):
+		currentInformation = currentInformation.replace(", ", " ");
+		currentInformation = currentInformation.replace(",", "");
+		currentInformation = currentInformation.replace(";", "");
+		currentInformation = currentInformation.replace("/", "");
+		currentInformation = currentInformation.replace(" - ", "-");
+		currentInformation = currentInformation.replace(" and ", " ");
+		currentInformation = currentInformation.replace("Mondays", "M");
+		currentInformation = currentInformation.replace("Monday", "M");
+		currentInformation = currentInformation.replace("Mon", "M");
+		currentInformation = currentInformation.replace("Tuesdays", "T");
+		currentInformation = currentInformation.replace("Tuesday", "T");
+		currentInformation = currentInformation.replace("Tues", "T");
+		currentInformation = currentInformation.replace("Wednesdays", "W");
+		currentInformation = currentInformation.replace("Wednesday", "W");
+		currentInformation = currentInformation.replace("Wed", "W");
+		currentInformation = currentInformation.replace("Thursdays", "R");
+		currentInformation = currentInformation.replace("Thursday", "R");
+		currentInformation = currentInformation.replace("Thur", "R");
+		currentInformation = currentInformation.replace("Fridays", "F");
+		currentInformation = currentInformation.replace("Friday", "F");
+		currentInformation = currentInformation.replace("Fri", "F");
+		currentInformation = currentInformation.replace(" pm", "PM");
+		currentInformation = currentInformation.replace(" PM", "PM");
+		currentInformation = currentInformation.replace(" am", "AM");
+		currentInformation = currentInformation.replace(" AM", "AM");
+		return currentInformation;
+
 	def __extractRelevantInformation(self, currentInformation, singleTAData):
 		for k in range(0, len(currentInformation)):
 			if(currentInformation[k] == "*"):
-				singleTAData.append(currentInformation[:k]);
+				singleTAData.append(self.__adjustTimeData(currentInformation[:k]));
 				singleTAData.append(currentInformation[k+1:]);
 				return (True, singleTAData);
 		return (False, singleTAData);
+
+	def __adjustTimeData(self, currentInformation):
+		#print(currentInformation)
+		return currentInformation;
+
 	#Private Function:
 	#Called By __formatTAData.
 	#Determines The Office Location For The TA.
@@ -735,10 +771,11 @@ class Scrape(object):
 						allTAData, sIndex = currentParserForTA.computeAllTAData(allSectionValues, sIndex);
 						if(len(allTAData) != 5):
 							print(currentCourseAbbrev)
-							print(allTAData[5:])
+							#print(allTAData[5:])
 							print()
+							countFoundData += 1;
 						k = sIndex;
-						countFoundData += 1;
+						#countFoundData += 1;
 				k += 1;
 			print(countFoundData);
 
