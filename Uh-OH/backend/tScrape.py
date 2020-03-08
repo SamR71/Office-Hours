@@ -560,6 +560,7 @@ class ParserForTeachingAssistant(object):
 		currentDataCount = 0;
 		for k in range(5, len(currentTAData)):
 			currentInformation = self.__replaceCurrentData(currentTAData[k]);
+			#print(currentInformation, currentDataCount)
 			if("@" in currentInformation):
 				#Case 1: Only Email Data.
 				if(not " " in currentInformation):
@@ -567,7 +568,7 @@ class ParserForTeachingAssistant(object):
 					self.allTAData.append(singleTAData);
 					print(singleTAData)
 					singleTAData = [];
-					currentDataCount = 0;
+					currentDataCount = -1;
 				#Case 2: Contains Office Hour Times + Email Data
 				else:
 					currentInformation = currentInformation.replace("  ", "*");
@@ -576,29 +577,26 @@ class ParserForTeachingAssistant(object):
 						self.allTAData.append(singleTAData);
 						print(singleTAData);
 					singleTAData = [];
-					currentDataCount = 0;
+					currentDataCount = -1;
 			elif(currentDataCount == 0):
-				countDoubleSpaces = 0; 
-				for currentChar in currentInformation:
-					if(currentChar == "  "):
-						countDoubleSpaces += 1;
-				if(countDoubleSpaces == 0):
-					singleTAData.append(currentInformation);
+				currentInformation = currentInformation.replace("  ", "*");
+				extractDataFound, singleTAData = self.__extractRelevantInformation(currentInformation, singleTAData);
+				if(extractDataFound):
+					currentDataCount += 1;
 				else:
-					currentInformation = currentInformation.replace("  ", "*");
-					extractDataFound, singleTAData = self.__extractRelevantInformation(currentInformation, singleTAData);
-					if(extractDataFound):
-						currentDataCount += 1;
+					if(currentInformation != ' ' and currentInformation != ''):
+						singleTAData.append(currentInformation)
 			elif(currentDataCount == 1):
-				if(not(":" in currentInformation)):
-					singleTAData.append(currentInformation);
+				currentInformation = currentInformation.replace("  ", "*");
+				extractDataFound, singleTAData = self.__extractRelevantInformation(currentInformation, singleTAData);
+				if(extractDataFound):
+					currentDataCount += 1;
 				else:
-					currentInformation = currentInformation.replace("  ", "*");
-					extractDataFound, singleTAData = self.__extractRelevantInformation(currentInformation, singleTAData);
-					if(extractDataFound):
-						currentDataCount += 1;
+					if(currentInformation != '' and currentInformation != ' '):
+						singleTAData.append(currentInformation)
 			else:
-				singleTAData.append(currentInformation);
+				if(currentInformation != '' and currentInformation != ' '):
+					singleTAData.append(currentInformation);
 			
 			currentDataCount += 1;
 
@@ -649,8 +647,10 @@ class ParserForTeachingAssistant(object):
 	def __extractRelevantInformation(self, currentInformation, singleTAData):
 		for k in range(0, len(currentInformation)):
 			if(currentInformation[k] == "*"):
-				singleTAData.append(self.__adjustTimeData(currentInformation[:k]));
-				singleTAData.append(currentInformation[k+1:]);
+				if(currentInformation[:k] != '' and currentInformation[:k] != ' '):
+					singleTAData.append(currentInformation[:k]);
+				if(currentInformation[k+1:] != '' and currentInformation[k+1:] != ' '):
+					singleTAData.append(currentInformation[k+1:]);
 				return (True, singleTAData);
 		return (False, singleTAData);
 
