@@ -163,6 +163,8 @@ class ParserForCourseAbbrev(object):
 		#Optimization: To Filter Oddly Formatted Course Name Values
 		if(len(currentAbbrev) > 10):
 			notUsedPortion = currentAbbrev[:-10]
+			if("Prerequisites" in notUsedPortion):
+				return (False, currentAbbrev)
 			for currentValue in notUsedPortion:
 				if(currentValue.isnumeric()):
 					return (False, currentAbbrev)
@@ -560,7 +562,6 @@ class ParserForTeachingAssistant(object):
 		currentDataCount = 0;
 		for k in range(5, len(currentTAData)):
 			currentInformation = self.__replaceCurrentData(currentTAData[k]);
-			#print(currentInformation, currentDataCount)
 			if("@" in currentInformation):
 				#Case 1: Only Email Data.
 				if(not " " in currentInformation):
@@ -748,9 +749,9 @@ class Scrape(object):
 			#Find All Subsections For Course Information:
 			allSectionValues = currentSoup.find_all("div")
 			#Loop Through All Course Descriptions:
-			k = 0;
+			k = 0;80
 			countFoundData = 0;
-			while(k < len(allSectionValues)):
+			while(k < len(allSectionValues) and countFoundData < 120):
 				currentSection = allSectionValues[k];
 				#Check If Current Section Contains Instructor Information:
 				if(currentSection.find_all("p", string=re.compile("Instructor")) != None):
@@ -767,13 +768,15 @@ class Scrape(object):
 						#currentPopForProfessor = PopulaterForProfessor(allProfessorData);
 						#currentPopForProfessor.runPopulatationProfessorData(currentCourseAbbrev);
 						#Parse TA Data w/ ParserForTA:
+						#print(allProfessorData)
 						currentParserForTA = ParserForTeachingAssistant();
 						allTAData, sIndex = currentParserForTA.computeAllTAData(allSectionValues, sIndex);
 						if(len(allTAData) != 5):
-							print(currentCourseAbbrev)
+							print(currentCourseAbbrev[:4] + "&#160;" + currentCourseAbbrev[5:])
 							#print(allTAData[5:])
 							print()
 							countFoundData += 1;
+						#print()
 						k = sIndex;
 						#countFoundData += 1;
 				k += 1;
