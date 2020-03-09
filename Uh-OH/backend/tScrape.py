@@ -611,7 +611,8 @@ class ParserForTeachingAssistant(object):
 				or "tba" in currentInformation 
 				or currentInformation == "none" 
 				or currentInformation == "n/a"
-				or currentInformation == "na"):
+				or currentInformation == "na"
+				or currentInformation == "0"):
 				noCount += 1;
 		if(noCount == len(self.allTAData)-5):
 			return self.allTAData[:5];
@@ -752,7 +753,7 @@ class Scrape(object):
 			#Loop Through All Course Descriptions:
 			k = 0;80
 			countFoundData = 0;
-			while(k < len(allSectionValues) and countFoundData < 120):
+			while(k < len(allSectionValues) and countFoundData < 290):
 				currentSection = allSectionValues[k];
 				#Check If Current Section Contains Instructor Information:
 				if(currentSection.find_all("p", string=re.compile("Instructor")) != None):
@@ -774,7 +775,7 @@ class Scrape(object):
 						allTAData, sIndex = currentParserForTA.computeAllTAData(allSectionValues, sIndex);
 						if(len(allTAData) != 5):
 							print(currentCourseAbbrev[:4] + "&#160;" + currentCourseAbbrev[5:])
-							#print(allTAData[5:])
+							#print(allTAData)
 							print()
 							countFoundData += 1;
 						#print()
