@@ -624,6 +624,7 @@ class ParserForTeachingAssistant(object):
 		currentInformation = currentInformation.replace("/", "");
 		currentInformation = currentInformation.replace(" - ", "-");
 		currentInformation = currentInformation.replace(" and ", " ");
+		currentInformation = currentInformation.replace(" to ", "-");
 		currentInformation = currentInformation.replace("Mondays", "M");
 		currentInformation = currentInformation.replace("Monday", "M");
 		currentInformation = currentInformation.replace("Mon", "M");
