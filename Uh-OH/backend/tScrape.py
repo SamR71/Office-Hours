@@ -377,14 +377,15 @@ class PopulaterForProfessor(object):
 	
 	#Constructor:
 	#Contains Data To Be Populated:
-	def __init__(self, currentProfessorData):
+	def __init__(self, currentCourseAbbrev, currentProfessorData):
+		self.relevantCourseAbbrev = currentCourseAbbrev;
 		self.allProfessorData = currentProfessorData;
 	
 	#Public Function:
 	#Runs Population of self.allProfessorData Into Database.
 	def runPopulatationProfessorData(self, currentCourseAbbrev):
 		#Checks/Asserts That Course Truly Exists When Called By scrapeSpring2019OfficeHours()
-		allExistingCourses = Course.objects.filter(courseAbbrev = currentCourseAbbrev);
+		allExistingCourses = Course.objects.filter(courseAbbrev = self.relevantCourseAbbrev);
 		#Since courseAbbrev = Unique Course Attribute, len(allExistingCourses) Must Be 1.
 		currentCourseObject = allExistingCourses[0];
 		allExistingProfessors = Professor.objects.filter(currentCourse = currentCourseObject).filter(pName = self.allProfessorData[0]);
@@ -765,7 +766,7 @@ class PopulaterForTeachingAssistant(object):
 															meetStartTime = allSingleTAData[2][k][1],
 															meetEndTime = allSingleTAData[2][k][2]);
 					newOfficeHours.save();
-					
+
 #---------------------------------------------------------------------------------------------------
 
 #Main Driver Scrape Class For All Formats:
@@ -808,24 +809,26 @@ class Scrape(object):
 					currentCourseAbbrev = currentParserForCourse.currentIdentityValue;
 					#Assert Current Section Describes A Valid Section:
 					if(currentCourseAbbrev != None):
-						#print(currentCourseAbbrev)
+						print(currentCourseAbbrev)
 						#Parse Professor Data w/ ParserForProfessor:
 						currentParserForProfessor = ParserForProfessor();
 						allProfessorData, sIndex = currentParserForProfessor.computeAllProfessorData(allSectionValues, k);
 						#Populate Professor Data w/ PopulaterForProfessor:
-						#currentPopForProfessor = PopulaterForProfessor(allProfessorData);
-						#currentPopForProfessor.runPopulatationProfessorData(currentCourseAbbrev);
+						#currentPopForProfessor = PopulaterForProfessor(currentCourseAbbrev, allProfessorData);
+						#currentPopForProfessor.runPopulatationProfessorData();
 						#Parse TA Data w/ ParserForTA:
-						#print(allProfessorData)
+						print(allProfessorData)
+						#Parse TA Data w/ ParserForTeachingAssistant:
 						currentParserForTA = ParserForTeachingAssistant();
 						allTAData, sIndex = currentParserForTA.computeAllTAData(allSectionValues, sIndex);
+						#Populate Professor Data w/ PopulaterForTeachingAssistant:
+						#currentPopForTA = PopulaterForTeachingAssistant(currentCourseAbbrev, allTAData);
+						#currentPopForTA.runPopulatationAllTAData();
 						if(len(allTAData) != 0):
-							print(currentCourseAbbrev)
 							print(allTAData)
-							print()
-							countFoundData += 1;
+						countFoundData += 1;
 						k = sIndex;
-						#countFoundData += 1;
+						print()
 				k += 1;
 			print(countFoundData);
 
