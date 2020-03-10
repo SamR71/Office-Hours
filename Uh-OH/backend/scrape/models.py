@@ -17,7 +17,7 @@ class Course(models.Model):
 	#courseName = Listed Name of Course. 
 	courseName = models.CharField(max_length=128)
 	#courseValue = CRN Number.
-	courseValue = models.CharField(validators=[MinLengthValidator(5)], max_length=5);
+	courseValue = models.CharField(validators=[MinLengthValidator(5)], max_length=5)
 	#courseAbbrev = Abbreviation For Course Name.
 	courseAbbrev = models.CharField(max_length=128)
 
@@ -42,7 +42,7 @@ class Professor(models.Model):
 	currentCourse = models.ForeignKey(Course, on_delete=models.CASCADE)
 
 	def __str__(self):
-		return str(self.currentCourse) + " + " + str(self.pName) + " + " + str(self.pEmail);
+		return str(self.currentCourse) + " + " + str(self.pName) + " + " + str(self.pEmail)
 
 class ProfessorOfficeHours(models.Model):
 	"""
@@ -60,7 +60,7 @@ class ProfessorOfficeHours(models.Model):
 	meetDates = models.CharField(max_length=7)
 
 	def __str__(self):
-		return str(self.meetProfessor) + " + " + str(self.meetLocation) + " + " + str(self.meetDates) + " + " + str(self.meetStartTime) + " + " + str(self.meetEndTime);
+		return str(self.meetProfessor) + " + " + str(self.meetLocation) + " + " + str(self.meetDates) + " + " + str(self.meetStartTime) + " + " + str(self.meetEndTime)
 
 class TeachingAssistant(models.Model):
 	"""
@@ -76,7 +76,7 @@ class TeachingAssistant(models.Model):
 	currentCourse = models.ForeignKey(Course, on_delete=models.CASCADE)
 
 	def __str__(self):
-		return str(self.currentCourse) + " + " + str(self.tName) + " + " + str(self.tEmail);
+		return str(self.currentCourse) + " + " + str(self.tName) + " + " + str(self.tEmail)
 
 class TeachingAssistantOfficeHours(models.Model):
 	"""
@@ -94,7 +94,7 @@ class TeachingAssistantOfficeHours(models.Model):
 	meetDates = models.CharField(max_length=7)
 
 	def __str__(self):
-		return str(self.meetTA) + " + " + str(self.meetLocation) + " + " + str(self.meetDates) + " + " + str(self.meetStartTime) + " + " + str(self.meetEndTime);
+		return str(self.meetTA) + " + " + str(self.meetLocation) + " + " + str(self.meetDates) + " + " + str(self.meetStartTime) + " + " + str(self.meetEndTime)
 
 class CourseSection(models.Model):
 	"""
@@ -106,10 +106,10 @@ class CourseSection(models.Model):
 		verbose_name_plural = 'Course Sections'
         
 	currentCourse = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='sections')
-	sectionID = models.CharField(validators=[MinLengthValidator(2)], max_length = 2);
+	sectionID = models.CharField(validators=[MinLengthValidator(2)], max_length = 2)
 
 	def __str__(self):
-		return str(self.currentCourse) + " + " + str(self.sectionID);
+		return str(self.currentCourse) + " + " + str(self.sectionID)
 
 class CourseMeetingTime(models.Model):
 	"""
@@ -128,4 +128,4 @@ class CourseMeetingTime(models.Model):
 	meetInstructor = models.CharField(max_length=128, default = "")
 
 	def __str__(self):
-		return str(self.meetSection) + " + " + str(self.meetType) + " + " + str(self.meetInstructor);
+		return str(self.meetSection) + " + " + str(self.meetType) + " + " + str(self.meetInstructor)
