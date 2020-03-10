@@ -804,7 +804,7 @@ class Scrape(object):
 		currentDataInDatabase = Course.objects.all()
 		if(len(currentDataInDatabase) != 0):
 			currentDataInDatabase.delete()
-		currentParserForCourses = ParseForCourse();
+		currentParserForCourses = ParserForCourse();
 		currentParserForCourses.computeAllCourseData();
 		allCourseData = currentParserForCourses.allCourseData;
 		currentPopForCourse = PopulateForCourse(allCourseData);
