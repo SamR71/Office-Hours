@@ -542,7 +542,7 @@ class ParserForTeachingAssistant(object):
 			self.allTAData[k] = self.allTAData[k][:-1];
 
 		currentTAData = self.__detectNoTAData();
-		self.allTAData = self.__obtainAllNotFormattedTAData(currentTAData);
+		self.__obtainAllNotFormattedTAData(currentTAData);
 		return self.allTAData;
 
 	def __detectNoTAData(self):
@@ -563,7 +563,7 @@ class ParserForTeachingAssistant(object):
 	def __obtainAllNotFormattedTAData(self, currentTAData):
 		currentDataCount = 0;
 		singleTAData = [];
-		allNotFormattedTAData = [];
+		self.allTAData = [];
 		for k in range(5, len(currentTAData)):
 			#Reformat/Adjust Current Information:
 			currentInformation = self.__replaceCurrentData(currentTAData[k]);
@@ -572,7 +572,7 @@ class ParserForTeachingAssistant(object):
 				#Only Email Data.
 				if(not " " in currentInformation):
 					singleTAData.append(currentInformation);
-					allNotFormattedTAData.append(singleTAData);
+					self.allTAData.append(singleTAData);
 					#print(singleTAData)
 					singleTAData = [];
 					currentDataCount = -1;
@@ -581,7 +581,7 @@ class ParserForTeachingAssistant(object):
 					currentInformation = currentInformation.replace("  ", "*");
 					extractDataFound, singleTAData = self.__extractRelevantInformation(currentInformation, singleTAData);
 					if(extractDataFound):
-						allNotFormattedTAData.append(singleTAData);
+						self.allTAData.append(singleTAData);
 						#print(singleTAData);
 					singleTAData = [];
 					currentDataCount = -1;
@@ -613,7 +613,7 @@ class ParserForTeachingAssistant(object):
 					singleTAData.append(currentInformation);
 			#Incrremnt Current Data Value/Count For Current singleTAData.
 			currentDataCount += 1;
-		return allNotFormattedTAData;
+	
 
 	def __replaceCurrentData(self, currentInformation):
 		#Reformat Conditions For TA Office Hour Times:
