@@ -390,7 +390,7 @@ class PopulaterForProfessor(object):
 	
 	#Public Function:
 	#Runs Population of self.allProfessorData Into Database.
-	def runPopulatationProfessorData(self, currentCourseAbbrev):
+	def runPopulatationProfessorData(self):
 		#Checks/Asserts That Course Truly Exists When Called By scrapeSpring2019OfficeHours()
 		allExistingCourses = Course.objects.filter(courseAbbrev = self.relevantCourseAbbrev);
 		#Since courseAbbrev = Unique Course Attribute, len(allExistingCourses) Must Be 1.
@@ -754,8 +754,8 @@ class PopulaterForTeachingAssistant(object):
 		allExistingTA = TeachingAssistant.objects.filter(currentCourse = currentCourseObject).filter(tName = allSingleTAData[0]);
 		#Professor For Particular Course Does Not Exist.
 		if(len(allExistingTA) == 0):
-			currentTA = TeachingAssistant(tName = self.allProfessorData[0], 
-											tEmail = self.allProfessorData[3], 
+			currentTA = TeachingAssistant(tName = allSingleTAData[0], 
+											tEmail = allSingleTAData[3], 
 											currentCourse = currentCourseObject);
 			currentTA.save();
 			#Loop Through All Professor Office Hours:
