@@ -624,11 +624,11 @@ class ParserForTeachingAssistant(object):
 			if(":" in allDataInSingleStr):
 				tempParserForOfficeHours = allDataInSingleStr.split();
 				#Extract Date + Time Components + Populate Into currentOfficeHours.
-				for k in range(0, len(tempParserForOfficeHours), 2):
-					firstValue = tempParserForOfficeHours[k];
+				for m in range(0, len(tempParserForOfficeHours), 2):
+					firstValue = tempParserForOfficeHours[m];
 					secondValue = None;
-					if(k+1 < len(tempParserForOfficeHours)):
-						secondValue = tempParserForOfficeHours[k+1];
+					if(m+1 < len(tempParserForOfficeHours)):
+						secondValue = tempParserForOfficeHours[m+1];
 					#Case 1: No Date Specified + Just Time
 					if(any(currentChar.isdigit() for currentChar in firstValue)):
 						secondValue = firstValue;
@@ -636,7 +636,7 @@ class ParserForTeachingAssistant(object):
 						(startTime, endTime) = getStartEndTimes(secondValue);
 						if(startTime != None and endTime != None):
 							currentOfficeHours.append((firstValue, startTime, endTime))
-						k -= 1;
+						m -= 1;
 					#Case 2: Date Specified.
 					else:
 						#Case 3: Time Specified
@@ -646,8 +646,8 @@ class ParserForTeachingAssistant(object):
 								currentOfficeHours.append((firstValue, startTime, endTime))
 			else:
 				currentOfficeHours.append((allDataInSingleStr, "N/A", "N/A"))
+			self.allTAData[k][2] = currentOfficeHours
 			#print(currentOfficeHours)
-			self.allTAData[k][2] = currentOfficeHours;
 		return self.allTAData;
 
 	def __replaceCurrentData(self, currentInformation):
