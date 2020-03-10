@@ -5,10 +5,14 @@ import sys
 import django
 import PyPDF2
 from bs4 import BeautifulSoup
+
 #Necessary Setup To Import Models:
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "backend.settings")
 django.setup()
-from scrape.models import Course, CourseSection, CourseMeetingTime, Professor, ProfessorOfficeHours
+
+from scrape.models import Course, CourseSection, CourseMeetingTime
+from scrape.models import Professor, ProfessorOfficeHours
+from scrape.models import TeachingAssistant, TeachingAssistantOfficeHours
 
 #---------------------------------------------------------------------------------------------------
 
@@ -37,8 +41,9 @@ class ParserForCourse(object):
 			    allTableColumns = currentRow.find_all('td')
 			    allTableColumns = [currentColumn.text.strip() for currentColumn in allTableColumns]
 			    currentData = [currentColumn for currentColumn in allTableColumns]
-
+			    #Check If Data Exists.
 			    if(len(currentData) != 0):
+			    	#Assert Data Is The Same.
 			    	if(len(currentData) == 14):
 				    	if(currentData[1] != ""):
 				    		#Special Case Accounting For Error In Website Format:
@@ -46,9 +51,11 @@ class ParserForCourse(object):
 					    		currentData[1] = "MULTIVAR CALC & MATRIX ALGEBRA"
 					    	prevCourseData = currentData
 				    	else:
+				    		#Optimization For "" Course Names To Take Name + Abbrev From Previous Course.
 				    		if(prevCourseData != None):
 				    			currentData[0] = prevCourseData[0]
 				    			currentData[1] = prevCourseData[1]
+				    	#Append Data To self.allCourseData.
 				    	self.allCourseData.append(currentData)
 
 #---------------------------------------------------------------------------------------------------
@@ -349,7 +356,7 @@ class ParserForProfessor(object):
 			secondValue = None;
 			if(k+1 < len(tempParserForOfficeHours)):
 				secondValue = tempParserForOfficeHours[k+1];
-			#Case 1: No Date Specified + Just Time
+			#Case 1: No Date Specified + Just Time.
 			if(any(currentChar.isdigit() for currentChar in firstValue)):
 				secondValue = firstValue;
 				firstValue = "Not Specified By Instructor."
@@ -359,7 +366,7 @@ class ParserForProfessor(object):
 				k -= 1;
 			#Case 2: Date Specified.
 			else:
-				#Case 3: Time Specified
+				#Case 3: Time Specified.
 				if(secondValue != None):
 					(startTime, endTime) = getStartEndTimes(secondValue);
 					if(startTime != None and endTime != None):
@@ -487,7 +494,6 @@ class ParserForTeachingAssistant(object):
 				break;
 		return startValue;
 
-
 	#Private Function:
 	#Determines The Start Index of "Instructor" Data For The Next Setion.
 	def __getTANextPageStartValue(self, allSectionValues, sIndex):
@@ -509,7 +515,6 @@ class ParserForTeachingAssistant(object):
 				break;
 			k += 1;
 		return startValue;
-
 
 	#Private Function:
 	#Puts All TA Data From Current Section Into self.allTAData. 
@@ -547,6 +552,8 @@ class ParserForTeachingAssistant(object):
 		self.allTAData = self.__obtainAllFormattedTAData();
 		return self.allTAData;
 
+	#Private Function:
+	#Detects If No Real TA Data Is Present.
 	def __detectNoTAData(self):
 		noCount = 0;
 		for k in range(5,len(self.allTAData)):
@@ -558,10 +565,15 @@ class ParserForTeachingAssistant(object):
 				or currentInformation == "na"
 				or currentInformation == "0"):
 				noCount += 1;
+		#If No TA Data Is Found Return self.allTAData[:5]
 		if(noCount == len(self.allTAData)-5):
 			return self.allTAData[:5];
+		#Else Return Standard Data.
 		return self.allTAData;
 
+	#Private Function:
+	#Obtain All Not Formatted TA Data From Syllabus w/ Standardized Fields.
+	#[Name, Location, Office Hours, Email].
 	def __obtainAllNotFormattedTAData(self, currentTAData):
 		currentDataCount = 0;
 		singleTAData = [];
@@ -616,10 +628,15 @@ class ParserForTeachingAssistant(object):
 			#Incrremnt Current Data Value/Count For Current singleTAData.
 			currentDataCount += 1;
 	
+	#Private Function:
+	#Formats All TA Data Office Hours 
+	#To Simplify/Standardize Data For Population. 
 	def __obtainAllFormattedTAData(self):
 		allFormattedTAData = [];
 		for k in range(0, len(self.allTAData)):
+			#Current Single TA Data.
 			currentSingleTA = self.allTAData[k];
+			#Current Office Hours For Current TA:
 			allDataInSingleStr = currentSingleTA[2];
 			currentOfficeHours = [];
 			if(":" in allDataInSingleStr):
@@ -630,7 +647,7 @@ class ParserForTeachingAssistant(object):
 					secondValue = None;
 					if(m+1 < len(tempParserForOfficeHours)):
 						secondValue = tempParserForOfficeHours[m+1];
-					#Case 1: No Date Specified + Just Time
+					#Case 1: No Date Specified + Just Time.
 					if(any(currentChar.isdigit() for currentChar in firstValue)):
 						secondValue = firstValue;
 						firstValue = "Not Specified By Instructor."
@@ -640,17 +657,22 @@ class ParserForTeachingAssistant(object):
 						m -= 1;
 					#Case 2: Date Specified.
 					else:
-						#Case 3: Time Specified
+						#Case 3: Time Specified.
 						if(secondValue != None):
 							(startTime, endTime) = getStartEndTimes(secondValue);
 							if(startTime != None and endTime != None):
 								currentOfficeHours.append((firstValue, startTime, endTime))
 			else:
+				#If Office Hours = "By Appointment"/"TBD"/"None" ...
+				#Append Data +  "N/A" Start Time + "N/A" End Time.
 				currentOfficeHours.append((allDataInSingleStr, "N/A", "N/A"))
 			self.allTAData[k][2] = currentOfficeHours
 			#print(currentOfficeHours)
 		return self.allTAData;
 
+	#Private Function:
+	#Called By __formatTAData() To Adjust/Replace Characters
+	#From prevSyllabus.HTML To Simply Parsing/Scraping.
 	def __replaceCurrentData(self, currentInformation):
 		#Reformat Conditions For TA Office Hour Times:
 		#Common Grammar Conditions:
@@ -685,6 +707,9 @@ class ParserForTeachingAssistant(object):
 		#Return Newly Formatted Data.
 		return currentInformation;
 
+	#Private Function:
+	#Extracts Relevant Information When Multiple Pieces of TA Information
+	#Are Present In A Single Line. 
 	def __extractRelevantInformation(self, currentInformation, singleTAData):
 		for k in range(0, len(currentInformation)):
 			#Case Multiple Data Present In Current Information:
@@ -716,6 +741,7 @@ class PopulaterForTeachingAssistant(object):
 	#Runs Population of Current All TA Data Into Database.
 	def runPopulatationAllTAData(self):
 		for k in range(0, len(self.allTAData)):
+			#Populate New Single TA Data Into Database.
 			self.__runPopulatationSingleTAData(self.allTAData[k]);
 	
 	#Public Function:
@@ -726,7 +752,7 @@ class PopulaterForTeachingAssistant(object):
 		#Since courseAbbrev = Unique Course Attribute, len(allExistingCourses) Must Be 1.
 		currentCourseObject = allExistingCourses[0];
 		allExistingTA = TeachingAssistant.objects.filter(currentCourse = currentCourseObject).filter(tName = allSingleTAData[0]);
-		#Professor For PArticular Course Does Not Exist
+		#Professor For Particular Course Does Not Exist.
 		if(len(allExistingTA) == 0):
 			currentTA = TeachingAssistant(tName = self.allProfessorData[0], 
 											tEmail = self.allProfessorData[3], 
@@ -814,8 +840,8 @@ class Scrape(object):
 						currentParserForProfessor = ParserForProfessor();
 						allProfessorData, sIndex = currentParserForProfessor.computeAllProfessorData(allSectionValues, k);
 						#Populate Professor Data w/ PopulaterForProfessor:
-						#currentPopForProfessor = PopulaterForProfessor(currentCourseAbbrev, allProfessorData);
-						#currentPopForProfessor.runPopulatationProfessorData();
+						currentPopForProfessor = PopulaterForProfessor(currentCourseAbbrev, allProfessorData);
+						currentPopForProfessor.runPopulatationProfessorData();
 						#Parse TA Data w/ ParserForTA:
 						print(allProfessorData)
 						#Parse TA Data w/ ParserForTeachingAssistant:
@@ -834,7 +860,7 @@ class Scrape(object):
 
 #---------------------------------------------------------------------------------------------------
 
-#Main Function:
+#Main Driver Function:
 #Invokes Appropriate Scrape Objects.
 def main():
 	#Error Checking For # of Arguments:
@@ -855,5 +881,6 @@ def main():
     		currentScrape.scrapeSpring2019OfficeHours()
     		print("Termination of Scrape Spring 2019 Office Hours Data.")
 
+#Invoke Main Driver Function main():
 if __name__ == "__main__":
     main()
