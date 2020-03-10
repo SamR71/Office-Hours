@@ -543,6 +543,7 @@ class ParserForTeachingAssistant(object):
 
 		currentTAData = self.__detectNoTAData();
 		self.__obtainAllNotFormattedTAData(currentTAData);
+		self.allTAData = self.__obtainAllFormattedTAData();
 		return self.allTAData;
 
 	def __detectNoTAData(self):
@@ -614,6 +615,40 @@ class ParserForTeachingAssistant(object):
 			#Incrremnt Current Data Value/Count For Current singleTAData.
 			currentDataCount += 1;
 	
+	def __obtainAllFormattedTAData(self):
+		allFormattedTAData = [];
+		for k in range(0, len(self.allTAData)):
+			currentSingleTA = self.allTAData[k];
+			allDataInSingleStr = currentSingleTA[2];
+			currentOfficeHours = [];
+			if(":" in allDataInSingleStr):
+				tempParserForOfficeHours = allDataInSingleStr.split();
+				#Extract Date + Time Components + Populate Into currentOfficeHours.
+				for k in range(0, len(tempParserForOfficeHours), 2):
+					firstValue = tempParserForOfficeHours[k];
+					secondValue = None;
+					if(k+1 < len(tempParserForOfficeHours)):
+						secondValue = tempParserForOfficeHours[k+1];
+					#Case 1: No Date Specified + Just Time
+					if(any(currentChar.isdigit() for currentChar in firstValue)):
+						secondValue = firstValue;
+						firstValue = "Not Specified By Instructor."
+						(startTime, endTime) = getStartEndTimes(secondValue);
+						if(startTime != None and endTime != None):
+							currentOfficeHours.append((firstValue, startTime, endTime))
+						k -= 1;
+					#Case 2: Date Specified.
+					else:
+						#Case 3: Time Specified
+						if(secondValue != None):
+							(startTime, endTime) = getStartEndTimes(secondValue);
+							if(startTime != None and endTime != None):
+								currentOfficeHours.append((firstValue, startTime, endTime))
+			else:
+				currentOfficeHours.append((allDataInSingleStr, "N/A", "N/A"))
+			#print(currentOfficeHours)
+			self.allTAData[k][2] = currentOfficeHours;
+		return self.allTAData;
 
 	def __replaceCurrentData(self, currentInformation):
 		#Reformat Conditions For TA Office Hour Times:
@@ -777,11 +812,10 @@ class Scrape(object):
 						currentParserForTA = ParserForTeachingAssistant();
 						allTAData, sIndex = currentParserForTA.computeAllTAData(allSectionValues, sIndex);
 						if(len(allTAData) != 0):
-							print(currentCourseAbbrev[:4] + "&#160;" + currentCourseAbbrev[5:])
+							print(currentCourseAbbrev)
 							print(allTAData)
 							print()
 							countFoundData += 1;
-						#print()
 						k = sIndex;
 						#countFoundData += 1;
 				k += 1;
