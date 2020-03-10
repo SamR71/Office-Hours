@@ -848,8 +848,8 @@ class Scrape(object):
 						currentParserForTA = ParserForTeachingAssistant();
 						allTAData, sIndex = currentParserForTA.computeAllTAData(allSectionValues, sIndex);
 						#Populate Professor Data w/ PopulaterForTeachingAssistant:
-						#currentPopForTA = PopulaterForTeachingAssistant(currentCourseAbbrev, allTAData);
-						#currentPopForTA.runPopulatationAllTAData();
+						currentPopForTA = PopulaterForTeachingAssistant(currentCourseAbbrev, allTAData);
+						currentPopForTA.runPopulatationAllTAData();
 						if(len(allTAData) != 0):
 							print(allTAData)
 						countFoundData += 1;

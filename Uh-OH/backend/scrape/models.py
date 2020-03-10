@@ -94,7 +94,7 @@ class TeachingAssistantOfficeHours(models.Model):
 	meetDates = models.CharField(max_length=7)
 
 	def __str__(self):
-		return str(self.meetTA) + " + " + str(self.meetStartTime) + " + " + str(self.meetEndTime) + " + " + str(self.meetLocation);
+		return str(self.meetTA) + " + " + str(self.meetLocation) + " + " + str(self.meetDates) + " + " + str(self.meetStartTime) + " + " + str(self.meetEndTime);
 
 class CourseSection(models.Model):
 	"""
