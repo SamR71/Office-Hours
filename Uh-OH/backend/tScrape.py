@@ -701,6 +701,73 @@ class ParserForTeachingAssistant(object):
 
 #---------------------------------------------------------------------------------------------------
 
+#This Class Is Used To Populate The Current TA Data + Office Hours 
+#From A Particular Section/Course Into Our Backend Django SQLite3 Database. 	
+class PopulaterForTeachingAssistant(object):
+	
+	#Constructor:
+	#Contains Data To Be Populated:
+	def __init__(self, currentCourseAbbrev, currentTAData):
+		self.relevantCourseAbbrev = currentCourseAbbrev;
+		self.allTAData = currentTAData;
+
+	#Public Function:
+	#Runs Population of Current All TA Data Into Database.
+	def runPopulatationAllTAData(self):
+		for k in range(0, len(self.allTAData)):
+			self.__runPopulatationSingleTAData(self.allTAData[k]);
+	
+	#Public Function:
+	#Runs Population of Current Single TA Data Into Database.
+	def __runPopulatationSingleTAData(self, allSingleTAData):
+		#Checks/Asserts That Course Truly Exists When Called By scrapeSpring2019OfficeHours()
+		allExistingCourses = Course.objects.filter(courseAbbrev = self.relevantCourseAbbrev);
+		#Since courseAbbrev = Unique Course Attribute, len(allExistingCourses) Must Be 1.
+		currentCourseObject = allExistingCourses[0];
+		allExistingTA = TeachingAssistant.objects.filter(currentCourse = currentCourseObject).filter(tName = allSingleTAData[0]);
+		#Professor For PArticular Course Does Not Exist
+		if(len(allExistingTA) == 0):
+			currentTA = TeachingAssistant(tName = self.allProfessorData[0], 
+											tEmail = self.allProfessorData[3], 
+											currentCourse = currentCourseObject);
+			currentTA.save();
+			#Loop Through All Professor Office Hours:
+			for k in range(0, len(allSingleTAData[2])):
+				#Check That Specific Office Hours Do Not Yet Exist:
+				allExistingOfficeHours = TeachingAssistantOfficeHours.objects.filter(meetTA = currentTA)
+				if(allSingleTAData[2][k][1] != "N/A" and allSingleTAData[2][k][2] != "N/A"): 
+					alExistingOfficeHours = allExistingOfficeHours.filter(meetLocation = allSingleTAData[1])
+					allExistingOfficeHours = allExistingOfficeHours.filter(meetDates = allSingleTAData[2][k][0])
+				allExistingOfficeHours = allExistingOfficeHours.filter(meetStartTime = allSingleTAData[2][k][1])
+				allExistingOfficeHours = allExistingOfficeHours.filter(meetEndTime = allSingleTAData[2][k][2]);
+				if(len(allExistingOfficeHours) == 0):
+					newOfficeHours = TeachingAssistantOfficeHours(meetTA = currentTA,
+															meetLocation = allSingleTAData[1],
+															meetDates = allSingleTAData[2][k][0],
+															meetStartTime = allSingleTAData[2][k][1],
+															meetEndTime = allSingleTAData[2][k][2]);
+					newOfficeHours.save();
+		else:
+			currentTA = allExistingTA[0];
+			#Loop Through All Professor Office Hours:
+			for k in range(0, len(allSingleTAData[2])):
+				#Check That Specific Office Hours Do Not Yet Exist:
+				allExistingOfficeHours = TeachingAssistantOfficeHours.objects.filter(meetTA = currentTA)
+				if(allSingleTAData[2][k][1] != "N/A" and allSingleTAData[2][k][2] != "N/A"): 
+					alExistingOfficeHours = allExistingOfficeHours.filter(meetLocation = allSingleTAData[1])
+					allExistingOfficeHours = allExistingOfficeHours.filter(meetDates = allSingleTAData[2][k][0])
+				allExistingOfficeHours = allExistingOfficeHours.filter(meetStartTime = allSingleTAData[2][k][1])
+				allExistingOfficeHours = allExistingOfficeHours.filter(meetEndTime = allSingleTAData[2][k][2]);
+				if(len(allExistingOfficeHours) == 0):
+					newOfficeHours = TeachingAssistantOfficeHours(meetTA = currentTA,
+															meetLocation = allSingleTAData[1],
+															meetDates = allSingleTAData[2][k][0],
+															meetStartTime = allSingleTAData[2][k][1],
+															meetEndTime = allSingleTAData[2][k][2]);
+					newOfficeHours.save();
+					
+#---------------------------------------------------------------------------------------------------
+
 #Main Driver Scrape Class For All Formats:
 class Scrape(object):
 
