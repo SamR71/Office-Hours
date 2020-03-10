@@ -699,65 +699,6 @@ class ParserForTeachingAssistant(object):
 		#Return False = Only Single Relevant Data Exists In Current Information.
 		return (False, singleTAData);
 
-	#Private Function:
-	#Called By __formatTAData.
-	#Determines The Office Location For The TA.
-	# def __getTALocationValue(self, currentDataToExamine):
-	# 	for k in range(0, len(currentDataToExamine)):
-	# 		if("Office Location: " in currentDataToExamine[k]):
-	# 			return currentDataToExamine[k][17:];
-	# 	return "Currently To Be Determined.";
-
-	# #Private Function:
-	# #Called By __formatTAData.
-	# #Determines All Office Hours For The TA.
-	# #Returns List of Formatted Office Hours Data For TA.  
-	# def __getTAOfficeHours(self, currentDataToExamine):
-	# 	#Find Start of Office Hours Data:
-	# 	startValue = None;
-	# 	currentOfficeHours = [];
-	# 	for k in range(0, len(currentDataToExamine)):
-	# 		if("Office Hours: " in currentDataToExamine[k]):
-	# 			startValue = k;
-	# 			currentDataToExamine[k] = currentDataToExamine[k][14:];
-	# 	#Case 1: No Office Data.
-	# 	if(startValue == None):
-	# 		return [("Not Applicable.","Currently To Be Determined.")];
-	# 	#Combine All Office Hours Data Into A Single STR.
-	# 	allDataInSingleStr = "";
-	# 	for k in range(startValue, len(currentDataToExamine)):
-	# 		allDataInSingleStr += currentDataToExamine[k];
-	# 		#Do Not Append Space To Very End of Data.
-	# 		if(k != len(currentDataToExamine)-1):
-	# 			allDataInSingleStr += " ";
-	# 	#Split By Spaces To Extract Date + Time Components.
-	# 	tempParserForOfficeHours = allDataInSingleStr.split();
-	# 	#Extract Date + Time Components + Populate Into currentOfficeHours.
-	# 	for k in range(0, len(tempParserForOfficeHours), 2):
-	# 		firstValue = tempParserForOfficeHours[k];
-	# 		secondValue = None;
-	# 		if(k+1 < len(tempParserForOfficeHours)):
-	# 			secondValue = tempParserForOfficeHours[k+1];
-	# 		#Case 1: No Date Specified + Just Time
-	# 		if(any(currentChar.isdigit() for currentChar in firstValue)):
-	# 			secondValue = firstValue;
-	# 			firstValue = "Not Specified By Instructor."
-	# 			(startTime, endTime) = getStartEndTimes(secondValue);
-	# 			if(startTime != None and endTime != None):
-	# 				currentOfficeHours.append((firstValue, startTime, endTime))
-	# 			k -= 1;
-	# 		#Case 2: Date Specified.
-	# 		else:
-	# 			#Case 3: Time Specified
-	# 			if(secondValue != None):
-	# 				(startTime, endTime) = getStartEndTimes(secondValue);
-	# 				if(startTime != None and endTime != None):
-	# 					currentOfficeHours.append((firstValue, startTime, endTime))
-	# 	#No Correct Office Hours Data Found:
-	# 	if(len(currentOfficeHours) == 0):
-	# 		return [("Not Applicable.","Currently To Be Determined.")];
-	# 	return currentOfficeHours;		
-
 #---------------------------------------------------------------------------------------------------
 
 #Main Driver Scrape Class For All Formats:
