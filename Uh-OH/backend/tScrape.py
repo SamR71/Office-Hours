@@ -541,69 +541,11 @@ class ParserForTeachingAssistant(object):
 		for k in range(0, len(self.allTAData)):
 			self.allTAData[k] = self.allTAData[k][:-1];
 
-		currentTAData = self.__detectNoData();
-		# #Name of TA:
-		# tName = self.allTAData[1];
-		# #Convert Email To @rpi.edu Instead of @RPI.EDU By Converting To Lowecase:
-		# tEmail = self.allTAData[2].lower();
-		# #Obtain TA Office Hour Location:
-		# tLocation = self.__getTALocationValue(self.allTAData[3:]);
-		# #Obtain TA Office Hour Data:
-		# tOfficeHours = self.__getTAOfficeHours(self.allTAData[3:]);	
-		
-		# #Standardize/Normalize TA Data:
-		# self.allTAData = [];
-		# self.allTAData.append(tName);
-		# self.allTAData.append(tEmail);
-		# self.allTAData.append(tLocation);
-		# self.allTAData.append(tOfficeHours);
-		singleTAData = [];
-		self.allTAData = [];
-		currentDataCount = 0;
-		for k in range(5, len(currentTAData)):
-			currentInformation = self.__replaceCurrentData(currentTAData[k]);
-			if("@" in currentInformation):
-				#Case 1: Only Email Data.
-				if(not " " in currentInformation):
-					singleTAData.append(currentInformation);
-					self.allTAData.append(singleTAData);
-					print(singleTAData)
-					singleTAData = [];
-					currentDataCount = -1;
-				#Case 2: Contains Office Hour Times + Email Data
-				else:
-					currentInformation = currentInformation.replace("  ", "*");
-					extractDataFound, singleTAData = self.__extractRelevantInformation(currentInformation, singleTAData);
-					if(extractDataFound):
-						self.allTAData.append(singleTAData);
-						print(singleTAData);
-					singleTAData = [];
-					currentDataCount = -1;
-			elif(currentDataCount == 0):
-				currentInformation = currentInformation.replace("  ", "*");
-				extractDataFound, singleTAData = self.__extractRelevantInformation(currentInformation, singleTAData);
-				if(extractDataFound):
-					currentDataCount += 1;
-				else:
-					if(currentInformation != ' ' and currentInformation != ''):
-						singleTAData.append(currentInformation)
-			elif(currentDataCount == 1):
-				currentInformation = currentInformation.replace("  ", "*");
-				extractDataFound, singleTAData = self.__extractRelevantInformation(currentInformation, singleTAData);
-				if(extractDataFound):
-					currentDataCount += 1;
-				else:
-					if(currentInformation != '' and currentInformation != ' '):
-						singleTAData.append(currentInformation)
-			else:
-				if(currentInformation != '' and currentInformation != ' '):
-					singleTAData.append(currentInformation);
-			
-			currentDataCount += 1;
+		currentTAData = self.__detectNoTAData();
+		self.allTAData = self.__obtainAllNotFormattedTAData(currentTAData);
+		return self.allTAData;
 
-		return currentTAData;
-
-	def __detectNoData(self):
+	def __detectNoTAData(self):
 		noCount = 0;
 		for k in range(5,len(self.allTAData)):
 			currentInformation = self.allTAData[k].lower()
@@ -618,7 +560,64 @@ class ParserForTeachingAssistant(object):
 			return self.allTAData[:5];
 		return self.allTAData;
 
+	def __obtainAllNotFormattedTAData(self, currentTAData):
+		currentDataCount = 0;
+		singleTAData = [];
+		allNotFormattedTAData = [];
+		for k in range(5, len(currentTAData)):
+			#Reformat/Adjust Current Information:
+			currentInformation = self.__replaceCurrentData(currentTAData[k]);
+			#Case 1: Email Data Is Present.
+			if("@" in currentInformation):
+				#Only Email Data.
+				if(not " " in currentInformation):
+					singleTAData.append(currentInformation);
+					allNotFormattedTAData.append(singleTAData);
+					#print(singleTAData)
+					singleTAData = [];
+					currentDataCount = -1;
+				#Contains Office Hour Times + Email Data.
+				else:
+					currentInformation = currentInformation.replace("  ", "*");
+					extractDataFound, singleTAData = self.__extractRelevantInformation(currentInformation, singleTAData);
+					if(extractDataFound):
+						allNotFormattedTAData.append(singleTAData);
+						#print(singleTAData);
+					singleTAData = [];
+					currentDataCount = -1;
+			#Case 2: Name Data Is Present.
+			elif(currentDataCount == 0):
+				currentInformation = currentInformation.replace("  ", "*");
+				extractDataFound, singleTAData = self.__extractRelevantInformation(currentInformation, singleTAData);
+				#Contains Name + Location Data.
+				if(extractDataFound):
+					currentDataCount += 1;
+				#Only Name Data.
+				else:
+					if(currentInformation != ' ' and currentInformation != ''):
+						singleTAData.append(currentInformation)
+			#Case 3: Location Data Is Present.
+			elif(currentDataCount == 1):
+				currentInformation = currentInformation.replace("  ", "*");
+				extractDataFound, singleTAData = self.__extractRelevantInformation(currentInformation, singleTAData);
+				#Contains Location + Office Hour Times Data.
+				if(extractDataFound):
+					currentDataCount += 1;
+				#Only Location Data.
+				else:
+					if(currentInformation != '' and currentInformation != ' '):
+						singleTAData.append(currentInformation)
+			#Case 4: Only Office Hour Data.
+			else:
+				if(currentInformation != '' and currentInformation != ' '):
+					singleTAData.append(currentInformation);
+			#Incrremnt Current Data Value/Count For Current singleTAData.
+			currentDataCount += 1;
+		return allNotFormattedTAData;
+
 	def __replaceCurrentData(self, currentInformation):
+		#Reformat Conditions For TA Office Hour Times:
+		#Common Grammar Conditions:
 		currentInformation = currentInformation.replace(", ", " ");
 		currentInformation = currentInformation.replace(",", "");
 		currentInformation = currentInformation.replace(";", "");
@@ -626,6 +625,7 @@ class ParserForTeachingAssistant(object):
 		currentInformation = currentInformation.replace(" - ", "-");
 		currentInformation = currentInformation.replace(" and ", " ");
 		currentInformation = currentInformation.replace(" to ", "-");
+		#Similar Ways To Refer To Days of Week:
 		currentInformation = currentInformation.replace("Mondays", "M");
 		currentInformation = currentInformation.replace("Monday", "M");
 		currentInformation = currentInformation.replace("Mon", "M");
@@ -641,25 +641,28 @@ class ParserForTeachingAssistant(object):
 		currentInformation = currentInformation.replace("Fridays", "F");
 		currentInformation = currentInformation.replace("Friday", "F");
 		currentInformation = currentInformation.replace("Fri", "F");
+		#Common Time Format Adjustments:
 		currentInformation = currentInformation.replace(" pm", "PM");
 		currentInformation = currentInformation.replace(" PM", "PM");
 		currentInformation = currentInformation.replace(" am", "AM");
 		currentInformation = currentInformation.replace(" AM", "AM");
+		#Return Newly Formatted Data.
 		return currentInformation;
 
 	def __extractRelevantInformation(self, currentInformation, singleTAData):
 		for k in range(0, len(currentInformation)):
+			#Case Multiple Data Present In Current Information:
 			if(currentInformation[k] == "*"):
+				#Extract First Data Piece.
 				if(currentInformation[:k] != '' and currentInformation[:k] != ' '):
 					singleTAData.append(currentInformation[:k]);
+				#Extract Second Data Piece.
 				if(currentInformation[k+1:] != '' and currentInformation[k+1:] != ' '):
 					singleTAData.append(currentInformation[k+1:]);
+				#Return True = Multiple Data Found.
 				return (True, singleTAData);
+		#Return False = Only Single Relevant Data Exists In Current Information.
 		return (False, singleTAData);
-
-	def __adjustTimeData(self, currentInformation):
-		#print(currentInformation)
-		return currentInformation;
 
 	#Private Function:
 	#Called By __formatTAData.
@@ -751,9 +754,9 @@ class Scrape(object):
 			#Find All Subsections For Course Information:
 			allSectionValues = currentSoup.find_all("div")
 			#Loop Through All Course Descriptions:
-			k = 0;80
+			k = 0;
 			countFoundData = 0;
-			while(k < len(allSectionValues) and countFoundData < 290):
+			while(k < len(allSectionValues)):
 				currentSection = allSectionValues[k];
 				#Check If Current Section Contains Instructor Information:
 				if(currentSection.find_all("p", string=re.compile("Instructor")) != None):
@@ -773,9 +776,9 @@ class Scrape(object):
 						#print(allProfessorData)
 						currentParserForTA = ParserForTeachingAssistant();
 						allTAData, sIndex = currentParserForTA.computeAllTAData(allSectionValues, sIndex);
-						if(len(allTAData) != 5):
+						if(len(allTAData) != 0):
 							print(currentCourseAbbrev[:4] + "&#160;" + currentCourseAbbrev[5:])
-							#print(allTAData)
+							print(allTAData)
 							print()
 							countFoundData += 1;
 						#print()
