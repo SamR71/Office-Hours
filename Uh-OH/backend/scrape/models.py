@@ -84,7 +84,8 @@ class TeachingAssistantOfficeHours(models.Model):
 	by the Course, sectionID, and instructorName.
 	"""
 	class Meta:
-		verbose_name = 'Teaching Assistant Office Hours'
+		verbose_name = 'Teaching Assistant Office Hour'
+		verbose_name_plural = 'Teaching Assistant Office Hours'
 
 	meetTA = models.ForeignKey(TeachingAssistant, on_delete=models.CASCADE)
 	meetStartTime = models.CharField(max_length=7)
@@ -93,7 +94,7 @@ class TeachingAssistantOfficeHours(models.Model):
 	meetDates = models.CharField(max_length=7)
 
 	def __str__(self):
-		return str(self.meetTA) + " + " + str(self.meetStartTime) + " + " + str(self.meetEndTime) + " + " + str(self.meetLocation);
+		return str(self.meetTA) + " + " + str(self.meetLocation) + " + " + str(self.meetDates) + " + " + str(self.meetStartTime) + " + " + str(self.meetEndTime);
 
 class CourseSection(models.Model):
 	"""
