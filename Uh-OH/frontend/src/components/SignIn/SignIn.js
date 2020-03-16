@@ -18,7 +18,14 @@ class SignIn extends React.Component{
     handleClick(event)
     {
         var url = 'http://localhost:8000/login/loginuser/';
-        const res = fetch(url+this.state.userName+"/"+this.state.password);
+        const form = new FormData()
+        form.set('username', this.state.userName)
+        form.set('password', this.state.password)
+        const res = fetch(url, {
+            method: 'POST',
+            body: form,
+        })
+
     }
 
     handleChange(event)

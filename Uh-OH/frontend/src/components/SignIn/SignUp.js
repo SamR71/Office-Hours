@@ -20,7 +20,16 @@ class SignUp extends React.Component{
     handleClick()
     {
         var url = 'http://localhost:8000/login/registeruser/';
-        const res = fetch(url+this.state.fullName+"/"+this.state.email+"/"+this.state.password+"/"+this.state.repeatPassword);
+        const form = new FormData()
+        form.set('fullName', this.state.fullName)
+        form.set('email', this.state.email)
+        form.set('password', this.state.password)
+        form.set('repeatPassword', this.state.repeatPassword)
+        const res = fetch(url, {
+            method: 'POST',
+            body: form,
+        })
+        
    
     }
 
