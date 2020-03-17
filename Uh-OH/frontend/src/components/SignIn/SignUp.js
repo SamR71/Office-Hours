@@ -17,18 +17,26 @@ class SignUp extends React.Component{
         this.handleChange = this.handleChange.bind(this);
     }
 
-    handleClick()
+    handleClick(event)
     {
+        event.preventDefault();
         var url = 'http://localhost:8000/login/registeruser/';
+        var xhr = new XMLHttpRequest()
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == XMLHttpRequest.DONE) {
+                alert(xhr.responseText);
+                if (xhr.responseText == "Registration Successful!") {
+                    window.location.href = "/LogIn"
+                }
+            }
+        }
+        xhr.open('POST', url)
         const form = new FormData()
         form.set('fullName', this.state.fullName)
         form.set('email', this.state.email)
         form.set('password', this.state.password)
         form.set('repeatPassword', this.state.repeatPassword)
-        const res = fetch(url, {
-            method: 'POST',
-            body: form,
-        })
+        xhr.send(form)
         
    
     }

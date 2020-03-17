@@ -21,29 +21,24 @@ def userLogin(request):
         login(request._request, user)
         print('logged in')
         print()
-        return HttpResponse(status=200)
     else:
-        return HttpResponse('Unauthorized', status=401)
+        return HttpResponse("Invalid Login", content_type="text/plain", status=401)
+    return HttpResponse("User logged in!", content_type="text/plain", status=200)
 
 @api_view(['POST'])
 @parser_classes([MultiPartParser, FormParser])
 @csrf_exempt
 def userRegister(request):
-    try:
-        username = request.data.get('email')
-        password = request.data.get("password")
-        repeatpassword = request.data.get("repeatPassword")
-        name = request.data.get("fullName")
-        if username[len(username)-8:len(username)] != "@rpi.edu":
-            print("not an rpi email\n")
-            return HttpResponse('Unauthorized', status=422)
-        if password != repeatpassword:
-            print("passwords do not match\n")
-            return HttpResponse('Unauthorized', status=422)
-        user = User.objects.create_user(username, username, password)
-        user.save()
-    except Exception as e:
-        print(e)
-        print()
-        print()
-    return HttpResponse(status=200)
+    username = request.data.get('email')
+    password = request.data.get("password")
+    repeatpassword = request.data.get("repeatPassword")
+    name = request.data.get("fullName")
+    if username[len(username)-8:len(username)] != "@rpi.edu":
+        print("not an rpi email\n")
+        return Response('Invalid email: Must end in @rpi.edu', status=422)
+    if password != repeatpassword:
+        print("passwords do not match\n")
+        return Response('Passwords do not match', status=422)
+    user = User.objects.create_user(username, username, password)
+    user.save()
+    return HttpResponse("Registration Successful!", content_type="text/plain", status=200)
