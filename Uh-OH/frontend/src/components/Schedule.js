@@ -1,10 +1,27 @@
-import React from 'react';
-import moment from 'moment';
-import WeekCalendar from 'react-week-calendar';
-import './ScheduleStyle.css';
+import React from "react";
+import moment from "moment";
+import WeekCalendar from "react-week-calendar";
+import "./ScheduleStyle.css";
 
 class Schedule extends React.Component
 {
+
+    constructor(props) {
+        super(props);
+        this.state =
+        {
+            lastUID: 2,
+            eventIntervals:
+            [
+                {
+                    uid: 1,
+                    start: moment({h: 10, m: 0}).day(1), //day 1 is monday
+                    end: moment({h: 12, m: 0}).day(1),
+                    value: "Test"
+                },
+            ],
+        };
+    }
 
     render()
     {
@@ -21,7 +38,9 @@ class Schedule extends React.Component
                     cellHeight = {40}
                     numberOfDays = {7}
                     useModal = {false}
-                    /*eventComponent = will take in a component we define to display specific hours*/
+                    eventSpacing = {0}
+                    selectedIntervals = {this.state.eventIntervals}
+                    /*eventComponent = will take in a component to style how events are shown*/
                     />
             </div>
         );
