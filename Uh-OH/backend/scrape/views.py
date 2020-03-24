@@ -12,7 +12,7 @@ def home(request):
     return render(request, template_name='base.html')
 
 class CourseAPIView(generics.ListCreateAPIView):
-    search_fields = ['courseName']
+    search_fields = ['courseName', 'courseAbbrev', 'courseValue']
     filter_backends = (filters.SearchFilter,)
     queryset = Course.objects.all()
     serializer_class = CourseSerializer

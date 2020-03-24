@@ -17,7 +17,7 @@ class Course(models.Model):
 	#courseName = Listed Name of Course. 
 	courseName = models.CharField(max_length=128)
 	#courseValue = CRN Number.
-	courseValue = models.CharField(validators=[MinLengthValidator(5)], max_length=5);
+	courseValue = models.CharField(validators=[MinLengthValidator(5)], max_length=5)
 	#courseAbbrev = Abbreviation For Course Name.
 	courseAbbrev = models.CharField(max_length=128)
 
@@ -27,6 +27,74 @@ class Course(models.Model):
 
 	def __str__(self):
 		return self.courseName
+
+class Professor(models.Model):
+	"""
+	CourseSection Class represents a single section of a Course
+	by the Course, sectionID, and instructorName.
+	"""
+	class Meta:
+		verbose_name = 'Professor'
+		verbose_name_plural = 'Professors'
+
+	pName = models.CharField(max_length=128)
+	pEmail = models.CharField(max_length=128)
+	currentCourse = models.ForeignKey(Course, on_delete=models.CASCADE)
+
+	def __str__(self):
+		return str(self.currentCourse) + " + " + str(self.pName) + " + " + str(self.pEmail)
+
+class ProfessorOfficeHours(models.Model):
+	"""
+	CourseSection Class represents a single section of a Course
+	by the Course, sectionID, and instructorName.
+	"""
+	class Meta:
+		verbose_name = 'Professor Office Hour'
+		verbose_name_plural = 'Professor Office Hours'
+        
+	meetProfessor = models.ForeignKey(Professor, on_delete=models.CASCADE)
+	meetStartTime = models.CharField(max_length=7)
+	meetEndTime = models.CharField(max_length=7)
+	meetLocation = models.CharField(max_length=23)
+	meetDates = models.CharField(max_length=7)
+
+	def __str__(self):
+		return str(self.meetProfessor) + " + " + str(self.meetLocation) + " + " + str(self.meetDates) + " + " + str(self.meetStartTime) + " + " + str(self.meetEndTime)
+
+class TeachingAssistant(models.Model):
+	"""
+	CourseSection Class represents a single section of a Course
+	by the Course, sectionID, and instructorName.
+	"""
+	class Meta:
+		verbose_name = 'Teaching Assistant'
+		verbose_name_plural = 'Teaching Assistants'
+
+	tName = models.CharField(max_length=128)
+	tEmail = models.CharField(max_length=128)
+	currentCourse = models.ForeignKey(Course, on_delete=models.CASCADE)
+
+	def __str__(self):
+		return str(self.currentCourse) + " + " + str(self.tName) + " + " + str(self.tEmail)
+
+class TeachingAssistantOfficeHours(models.Model):
+	"""
+	CourseSection Class represents a single section of a Course
+	by the Course, sectionID, and instructorName.
+	"""
+	class Meta:
+		verbose_name = 'Teaching Assistant Office Hour'
+		verbose_name_plural = 'Teaching Assistant Office Hours'
+
+	meetTA = models.ForeignKey(TeachingAssistant, on_delete=models.CASCADE)
+	meetStartTime = models.CharField(max_length=7)
+	meetEndTime = models.CharField(max_length=7)
+	meetLocation = models.CharField(max_length=23)
+	meetDates = models.CharField(max_length=7)
+
+	def __str__(self):
+		return str(self.meetTA) + " + " + str(self.meetLocation) + " + " + str(self.meetDates) + " + " + str(self.meetStartTime) + " + " + str(self.meetEndTime)
 
 class CourseSection(models.Model):
 	"""
@@ -38,10 +106,10 @@ class CourseSection(models.Model):
 		verbose_name_plural = 'Course Sections'
         
 	currentCourse = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='sections')
-	sectionID = models.CharField(validators=[MinLengthValidator(2)], max_length = 2);
+	sectionID = models.CharField(validators=[MinLengthValidator(2)], max_length = 2)
 
 	def __str__(self):
-		return str(self.currentCourse) + " + " + str(self.sectionID);
+		return str(self.currentCourse) + " + " + str(self.sectionID)
 
 class CourseMeetingTime(models.Model):
 	"""
@@ -60,4 +128,4 @@ class CourseMeetingTime(models.Model):
 	meetInstructor = models.CharField(max_length=128, default = "")
 
 	def __str__(self):
-		return str(self.meetSection) + " + " + str(self.meetType) + " + " + str(self.meetInstructor);
+		return str(self.meetSection) + " + " + str(self.meetType) + " + " + str(self.meetInstructor)

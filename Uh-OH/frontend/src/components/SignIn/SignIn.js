@@ -1,7 +1,8 @@
 import React from "react"
 import { Link } from "react-router-dom";
 import "./SignIn.css";
-
+import {useHistory} from "react-router-dom";
+import { Redirect } from 'react-router';
 
 class SignIn extends React.Component{
 
@@ -13,13 +14,29 @@ class SignIn extends React.Component{
         };
         this.handleClick = this.handleClick.bind(this);
         this.handleChange = this.handleChange.bind(this);
-}
+    }
 
     handleClick(event)
     {
-        const link = this.state.userName;
-        this.props.history.push(link);
+        event.preventDefault();
+        var url = 'http://localhost:8000/login/loginuser/';
+        var xhr = new XMLHttpRequest()
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == XMLHttpRequest.DONE) {
+                alert(xhr.responseText);
+                if (xhr.responseText == "User logged in!") {
+                    window.location.href = "/"
+                }
+            }
+        }
+        xhr.open('POST', url)
+        const form = new FormData()
+        form.set('username', this.state.userName)
+        form.set('password', this.state.password)
+        xhr.send(form)
     }
+
+
 
     handleChange(event)
     {
