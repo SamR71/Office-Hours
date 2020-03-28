@@ -30,8 +30,9 @@ class Course(models.Model):
 
 class CourseSection(models.Model):
 	"""
-	CourseSection Class represents a single section of a Course
-	by the Course, sectionID, and instructorName.
+	CourseSection Class represents a 
+	Single Section of a Course, specified by 
+	the Course, sectionID, and instructorName.
 	"""
 	class Meta:
 		verbose_name = 'Course Section'
@@ -45,8 +46,8 @@ class CourseSection(models.Model):
 
 class CourseMeetingTime(models.Model):
 	"""
-	CourseMeetingTime Class represents a specific meeting time 
-	of a CourseSection.
+	CourseMeetingTime Class represents a 
+	specific Meeting Time of a CourseSection.
 	"""
 	class Meta:
 		verbose_name = 'Course Meeting Time'
@@ -65,8 +66,10 @@ class CourseMeetingTime(models.Model):
 
 class Instructor(models.Model):
 	"""
-	CourseSection Class represents a single section of a Course
-	by the Course, sectionID, and instructorName.
+	Instructor Class represents a 
+	specific Instructor linked to a specific
+	Course Object, specified by:
+	Course, Name, Email.
 	"""
 	class Meta:
 		verbose_name = 'Instructor'
@@ -85,8 +88,10 @@ class Instructor(models.Model):
 
 class InstructorOfficeHours(models.Model):
 	"""
-	InstructorOfficeHours Class represents a single section of a Course
-	by the Course, sectionID, and instructorName.
+	InstructorOfficeHours Class represents a 
+	Singular Section of a particular 
+	Instructor's Office Hours, specified by:
+	Instructor, Start Time, End Time, Location, + Relevant Dates.
 	"""
 	class Meta:
 		verbose_name = 'Instructor Office Hour'
