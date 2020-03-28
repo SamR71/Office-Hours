@@ -107,4 +107,4 @@ class InstructorOfficeHours(models.Model):
 		fullOfficeHoursType = "Professor Office Hours:";
 		if(self.meetInstructor.iType == "T"):
 			fullOfficeHoursType = "Teaching Assistant Office Hours:"
-		return str(self.meetInstructor) + " + " + fullOfficeHoursType + "+" + str(self.meetLocation) + " + " + str(self.meetDates) + " + " + str(self.meetStartTime) + " + " + str(self.meetEndTime)
+		return str(self.meetInstructor) + " + " + fullOfficeHoursType + " + " + str(self.meetLocation) + " + " + str(self.meetDates) + " + " + str(self.meetStartTime) + " + " + str(self.meetEndTime)
