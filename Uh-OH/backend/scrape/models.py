@@ -81,7 +81,7 @@ class Instructor(models.Model):
 		fullInstructorType = "Professor"
 		if(self.iType == "T"):
 			fullInstructorType = "Teaching Assistant"
-		return str(self.currentCourse) + " + " + fullInstructorType + " + " + str(self.pName) + " + " + str(self.pEmail)
+		return str(self.currentCourse) + " + " + fullInstructorType + " + " + str(self.iName) + " + " + str(self.iEmail)
 
 class InstructorOfficeHours(models.Model):
 	"""
@@ -100,6 +100,6 @@ class InstructorOfficeHours(models.Model):
 
 	def __str__(self):
 		fullOfficeHoursType = "Professor Office Hours:";
-		if(meetInstructor.iType == "T"):
+		if(self.meetInstructor.iType == "T"):
 			fullOfficeHoursType = "Teaching Assistant Office Hours:"
 		return str(self.meetInstructor) + " + " + fullOfficeHoursType + "+" + str(self.meetLocation) + " + " + str(self.meetDates) + " + " + str(self.meetStartTime) + " + " + str(self.meetEndTime)
