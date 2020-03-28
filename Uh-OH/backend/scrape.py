@@ -11,8 +11,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "backend.settings")
 django.setup()
 
 from scrape.models import Course, CourseSection, CourseMeetingTime
-from scrape.models import Professor, ProfessorOfficeHours
-from scrape.models import TeachingAssistant, TeachingAssistantOfficeHours
+from scrape.models import Instructor, InstructorOfficeHours
 
 #---------------------------------------------------------------------------------------------------
 
@@ -395,23 +394,24 @@ class PopulaterForProfessor(object):
 		allExistingCourses = Course.objects.filter(courseAbbrev = self.relevantCourseAbbrev)
 		#Since courseAbbrev = Unique Course Attribute, len(allExistingCourses) Must Be 1.
 		currentCourseObject = allExistingCourses[0]
-		allExistingProfessors = Professor.objects.filter(currentCourse = currentCourseObject).filter(pName = self.allProfessorData[0])
+		allExistingProfessors = Instructor.objects.filter(currentCourse = currentCourseObject).filter(iType = "P").filter(iName = self.allProfessorData[0])
 		#Professor For PArticular Course Does Not Exist
 		if(len(allExistingProfessors) == 0):
-			currentProfessor = Professor(pName = self.allProfessorData[0], 
-											pEmail = self.allProfessorData[1], 
+			currentProfessor = Instructor(iType = "P",
+											iName = self.allProfessorData[0], 
+											iEmail = self.allProfessorData[1], 
 											currentCourse = currentCourseObject)
 			currentProfessor.save()
 			#Loop Through All Professor Office Hours:
 			for k in range(0, len(self.allProfessorData[3])):
 				#Check That Specific Office Hours Do Not Yet Exist:
-				allExistingOfficeHours = ProfessorOfficeHours.objects.filter(meetProfessor = currentProfessor)
+				allExistingOfficeHours = InstructorOfficeHours.objects.filter(meetInstructor = currentProfessor)
 				allExistingOfficeHours = allExistingOfficeHours.filter(meetLocation = self.allProfessorData[2])
 				allExistingOfficeHours = allExistingOfficeHours.filter(meetDates = self.allProfessorData[3][k][0])
 				allExistingOfficeHours = allExistingOfficeHours.filter(meetStartTime = self.allProfessorData[3][k][1])
 				allExistingOfficeHours = allExistingOfficeHours.filter(meetEndTime = self.allProfessorData[3][k][2])
 				if(len(allExistingOfficeHours) == 0):
-					newOfficeHours = ProfessorOfficeHours(meetProfessor = currentProfessor,
+					newOfficeHours = InstructorOfficeHours(meetInstructor = currentProfessor,
 															meetLocation = self.allProfessorData[2],
 															meetDates = self.allProfessorData[3][k][0],
 															meetStartTime = self.allProfessorData[3][k][1],
@@ -422,13 +422,13 @@ class PopulaterForProfessor(object):
 			#Loop Through All Professor Office Hours:
 			for k in range(0, len(self.allProfessorData[3])):
 				#Check That Specific Office Hours Do Not Yet Exist:
-				allExistingOfficeHours = ProfessorOfficeHours.objects.filter(meetProfessor = currentProfessor)
+				allExistingOfficeHours = InstructorOfficeHours.objects.filter(meetInstructor = currentProfessor)
 				allExistingOfficeHours = allExistingOfficeHours.filter(meetLocation = self.allProfessorData[2])
 				allExistingOfficeHours = allExistingOfficeHours.filter(meetDates = self.allProfessorData[3][k][0])
 				allExistingOfficeHours = allExistingOfficeHours.filter(meetStartTime = self.allProfessorData[3][k][1])
 				allExistingOfficeHours = allExistingOfficeHours.filter(meetEndTime = self.allProfessorData[3][k][2])
 				if(len(allExistingOfficeHours) == 0):
-					newOfficeHours = ProfessorOfficeHours(meetProfessor = currentProfessor,
+					newOfficeHours = InstructorOfficeHours(meetInstructor = currentProfessor,
 															meetLocation = self.allProfessorData[2],
 															meetDates = self.allProfessorData[3][k][0],
 															meetStartTime = self.allProfessorData[3][k][1],
@@ -751,24 +751,25 @@ class PopulaterForTeachingAssistant(object):
 		allExistingCourses = Course.objects.filter(courseAbbrev = self.relevantCourseAbbrev)
 		#Since courseAbbrev = Unique Course Attribute, len(allExistingCourses) Must Be 1.
 		currentCourseObject = allExistingCourses[0]
-		allExistingTA = TeachingAssistant.objects.filter(currentCourse = currentCourseObject).filter(tName = allSingleTAData[0])
+		allExistingTA = Instructor.objects.filter(currentCourse = currentCourseObject).filter(iType = "T").filter(iName = allSingleTAData[0])
 		#Professor For Particular Course Does Not Exist.
 		if(len(allExistingTA) == 0):
-			currentTA = TeachingAssistant(tName = allSingleTAData[0], 
-											tEmail = allSingleTAData[3], 
-											currentCourse = currentCourseObject)
+			currentTA = Instructor(iType = "T",
+										iName = allSingleTAData[0], 
+										iEmail = allSingleTAData[3], 
+										currentCourse = currentCourseObject)
 			currentTA.save()
 			#Loop Through All Professor Office Hours:
 			for k in range(0, len(allSingleTAData[2])):
 				#Check That Specific Office Hours Do Not Yet Exist:
-				allExistingOfficeHours = TeachingAssistantOfficeHours.objects.filter(meetTA = currentTA)
+				allExistingOfficeHours = InstructorOfficeHours.objects.filter(meetInstructor = currentTA)
 				if(allSingleTAData[2][k][1] != "N/A" and allSingleTAData[2][k][2] != "N/A"): 
 					alExistingOfficeHours = allExistingOfficeHours.filter(meetLocation = allSingleTAData[1])
 					allExistingOfficeHours = allExistingOfficeHours.filter(meetDates = allSingleTAData[2][k][0])
 				allExistingOfficeHours = allExistingOfficeHours.filter(meetStartTime = allSingleTAData[2][k][1])
 				allExistingOfficeHours = allExistingOfficeHours.filter(meetEndTime = allSingleTAData[2][k][2])
 				if(len(allExistingOfficeHours) == 0):
-					newOfficeHours = TeachingAssistantOfficeHours(meetTA = currentTA,
+					newOfficeHours = InstructorOfficeHours(meetInstructor = currentTA,
 															meetLocation = allSingleTAData[1],
 															meetDates = allSingleTAData[2][k][0],
 															meetStartTime = allSingleTAData[2][k][1],
@@ -776,17 +777,17 @@ class PopulaterForTeachingAssistant(object):
 					newOfficeHours.save()
 		else:
 			currentTA = allExistingTA[0]
-			#Loop Through All Professor Office Hours:
+			#Loop Through All Teaching Assistant Office Hours:
 			for k in range(0, len(allSingleTAData[2])):
 				#Check That Specific Office Hours Do Not Yet Exist:
-				allExistingOfficeHours = TeachingAssistantOfficeHours.objects.filter(meetTA = currentTA)
+				allExistingOfficeHours = InstructorOfficeHours.objects.filter(meetInstructor = currentTA)
 				if(allSingleTAData[2][k][1] != "N/A" and allSingleTAData[2][k][2] != "N/A"): 
 					alExistingOfficeHours = allExistingOfficeHours.filter(meetLocation = allSingleTAData[1])
 					allExistingOfficeHours = allExistingOfficeHours.filter(meetDates = allSingleTAData[2][k][0])
 				allExistingOfficeHours = allExistingOfficeHours.filter(meetStartTime = allSingleTAData[2][k][1])
 				allExistingOfficeHours = allExistingOfficeHours.filter(meetEndTime = allSingleTAData[2][k][2])
 				if(len(allExistingOfficeHours) == 0):
-					newOfficeHours = TeachingAssistantOfficeHours(meetTA = currentTA,
+					newOfficeHours = InstructorOfficeHours(meetInstructor = currentTA,
 															meetLocation = allSingleTAData[1],
 															meetDates = allSingleTAData[2][k][0],
 															meetStartTime = allSingleTAData[2][k][1],
@@ -813,9 +814,9 @@ class Scrape(object):
 	#Scrape All Spring 2019 Prfoessor + TA Office Hours:
 	def scrapeSpring2019OfficeHours(self):
 		#Clear/Flush Database Objects Prior To Population.
-		currentProfessorDataInDatabase = Professor.objects.all()
-		if(len(currentProfessorDataInDatabase) != 0):
-			currentProfessorDataInDatabase.delete()
+		currentInstructorDataInDatabase = Instructor.objects.all()
+		if(len(currentInstructorDataInDatabase) != 0):
+			currentInstructorDataInDatabase.delete()
 		#Begin Scrape Procedure:
 		with open("prevSyllabus.html", "r") as currentFileReader:
 			#Read + Obtain All PDF Data:
