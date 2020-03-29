@@ -1,5 +1,5 @@
 import React from 'react';
-//import OfficeHourInfo from "./OfficeHourInfo";
+import OfficeHourInfo from "./OfficeHourInfo";
 import {withRouter} from 'react-router-dom';
 
 class InstructorInfo extends React.Component {
@@ -33,14 +33,15 @@ class InstructorInfo extends React.Component {
 	render() {
 		return (
 			<div>
-			{/* The Body Content of the MeetingTime, currently displays just as text */}
+			{/* The Body Content of the InstructorInfo */}
 			<br></br>
-				{this.state.type + ": " + this.state.name + " | " + this.state.email}
-				{/*this.state.officeHours.map(item => (
+			<b> {this.state.type+ ": " + this.state.name} </b> {this.state.email}
+				{/* For all office hours the instructor holds, display them */}
+				{this.state.officeHours.map(item => (
 					<div key = {item.id}>
 						<OfficeHourInfo officeHour={item} />
 					</div>
-				))*/}
+				))}
 			</div>
 		);
 	}
