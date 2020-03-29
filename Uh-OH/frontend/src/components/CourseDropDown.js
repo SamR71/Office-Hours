@@ -6,12 +6,13 @@ class CourseDropDown extends React.Component {
 	state = {
 		name: "",
 		sections: [],
+		instructors: [],
 	};
 	
 	
 	constructor(props) {
 		super(props);
-		this.state = {name: props.course.courseName, sections: props.course.sections};
+		this.state = {name: props.course.courseName, sections: props.course.sections, instructors: props.course.instructors};
 	}
 	
 	render() {
@@ -31,7 +32,7 @@ class CourseDropDown extends React.Component {
 					<div class="card card-body">
 						{this.state.sections.map(item => (
 							<div key={item.id}>
-								<SectionModal name={this.state.name} section={item} />
+								<SectionModal name={this.state.name} section={item} instructors={this.state.instructors}/>
 							</div>
 						))}
 					</div>
