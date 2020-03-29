@@ -75,10 +75,10 @@ class Instructor(models.Model):
 		verbose_name = 'Instructor'
 		verbose_name_plural = 'Instructor'
 
-	iType = models.CharField(max_length=1);
+	iType = models.CharField(max_length=1)
 	iName = models.CharField(max_length=128)
 	iEmail = models.CharField(max_length=128)
-	currentCourse = models.ForeignKey(Course, on_delete=models.CASCADE)
+	currentCourse = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='instructors')
 
 	def __str__(self):
 		fullInstructorType = "Professor"
@@ -97,14 +97,14 @@ class InstructorOfficeHours(models.Model):
 		verbose_name = 'Instructor Office Hour'
 		verbose_name_plural = 'Instructor Office Hours'
     
-	meetInstructor = models.ForeignKey(Instructor, on_delete=models.CASCADE)
+	meetInstructor = models.ForeignKey(Instructor, on_delete=models.CASCADE, related_name='iOfficeHours')
 	meetStartTime = models.CharField(max_length=7)
 	meetEndTime = models.CharField(max_length=7)
 	meetLocation = models.CharField(max_length=23)
 	meetDates = models.CharField(max_length=7)
 
 	def __str__(self):
-		fullOfficeHoursType = "Professor Office Hours:";
+		fullOfficeHoursType = "Professor Office Hours:"
 		if(self.meetInstructor.iType == "T"):
 			fullOfficeHoursType = "Teaching Assistant Office Hours:"
 		return str(self.meetInstructor) + " + " + fullOfficeHoursType + " + " + str(self.meetLocation) + " + " + str(self.meetDates) + " + " + str(self.meetStartTime) + " + " + str(self.meetEndTime)
