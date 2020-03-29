@@ -27,7 +27,7 @@ class CourseSectionSerializer(serializers.ModelSerializer):
 #Note To Team: Frontend Would Have To Grab iType From meetInstructor 
 #To Determine/Output Whether ProfessorOfficeHours/TeachingAssistantOfficeHours.
 class InstructorOfficeHoursSerializer(serializers.ModelSerializer):
-	instructorofficehours_id = serializers.PrimaryKeyRelatedField(queryset=InstructorOfficeHours.objects.all(), source='meetInstructor.id')
+	instructor_id = serializers.PrimaryKeyRelatedField(queryset=Instructor.objects.all(), source='meetInstructor.id')
 	class Meta:
 		model = InstructorOfficeHours
 		fields = 	('id',
@@ -36,7 +36,7 @@ class InstructorOfficeHoursSerializer(serializers.ModelSerializer):
 					'meetDates',
 					'meetStartTime',
 					'meetEndTime',
-					'instructorofficehours_id')
+					'instructor_id')
 
 #Initial Untested Serializer For Instructor:
 #Tried To Follow Existing Format/Syntax As Above Serializers.
@@ -44,11 +44,11 @@ class InstructorOfficeHoursSerializer(serializers.ModelSerializer):
 #To Determine/Output Whether Professor/TeachingAssistant.
 class InstructorSerializer(serializers.ModelSerializer):
 	#Adjust For Instructor Parameters:
-	instructor_id = serializers.PrimaryKeyRelatedField(queryset=Instructor.objects.all(), source='currentCourse.id')
+	course_id = serializers.PrimaryKeyRelatedField(queryset=Course.objects.all(), source='currentCourse.id')
 	iOfficeHours = InstructorOfficeHoursSerializer(many=True, read_only=True)
 	class Meta:
 		model = Instructor
-		fields = ('id', 'currentCourse', 'iType', 'iName', 'iEmail', 'instructor_id', 'iOfficeHours')
+		fields = ('id', 'currentCourse', 'iType', 'iName', 'iEmail', 'course_id', 'iOfficeHours')
 
 #Note To Team: Added Field For Instructors. 
 class CourseSerializer(serializers.ModelSerializer):
