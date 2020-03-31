@@ -21,7 +21,7 @@ class userScheduleItem(models.Model):
 	meetDates = models.CharField(max_length=7)
 
 	def __str__(self):
-		return str(self.meetInstructor) + " + " + str(self.meetLocation) + " + " + str(self.meetDates) + " + " + str(self.meetStartTime) + " + " + str(self.meetEndTime) + ","
+		return str(self.meetInstructor) + " + " + str(self.meetLocation) + " + " + str(self.meetDates) + " + " + str(self.meetStartTime) + " + " + str(self.meetEndTime)
 
 class userSchedules(models.Model):
 	"""
@@ -35,7 +35,7 @@ class userSchedules(models.Model):
 	username = models.CharField(max_length=50)
 	
 	
-	#information about the given entry
+	#concatenation of several different userScheduleItem strings
 	schedule = models.CharField(max_length=200)
 
 	def __str__(self):
