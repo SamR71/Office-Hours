@@ -16,6 +16,24 @@ class SectionModal extends React.Component {
 						courseMeetingTimes: props.section.courseMeetingTimes};
 	}
 
+	handleClick(event)
+    {
+        event.preventDefault();
+        var url = 'http://localhost:8000/schedules/add/';
+        var xhr = new XMLHttpRequest()
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == XMLHttpRequest.DONE) {
+                alert("Added course");
+            }
+        }
+        xhr.open('POST', url)
+        const form = new FormData()
+        form.set('name', this.state.name)
+        form.set('id', this.state.id)
+        form.set('courseMeetingTimes', this.state.courseMeetingTimes)
+        xhr.send(form)
+    }
+
 	render() {
 		return (
 			<div>
@@ -60,7 +78,7 @@ class SectionModal extends React.Component {
 							{/* The Modal Footer Content: Holds buttons to interact with the section */}
 							<div class="modal-footer">
 								<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-								<button type="button" class="btn btn-primary">Add to Schedule</button>
+								<button onClick={this.handleClick} type="button" class="btn btn-primary">Add to Schedule</button>
 							</div>
 						</div>
 					</div>
