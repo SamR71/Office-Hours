@@ -1,5 +1,6 @@
 import React from 'react';
 import MeetingTime from "./MeetingTime";
+import InstructorInfo from "./InstructorInfo";
 import {withRouter} from 'react-router-dom';
 
 class SectionModal extends React.Component {
@@ -7,14 +8,34 @@ class SectionModal extends React.Component {
 		name: "",
 		id: "",
 		courseMeetingTimes: [],
+		instructors: [],
 	};
 	
 	constructor(props) {
 		super(props);
 		this.state = {name: props.name,
 						id: props.section.sectionID,
-						courseMeetingTimes: props.section.courseMeetingTimes};
+						courseMeetingTimes: props.section.courseMeetingTimes,
+						instructors: props.instructors};
 	}
+
+	handleClick(event)
+    {
+        event.preventDefault();
+        var url = 'http://localhost:8000/schedules/add/';
+        var xhr = new XMLHttpRequest()
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == XMLHttpRequest.DONE) {
+                alert("Added course");
+            }
+        }
+        xhr.open('POST', url)
+        const form = new FormData()
+        form.set('name', this.state.name)
+        form.set('id', this.state.id)
+        form.set('courseMeetingTimes', this.state.courseMeetingTimes)
+        xhr.send(form)
+    }
 
 	render() {
 		return (
@@ -51,16 +72,23 @@ class SectionModal extends React.Component {
 							</div>
 							{/* The Modal Body Content */}
 							<div class="modal-body">
+								{/* Display the meeting times for the classes as MeetingTime components*/}
 								{this.state.courseMeetingTimes.map(item => (
 									<div key = {item.id}>
 										<MeetingTime meeting={item} />
+									</div>
+								))}
+								{/* Display the instructors for the classes as InstructorInfo components*/}
+								{this.state.instructors.map(item => (
+									<div key = {item.id}>
+										<InstructorInfo instructor={item} />
 									</div>
 								))}
 							</div>
 							{/* The Modal Footer Content: Holds buttons to interact with the section */}
 							<div class="modal-footer">
 								<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-								<button type="button" class="btn btn-primary">Add to Schedule</button>
+								<button onClick={this.handleClick} type="button" class="btn btn-primary">Add to Schedule</button>
 							</div>
 						</div>
 					</div>
