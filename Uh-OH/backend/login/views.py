@@ -18,9 +18,9 @@ def userLogin(request):
     password = request.data.get("password")
     user = authenticate(username=username, password=password)
     if user is not None:
-        login(request._request, user)
-        print('logged in')
-        print()
+        login(request, user)
+        print("logged in")
+        print("logged in user: " + str(request.user))
     else:
         return HttpResponse("Invalid Login", content_type="text/plain", status=401)
     return HttpResponse("User logged in!", content_type="text/plain", status=200)

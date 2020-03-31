@@ -1,9 +1,20 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import userScheduleItem, userSchedules
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.parsers import MultiPartParser, FormParser
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import api_view
+from rest_framework.decorators import parser_classes
 
 # Create your views here.
+@api_view(['POST'])
+@parser_classes([MultiPartParser, FormParser])
 def addCourse(request):
+    print("logged in user: " + str(request.user))
     username = None
     if request.user.is_authenticated:
         username = request.user.username
@@ -32,6 +43,8 @@ def addCourse(request):
     u.save()
     return HttpResponse("Course added", content_type="text/plain", status=200)
 
+@api_view(['POST'])
+@parser_classes([MultiPartParser, FormParser])
 def getSchedule(request):
     username = None
     if request.user.is_authenticated:

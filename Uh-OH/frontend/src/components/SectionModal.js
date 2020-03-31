@@ -17,6 +17,7 @@ class SectionModal extends React.Component {
 						id: props.section.sectionID,
 						courseMeetingTimes: props.section.courseMeetingTimes,
 						instructors: props.instructors};
+		this.handleClick = this.handleClick.bind(this);
 	}
 
 	handleClick(event)
