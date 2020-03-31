@@ -1,5 +1,6 @@
 import React from 'react';
 import MeetingTime from "./MeetingTime";
+import InstructorInfo from "./InstructorInfo";
 import {withRouter} from 'react-router-dom';
 
 class SectionModal extends React.Component {
@@ -7,13 +8,15 @@ class SectionModal extends React.Component {
 		name: "",
 		id: "",
 		courseMeetingTimes: [],
+		instructors: [],
 	};
 	
 	constructor(props) {
 		super(props);
 		this.state = {name: props.name,
 						id: props.section.sectionID,
-						courseMeetingTimes: props.section.courseMeetingTimes};
+						courseMeetingTimes: props.section.courseMeetingTimes,
+						instructors: props.instructors};
 	}
 
 	handleClick(event)
@@ -69,9 +72,16 @@ class SectionModal extends React.Component {
 							</div>
 							{/* The Modal Body Content */}
 							<div class="modal-body">
+								{/* Display the meeting times for the classes as MeetingTime components*/}
 								{this.state.courseMeetingTimes.map(item => (
 									<div key = {item.id}>
 										<MeetingTime meeting={item} />
+									</div>
+								))}
+								{/* Display the instructors for the classes as InstructorInfo components*/}
+								{this.state.instructors.map(item => (
+									<div key = {item.id}>
+										<InstructorInfo instructor={item} />
 									</div>
 								))}
 							</div>
