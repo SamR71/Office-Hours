@@ -1,3 +1,4 @@
 *.lock
 package-lock.json
-/Uh-Oh/backend/scrape/prevSyllabus.html
+/Uh-Oh/backend/prevSyllabus.html
+*.pyc
