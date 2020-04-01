@@ -1,6 +1,7 @@
 import React from "react";
 import moment from "moment";
 import WeekCalendar from "react-week-calendar";
+import customEvent from "./customEvent";
 import "./ScheduleStyle.css";
 
 class Schedule extends React.Component
@@ -40,7 +41,7 @@ class Schedule extends React.Component
                     useModal = {false}
                     eventSpacing = {0}
                     selectedIntervals = {this.state.eventIntervals}
-                    /*eventComponent = will take in a component to style how events are shown*/
+                    eventComponent = {customEvent}
                     />
             </div>
         );
