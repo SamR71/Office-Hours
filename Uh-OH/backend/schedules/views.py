@@ -14,13 +14,11 @@ from rest_framework.decorators import parser_classes
 @api_view(['POST'])
 @parser_classes([MultiPartParser, FormParser])
 def addCourse(request):
-    print("logged in user: " + str(request.user))
-    username = None
-    if request.user.is_authenticated:
-        username = request.user.username
-    else:
-        # User is not logged in
+    print("logged in user: " + str(request.data.get("user")))
+    username = request.data.get("user")
+    if username == '':
         return HttpResponse("User not logged in", content_type="text/plain", status=403)
+        
     meetInstructor = request.data.get("instructor")
     meetStartTime = request.data.get("startTime")
     meetEndTime = request.data.get("endTime")

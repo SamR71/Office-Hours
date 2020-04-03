@@ -3,12 +3,15 @@ import MeetingTime from "./MeetingTime";
 import InstructorInfo from "./InstructorInfo";
 import {withRouter} from 'react-router-dom';
 
+
 class SectionModal extends React.Component {
+	
 	state = {
 		name: "",
 		id: "",
 		courseMeetingTimes: [],
 		instructors: [],
+		loggedin: ''
 	};
 	
 	constructor(props) {
@@ -19,9 +22,15 @@ class SectionModal extends React.Component {
 						instructors: props.instructors};
 		this.handleClick = this.handleClick.bind(this);
 	}
+	
+	componentDidMount(){
+		var user = localStorage.getItem('loggedinuser');
+		this.setState({loggedin: user});
+	}
 
 	handleClick(event)
     {
+		alert(this.state.loggedin);
         event.preventDefault();
         var url = 'http://localhost:8000/schedules/add/';
         var xhr = new XMLHttpRequest()
@@ -35,6 +44,7 @@ class SectionModal extends React.Component {
         form.set('name', this.state.name)
         form.set('id', this.state.id)
         form.set('courseMeetingTimes', this.state.courseMeetingTimes)
+		form.set('user',this.state.loggedin)
         xhr.send(form)
     }
 

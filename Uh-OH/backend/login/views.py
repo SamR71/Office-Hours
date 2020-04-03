@@ -15,15 +15,18 @@ from rest_framework.decorators import parser_classes
 @csrf_exempt
 def userLogin(request):
     username = request.data.get("username")
+    print(username)
     password = request.data.get("password")
+    print(password)
     user = authenticate(username=username, password=password)
     if user is not None:
         login(request, user)
         print("logged in")
         print("logged in user: " + str(request.user))
+        print(request.session)
     else:
-        return HttpResponse("Invalid Login", content_type="text/plain", status=401)
-    return HttpResponse("User logged in!", content_type="text/plain", status=200)
+        return HttpResponse("Invalid Login, you buttocks", content_type="text/plain", status=401)
+    return HttpResponse(str(request.user), content_type="text/plain", status=200)
 
 @api_view(['POST'])
 @parser_classes([MultiPartParser, FormParser])
