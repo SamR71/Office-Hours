@@ -31,14 +31,17 @@ def addCourse(request):
 
     # locate user in the database
     userSchedule = userSchedules.objects.filter(username=username)
-    if userSchedule is None:
+    if len(list(userSchedule)) == 0:
         # user does not have entry in database; add entry with empty schedule
         userSchedule = userSchedules(username=username, schedule="")
-        
+    else:
+        userSchedule = list(userSchedule)[0]
+    print(userSchedule)
     # concatenate new course's userScheduleItem to end of user's schedule
-    schedule = userSchedule + "," + str(u)
-    u.schedule = schedule 
-    u.save()
+    schedule = str(userSchedule) + "," + str(u)
+    print(schedule)
+    userSchedule.schedule = schedule 
+    userSchedule.save()
     return HttpResponse("Course added", content_type="text/plain", status=200)
 
 @api_view(['POST'])

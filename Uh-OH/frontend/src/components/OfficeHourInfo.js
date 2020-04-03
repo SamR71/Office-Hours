@@ -6,7 +6,8 @@ class OfficeHourInfo extends React.Component {
 		dates: "",
 		location: "",
 		startTime: "",
-		endTime: "",
+        endTime: "",
+        loggedin: ''
 	};
 
 	constructor(props) {
@@ -15,9 +16,15 @@ class OfficeHourInfo extends React.Component {
 					location: props.officeHour.meetLocation,
 					startTime: props.officeHour.meetStartTime,
 					endTime: props.officeHour.meetEndTime,
-					instructor: props.officeHour.meetInstructor};
+                    instructor: props.officeHour.meetInstructor};
+        this.handleClick = this.handleClick.bind(this);
 	}
-	
+    
+    componentDidMount(){
+		var user = localStorage.getItem('loggedinuser');
+		this.setState({loggedin: user});
+    }
+    
 	handleClick(event)
     {
         event.preventDefault();
@@ -34,7 +41,8 @@ class OfficeHourInfo extends React.Component {
 		form.set('location', this.state.location)
         form.set('startTime', this.state.startTime)
 		form.set('endTime', this.state.endTime)
-		form.set('instructor', this.state.instructor)
+        form.set('instructor', this.state.instructor)
+        form.set('user',this.state.loggedin)
         xhr.send(form)
     }
 
