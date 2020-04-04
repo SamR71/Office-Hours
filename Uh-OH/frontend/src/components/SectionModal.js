@@ -3,12 +3,15 @@ import MeetingTime from "./MeetingTime";
 import InstructorInfo from "./InstructorInfo";
 import {withRouter} from 'react-router-dom';
 
+
 class SectionModal extends React.Component {
+	
 	state = {
 		name: "",
 		id: "",
 		courseMeetingTimes: [],
 		instructors: [],
+		loggedin: ''
 	};
 	
 	constructor(props) {
@@ -17,7 +20,22 @@ class SectionModal extends React.Component {
 						id: props.section.sectionID,
 						courseMeetingTimes: props.section.courseMeetingTimes,
 						instructors: props.instructors};
+		this.handleClick = this.handleClick.bind(this);
 	}
+	
+	componentDidMount(){
+		var user = localStorage.getItem('loggedinuser');
+		this.setState({loggedin: user});
+	}
+
+	handleClick(event)
+    {
+        event.preventDefault();
+        /*{this.state.instructors.map(item => (
+            InstructorInfo instructor=item
+            instructor.addToSchedule()
+        ))}*/
+    }
 
 	render() {
 		return (
@@ -70,7 +88,7 @@ class SectionModal extends React.Component {
 							{/* The Modal Footer Content: Holds buttons to interact with the section */}
 							<div class="modal-footer">
 								<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-								<button type="button" class="btn btn-primary">Add to Schedule</button>
+								{/* <button onClick={this.handleClick} type="button" class="btn btn-primary">Add to Schedule</button> */}
 							</div>
 						</div>
 					</div>

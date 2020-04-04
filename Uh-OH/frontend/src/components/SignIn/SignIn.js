@@ -5,7 +5,7 @@ import {useHistory} from "react-router-dom";
 import { Redirect } from 'react-router';
 
 class SignIn extends React.Component{
-
+	
     constructor(props) {
         super(props);
         this.state = {
@@ -19,21 +19,7 @@ class SignIn extends React.Component{
     handleClick(event)
     {
         event.preventDefault();
-        var url = 'http://localhost:8000/login/loginuser/';
-        var xhr = new XMLHttpRequest()
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState == XMLHttpRequest.DONE) {
-                alert(xhr.responseText);
-                if (xhr.responseText == "User logged in!") {
-                    window.location.href = "/"
-                }
-            }
-        }
-        xhr.open('POST', url)
-        const form = new FormData()
-        form.set('username', this.state.userName)
-        form.set('password', this.state.password)
-        xhr.send(form)
+        this.props.handle_login(this.state.userName, this.state.password);
     }
 
 

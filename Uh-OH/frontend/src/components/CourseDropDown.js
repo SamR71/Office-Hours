@@ -32,7 +32,7 @@ class CourseDropDown extends React.Component {
 					<div class="card card-body">
 						{this.state.sections.map(item => (
 							<div key={item.id}>
-								<SectionModal name={this.state.name} section={item} instructors={this.state.instructors}/>
+								<SectionModal name={this.state.name} section={item} instructors={this.state.instructors} loggedin={this.props.loggedin}/>
 							</div>
 						))}
 					</div>
