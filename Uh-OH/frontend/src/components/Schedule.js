@@ -15,7 +15,7 @@ class Schedule extends React.Component
 	{
         super(props);
         this.state =
-	    {
+        {
             rawData: [],
             eventIntervals: [],
         };
