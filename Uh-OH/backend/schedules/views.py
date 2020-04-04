@@ -44,7 +44,7 @@ def addCourse(request):
     userSchedule.save()
     return HttpResponse("Office Hours Added", content_type="text/plain", status=200)
 
-@api_view(['POST'])
+@api_view(['GET'])
 @parser_classes([MultiPartParser, FormParser])
 def getSchedule(request):
     username = None
