@@ -31,9 +31,10 @@ class SectionModal extends React.Component {
 	handleClick(event)
     {
         event.preventDefault();
-        {this.state.instructors.map(item => (
-            item.addToSchedule()
-        ))}
+        /*{this.state.instructors.map(item => (
+            InstructorInfo instructor=item
+            instructor.addToSchedule()
+        ))}*/
     }
 
 	render() {
@@ -87,7 +88,7 @@ class SectionModal extends React.Component {
 							{/* The Modal Footer Content: Holds buttons to interact with the section */}
 							<div class="modal-footer">
 								<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-								<button onClick={this.handleClick} type="button" class="btn btn-primary">Add to Schedule</button>
+								{/* <button onClick={this.handleClick} type="button" class="btn btn-primary">Add to Schedule</button> */}
 							</div>
 						</div>
 					</div>

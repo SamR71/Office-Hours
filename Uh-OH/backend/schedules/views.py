@@ -42,7 +42,7 @@ def addCourse(request):
     print(schedule)
     userSchedule.schedule = schedule 
     userSchedule.save()
-    return HttpResponse("Course added", content_type="text/plain", status=200)
+    return HttpResponse("Office Hours Added", content_type="text/plain", status=200)
 
 @api_view(['POST'])
 @parser_classes([MultiPartParser, FormParser])
