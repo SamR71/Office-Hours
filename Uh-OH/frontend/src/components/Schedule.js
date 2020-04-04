@@ -32,6 +32,7 @@ class Schedule extends React.Component
             xhr.onreadystatechange = function() {
                 if (xhr.readyState == XMLHttpRequest.DONE) {
                     schedule = xhr.readyState
+                    // Schedule string should be saved in 'schedule' variable 
                 }
             }
             xhr.onreadystatechange = function() {
@@ -42,7 +43,7 @@ class Schedule extends React.Component
             form.set('user',this.state.loggedin)
             xhr.send(form)
 
-            // Schedule string should now be saved in 'schedule' variable 
+            
             
 		}
 		catch (e)
