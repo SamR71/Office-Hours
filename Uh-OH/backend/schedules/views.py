@@ -47,6 +47,7 @@ def addCourse(request):
 @api_view(['POST'])
 @parser_classes([MultiPartParser, FormParser])
 def getSchedule(request):
+    print("logged in user: " + str(request.data.get("user")))
     username = request.data.get("user")
     if username == '':
         return HttpResponse("User not logged in", content_type="text/plain", status=403)

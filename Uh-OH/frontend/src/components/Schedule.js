@@ -7,12 +7,16 @@ import "./ScheduleStyle.css";
 class Schedule extends React.Component
 {
 
+    state = {
+        loggedin: ''
+    };
+    
     constructor(props)
 	{
         super(props);
         this.state =
         {
-        	test: "",
+            test: "",
             rawData: [],
             eventIntervals: [],
         };
@@ -21,6 +25,10 @@ class Schedule extends React.Component
 
     async componentDidMount()
 	{
+        // Retrieve login token
+        var user = localStorage.getItem('loggedinuser');
+        alert(user)
+        
 		// GET request to get the schedule data.
         // Schedule will be stored in the string 'schedule'
         let schedule = "testing";
@@ -35,6 +43,7 @@ class Schedule extends React.Component
                 if (status === 0 || (status >= 200 && status < 400))
                 {
                     schedule = xhr.responseText;
+                    alert(schedule)
                 }
                 else
                 {
@@ -54,7 +63,7 @@ class Schedule extends React.Component
         const form = new FormData();
 
         // Send along login token
-        form.set("user",this.state.loggedin);
+        form.set("user",user);
         xhr.send(form);
 
 		this.setState({test: schedule});
