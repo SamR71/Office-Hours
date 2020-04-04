@@ -44,14 +44,12 @@ def addCourse(request):
     userSchedule.save()
     return HttpResponse("Office Hours Added", content_type="text/plain", status=200)
 
-@api_view(['GET'])
+@api_view(['POST'])
 @parser_classes([MultiPartParser, FormParser])
 def getSchedule(request):
-    username = None
-    if request.user.is_authenticated:
-        username = request.user.username
-    else:
-        # User is not logged in
+    print("logged in user: " + str(request.data.get("user")))
+    username = request.data.get("user")
+    if username == '':
         return HttpResponse("User not logged in", content_type="text/plain", status=403)
     userSchedule = userSchedules.objects.filter(username=username)
     if len(list(userSchedule)) == 0:

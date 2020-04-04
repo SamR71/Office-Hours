@@ -3,10 +3,46 @@ import Schedule from "./Schedule";
 
 class Home extends React.Component
 {
+	constructor(props)
+	{
+		super(props);
+		this.state =
+		{
+			officeHours: ["Search for office hours to display here..."]
+		}
+	}
+
+	async componentDidMount()
+	{
+        // Retrieve login token
+        var user = localStorage.getItem("loggedinuser");
+
+		// GET request to get the schedule data.
+        let schedule = null;
+        let url = "http://localhost:8000/schedules/get/";
+        let xhr = new XMLHttpRequest();
+
+        // get a callback when the server responds
+	    xhr.addEventListener("load", () => {
+	        // update the state of the component with the result here
+	        schedule = xhr.responseText;
+	        if(schedule !== "")
+	        {
+	        	this.setState({officeHours: schedule.split(",")});
+	        }
+	    });
+
+        xhr.open("POST", url);
+        const form = new FormData();
+
+        // Send along login token
+        form.set("user",user);
+        xhr.send(form);
+	}
+
     render()
     {
-
-        const homePageStyle =
+    	const homePageStyle =
         {
             margin: "20px"
         };
@@ -18,8 +54,8 @@ class Home extends React.Component
                         <h2>My Schedule:</h2>
                         <Schedule />
                         <br></br>
-                        <h2>My Courses:</h2>
-                        <p>add courses to display here...</p>
+                        <h2>Office Hours:</h2>
+                        <p>{this.state.officeHours.map(item => <ul>{item}</ul>)}</p>
                     </div>
                 </div>
             </div>
