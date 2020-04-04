@@ -24,10 +24,8 @@ class OfficeHourInfo extends React.Component {
 		var user = localStorage.getItem('loggedinuser');
 		this.setState({loggedin: user});
     }
-    
-	handleClick(event)
-    {
-        event.preventDefault();
+
+    addToSchedule(){
         var url = 'http://localhost:8000/schedules/add/';
         var xhr = new XMLHttpRequest()
         xhr.onreadystatechange = function() {
@@ -44,6 +42,12 @@ class OfficeHourInfo extends React.Component {
         form.set('instructor', this.state.instructor)
         form.set('user',this.state.loggedin)
         xhr.send(form)
+    }
+    
+	handleClick(event)
+    {
+        event.preventDefault();
+        this.addToSchedule();
     }
 
 	render() {

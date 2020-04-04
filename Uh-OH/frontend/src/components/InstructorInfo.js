@@ -28,7 +28,13 @@ class InstructorInfo extends React.Component {
 					name: newName,
 					email: props.instructor.iEmail,
 					officeHours: props.instructor.iOfficeHours};
-	}
+    }
+    
+    addToSchedule(){
+        this.state.officeHours.forEach(function(officehour){
+            officehour.addToSchedule()
+        })
+    }
 	
 	render() {
 		return (

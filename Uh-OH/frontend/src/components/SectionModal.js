@@ -30,22 +30,10 @@ class SectionModal extends React.Component {
 
 	handleClick(event)
     {
-		alert(this.state.loggedin);
         event.preventDefault();
-        var url = 'http://localhost:8000/schedules/add/';
-        var xhr = new XMLHttpRequest()
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState == XMLHttpRequest.DONE) {
-                alert("Added course");
-            }
-        }
-        xhr.open('POST', url)
-        const form = new FormData()
-        form.set('name', this.state.name)
-        form.set('id', this.state.id)
-        form.set('courseMeetingTimes', this.state.courseMeetingTimes)
-		form.set('user',this.state.loggedin)
-        xhr.send(form)
+        this.state.instructors.forEach(function(section){
+            section.addToSchedule()
+        })
     }
 
 	render() {
