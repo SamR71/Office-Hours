@@ -27,13 +27,10 @@ class App extends Component
 				
 				if(xhr.status == 200){
 					alert("User logged in!");
-					alert(xhr.responseText);
 					this.setState({loggedin: xhr.responseText});
 					localStorage.setItem('loggedinuser', xhr.responseText);
-					alert(this.state.loggedin);
 					window.location.href = "/"
 				}else{
-					alert("bad");
 					alert(xhr.responseText);
 				}
             }

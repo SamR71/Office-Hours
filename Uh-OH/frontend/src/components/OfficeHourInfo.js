@@ -29,9 +29,6 @@ class OfficeHourInfo extends React.Component {
         var url = 'http://localhost:8000/schedules/add/';
         var xhr = new XMLHttpRequest()
         xhr.onreadystatechange = function() {
-            if (xhr.readyState == XMLHttpRequest.DONE) {
-                alert("Added course");
-            }
         }
         xhr.open('POST', url)
 		const form = new FormData()

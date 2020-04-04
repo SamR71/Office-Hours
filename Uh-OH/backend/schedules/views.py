@@ -54,6 +54,9 @@ def getSchedule(request):
         # User is not logged in
         return HttpResponse("User not logged in", content_type="text/plain", status=403)
     userSchedule = userSchedules.objects.filter(username=username)
-    if userSchedule is None:
-        return HttpResponse("", content_type="text/plain", status=200) # user did not add to their schedule
+    if len(list(userSchedule)) == 0:
+        # user does not have entry in database; add entry with empty schedule
+        userSchedule = userSchedules(username=username, schedule="")
+    else:
+        userSchedule = list(userSchedule)[0]
     return HttpResponse(str(userSchedule), content_type="text/plain", status=200) 

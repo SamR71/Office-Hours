@@ -31,9 +31,9 @@ class SectionModal extends React.Component {
 	handleClick(event)
     {
         event.preventDefault();
-        this.state.instructors.forEach(function(section){
-            section.addToSchedule()
-        })
+        {this.state.instructors.map(item => (
+            item.addToSchedule()
+        ))}
     }
 
 	render() {
