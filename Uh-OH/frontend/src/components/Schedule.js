@@ -25,6 +25,7 @@ class Schedule extends React.Component
 	    {
     		// GET request using fetch with async/await
 		    let xhr = new XMLHttpRequest();
+		    let user = localStorage.getItem("loggedinuser");
 
 		    // get a callback when the server responds
 		    xhr.addEventListener("load", () => {
@@ -32,7 +33,7 @@ class Schedule extends React.Component
 			    this.setState({test: xhr.responseText})
 		    });
 		    // open the request with the verb and the url
-		    xhr.open("GET", "http://localhost:8000/schedules/get/");
+		    xhr.open("GET", "http://localhost:8000/schedules/get/", true, user);
 		    // send the request
 		    xhr.send();
 		}
