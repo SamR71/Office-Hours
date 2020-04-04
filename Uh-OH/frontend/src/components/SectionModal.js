@@ -1,7 +1,7 @@
-import React from 'react';
+import React from "react";
 import MeetingTime from "./MeetingTime";
 import InstructorInfo from "./InstructorInfo";
-import {withRouter} from 'react-router-dom';
+import {withRouter} from "react-router-dom";
 
 
 class SectionModal extends React.Component {
@@ -11,7 +11,7 @@ class SectionModal extends React.Component {
 		id: "",
 		courseMeetingTimes: [],
 		instructors: [],
-		loggedin: ''
+		loggedin: ""
 	};
 	
 	constructor(props) {
@@ -24,7 +24,7 @@ class SectionModal extends React.Component {
 	}
 	
 	componentDidMount(){
-		var user = localStorage.getItem('loggedinuser');
+		var user = localStorage.getItem("loggedinuser");
 		this.setState({loggedin: user});
 	}
 

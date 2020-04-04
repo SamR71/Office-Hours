@@ -7,28 +7,71 @@ import "./ScheduleStyle.css";
 class Schedule extends React.Component
 {
 
-    constructor(props) {
+    constructor(props)
+	{
         super(props);
         this.state =
         {
-            lastUID: 2,
-            eventIntervals:
-            [
-                {
-                    uid: 1,
-                    start: moment({h: 10, m: 0}).day(1), //day 1 is monday
-                    end: moment({h: 12, m: 0}).day(1),
-                    value: "Test"
-                },
-            ],
+        	test: "",
+            rawData: [],
+            eventIntervals: [],
         };
+        this.helpFormatStrings = this.helpFormatStrings.bind(this);
     }
+
+    async componentDidMount()
+	{
+    	try
+	    {
+    		// GET request using fetch with async/await
+		    let xhr = new XMLHttpRequest();
+
+		    // get a callback when the server responds
+		    xhr.addEventListener("load", () => {
+				// update the state of the component with the result here
+			    this.setState({test: xhr.responseText})
+		    });
+		    // open the request with the verb and the url
+		    xhr.open("GET", "http://localhost:8000/schedules/get/");
+		    // send the request
+		    xhr.send();
+		}
+		catch (e)
+		{
+			console.log(e);
+		}
+	}
+
+	helpFormatStrings()
+	{
+		// clear intervals of any old data
+		this.setState({eventIntervals: []});
+
+		let intervals = [];
+		let officeHour = "";
+		//looping over all office hours to turn into intervals
+		for(officeHour in this.state.rawData)
+		{
+			const info = officeHour.split(" + ");
+			const days = info[2].split("");
+
+			const start = moment(info[3], "LT");
+			const end = moment(info[4], "LT");
+			const value = info[1];
+
+			intervals.push({start, end, value});
+		}
+
+		this.setState({eventIntervals: intervals})
+	}
 
     render()
     {
 
         return(
             <div>
+	            {this.state.rawData}
+	            {this.state.test}
                 <WeekCalendar
                     firstDay = {moment().day(1)}
                     startTime = {moment({h:8, m:0})}

@@ -1,10 +1,11 @@
-import React from 'react';
-import queryString from 'query-string';
+import React from "react";
+import queryString from "query-string";
 import CourseDropDown from "./CourseDropDown";
-import {withRouter} from 'react-router-dom';
+import {withRouter} from "react-router-dom";
 
 class Search extends React.Component {
-	state = {
+	state =
+	{
 		courses: []
 	};
 	
