@@ -6,7 +6,8 @@ class OfficeHourInfo extends React.Component {
 		dates: "",
 		location: "",
 		startTime: "",
-		endTime: "",
+        endTime: "",
+        loggedin: ''
 	};
 
 	constructor(props) {
@@ -14,9 +15,43 @@ class OfficeHourInfo extends React.Component {
 		this.state = {dates: props.officeHour.meetDates,
 					location: props.officeHour.meetLocation,
 					startTime: props.officeHour.meetStartTime,
-					endTime: props.officeHour.meetEndTime,};
+					endTime: props.officeHour.meetEndTime,
+                    instructor: props.officeHour.meetInstructor};
+        this.handleClick = this.handleClick.bind(this);
 	}
-	
+    
+    componentDidMount(){
+		var user = localStorage.getItem('loggedinuser');
+		this.setState({loggedin: user});
+    }
+
+    addToSchedule(){
+        var url = 'http://localhost:8000/schedules/add/';
+        var xhr = new XMLHttpRequest()
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == XMLHttpRequest.DONE) {
+                alert(xhr.responseText);
+            }
+        }
+        xhr.onreadystatechange = function() {
+        }
+        xhr.open('POST', url)
+		const form = new FormData()
+		form.set('dates', this.state.dates)
+		form.set('location', this.state.location)
+        form.set('startTime', this.state.startTime)
+		form.set('endTime', this.state.endTime)
+        form.set('instructor', this.state.instructor)
+        form.set('user',this.state.loggedin)
+        xhr.send(form)
+    }
+    
+	handleClick(event)
+    {
+        event.preventDefault();
+        this.addToSchedule();
+    }
+
 	render() {
 		return (
 			<div>
@@ -25,7 +60,7 @@ class OfficeHourInfo extends React.Component {
 				{/* For more info on customizing and adding functionality:
 					https://react-bootstrap.github.io/components/buttons/ */}
 				{/* The button to add a specific office hours to the user schedule, currently does nothing */}
-				<button type="button" class="btn btn-sm btn-outline-primary">Add</button>
+				<button onClick={this.handleClick} type="button" class="btn btn-sm btn-outline-primary">Add</button>
 			</div>
 		);
 	}
