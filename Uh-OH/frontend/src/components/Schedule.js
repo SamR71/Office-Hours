@@ -21,26 +21,43 @@ class Schedule extends React.Component
 
     async componentDidMount()
 	{
-    	try
-	    {
-    		// GET request using fetch with async/await
-		    let xhr = new XMLHttpRequest();
-		    let user = localStorage.getItem("loggedinuser");
+		// GET request to get the schedule data.
+        // Schedule will be stored in the string 'schedule'
+        let schedule = "testing";
+        let url = "http://localhost:8000/schedules/get/";
+        let xhr = new XMLHttpRequest();
 
-		    // get a callback when the server responds
-		    xhr.addEventListener("load", () => {
-				// update the state of the component with the result here
-			    this.setState({test: xhr.responseText})
-		    });
-		    // open the request with the verb and the url
-		    xhr.open("GET", "http://localhost:8000/schedules/get/", true, user);
-		    // send the request
-		    xhr.send();
-		}
-		catch (e)
-		{
-			console.log(e);
-		}
+        xhr.onreadystatechange = function()
+        {
+            if (xhr.readyState === XMLHttpRequest.DONE)
+            {
+                let status = xhr.status;
+                if (status === 0 || (status >= 200 && status < 400))
+                {
+                    schedule = xhr.responseText;
+                }
+                else
+                {
+                    schedule = "ERROR!"
+                }
+            }
+        };
+
+        //tried to get schedule to say something other than testing this also didnt work
+        // get a callback when the server responds
+	    //xhr.addEventListener("load", () => {
+	        // update the state of the component with the result here
+	    //    schedule = xhr.responseText;
+	    //})
+
+        xhr.open("POST", url);
+        const form = new FormData();
+
+        // Send along login token
+        form.set("user",this.state.loggedin);
+        xhr.send(form);
+
+		this.setState({test: schedule});
 	}
 
 	helpFormatStrings()
