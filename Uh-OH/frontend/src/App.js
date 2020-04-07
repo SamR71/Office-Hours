@@ -20,17 +20,20 @@ class App extends Component
 	}
 	
 	handle_login (username, password) {
+        // Send POST request to backend requesting to log user in
 		var url = 'http://localhost:8000/login/loginuser/';
         var xhr = new XMLHttpRequest()
         xhr.onreadystatechange = function() {
             if (xhr.readyState == XMLHttpRequest.DONE) {
-				
 				if(xhr.status == 200){
-					alert("User logged in!");
+                    alert("User logged in!");
+                    // Store login token returned by the backend
 					this.setState({loggedin: xhr.responseText});
-					localStorage.setItem('loggedinuser', xhr.responseText);
+                    localStorage.setItem('loggedinuser', xhr.responseText);
+                    // Redirect to homepage
 					window.location.href = "/"
 				}else{
+                    // User did not log in correctly, display returned error message
 					alert(xhr.responseText);
 				}
             }

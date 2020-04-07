@@ -19,7 +19,8 @@ class SignUp extends React.Component{
 
     handleClick(event)
     {
-        event.preventDefault();
+        event.preventDefault(); 
+        // Create POST request in backend requesting to register new user
         var url = 'http://localhost:8000/login/registeruser/';
         var xhr = new XMLHttpRequest()
         xhr.onreadystatechange = function() {

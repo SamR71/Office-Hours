@@ -26,11 +26,12 @@ class OfficeHourInfo extends React.Component {
     }
 
     addToSchedule(){
+        // Send POST request to backend to add this office hour object to the user's schedule
         var url = 'http://localhost:8000/schedules/add/';
         var xhr = new XMLHttpRequest()
         xhr.onreadystatechange = function() {
             if (xhr.readyState == XMLHttpRequest.DONE) {
-                alert(xhr.responseText);
+                alert(xhr.responseText); // display results of POST request to user
             }
         }
         xhr.onreadystatechange = function() {

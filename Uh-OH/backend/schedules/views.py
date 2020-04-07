@@ -15,10 +15,12 @@ from rest_framework.decorators import parser_classes
 @parser_classes([MultiPartParser, FormParser])
 def addCourse(request):
     print("logged in user: " + str(request.data.get("user")))
+    # Extract username of logged in user
     username = request.data.get("user")
     if username == '':
         return HttpResponse("User not logged in", content_type="text/plain", status=403)
-        
+
+    # Extract details from data in the POST request
     meetInstructor = request.data.get("instructor")
     meetStartTime = request.data.get("startTime")
     meetEndTime = request.data.get("endTime")
@@ -47,14 +49,17 @@ def addCourse(request):
 @api_view(['POST'])
 @parser_classes([MultiPartParser, FormParser])
 def getSchedule(request):
+    # Extract username of logged in user
     print("logged in user: " + str(request.data.get("user")))
     username = request.data.get("user")
     if username == '':
         return HttpResponse("User not logged in", content_type="text/plain", status=403)
+
+    # Find user's schedule
     userSchedule = userSchedules.objects.filter(username=username)
     if len(list(userSchedule)) == 0:
         # user does not have entry in database; add entry with empty schedule
         userSchedule = userSchedules(username=username, schedule="")
     else:
         userSchedule = list(userSchedule)[0]
-    return HttpResponse(str(userSchedule), content_type="text/plain", status=200) 
+    return HttpResponse(str(userSchedule), content_type="text/plain", status=200) # Return user's schedule
