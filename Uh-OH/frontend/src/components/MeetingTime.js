@@ -1,7 +1,11 @@
 import React from 'react';
 import {withRouter} from 'react-router-dom';
 
+/* The MeetingTime component displays information about a CourseMeetingTime object.
+ * It displays the information as a string but can be modified 
+ */
 class MeetingTime extends React.Component {
+	// the state holds standard info of the fields of a CourseMeetingTime object
 	state = {
 		type: "",
 		dates: "",

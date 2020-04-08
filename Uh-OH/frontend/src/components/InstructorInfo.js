@@ -2,7 +2,12 @@ import React from 'react';
 import OfficeHourInfo from "./OfficeHourInfo";
 import {withRouter} from 'react-router-dom';
 
+/* The InstructorInfo component displays information about an Instructor object.
+ * It displays the information as a string but can be modified. It also uses
+ * OfficeHourInfo components to display the current instructor's InstructorsOfficeHours
+ */
 class InstructorInfo extends React.Component {
+	// the state holds the fields of an Instructor object, as well as an array of InstructorOfficeHours
 	state = {
 		type: "",
 		name: "",
@@ -30,6 +35,7 @@ class InstructorInfo extends React.Component {
 					officeHours: props.instructor.iOfficeHours};
     }
     
+    // Add all office hours for this instructor to the schedule at once
     addToSchedule(){
         this.state.officeHours.forEach(function(officehour){
             officehour.addToSchedule()
@@ -39,10 +45,11 @@ class InstructorInfo extends React.Component {
 	render() {
 		return (
 			<div>
-			{/* The Body Content of the InstructorInfo */}
+			{/* The Body Content of the InstructorInfo, displays the info as text */}
 			<br></br>
 			<b> {this.state.type+ ": " + this.state.name} </b> {this.state.email}
-				{/* For all office hours the instructor holds, display them */}
+				{/* For all office hours the instructor holds, map them to
+					OfficeHourInfo components with their ID as the key */}
 				{this.state.officeHours.map(item => (
 					<div key = {item.id}>
 						<OfficeHourInfo officeHour={item} />
