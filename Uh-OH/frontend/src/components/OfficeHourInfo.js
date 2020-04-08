@@ -13,7 +13,9 @@ class OfficeHourInfo extends React.Component {
 		location: "",
 		startTime: "",
         endTime: "",
-        loggedin: ''
+        loggedin: '',
+        instructorName: "",
+        instructorType: ""
 	};
 
 	constructor(props) {
@@ -22,6 +24,8 @@ class OfficeHourInfo extends React.Component {
 					location: props.officeHour.meetLocation,
 					startTime: props.officeHour.meetStartTime,
 					endTime: props.officeHour.meetEndTime,
+					instructorName: props.instructorName,
+        			instructorType: props.instructorType,
                     instructor: props.officeHour.meetInstructor};
         // initialize the handleClick function to allow it to execute
         this.handleClick = this.handleClick.bind(this);
