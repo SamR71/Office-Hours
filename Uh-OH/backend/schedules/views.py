@@ -28,11 +28,10 @@ def addCourse(request):
     meetDates = request.data.get("dates")
 
     # create userScheduleItem
-    allExistingUserScheduleItems = userScheduleItem.objects.filter(meetInstructor=meetInstructor).filter(meetStartTime=meetStartTime).filter(meetEndTime=meetEndTime).filter(meetLocation=meetLocation).filter(meetDates=meetDates)
-    
     #Initialize User Schedule Item Object To None:
     #Will Be Either Newly Created/Set To Existing Item.
     u = None;
+    allExistingUserScheduleItems = userScheduleItem.objects.filter(meetInstructor=meetInstructor).filter(meetStartTime=meetStartTime).filter(meetEndTime=meetEndTime).filter(meetLocation=meetLocation).filter(meetDates=meetDates)
     if(len(allExistingUserScheduleItems) == 0):
         u = userScheduleItem(meetInstructor=meetInstructor, meetStartTime=meetStartTime, meetEndTime=meetEndTime, meetLocation=meetLocation, meetDates=meetDates)
         u.save()
