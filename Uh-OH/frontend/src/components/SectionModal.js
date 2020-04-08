@@ -73,8 +73,7 @@ class SectionModal extends React.Component {
 									<br></br>
 									{"Section #" + this.state.id}
 								</h5>
-								{/* A "button" to close the modal, it spans the whole screen so when a user
-									clicks somewhere off of the modal the modal is dismissed */}
+								{/* An 'x' button at the top right of the modal to close the modal */}
 								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 									<span aria-hidden="true">&times;</span>
 								</button>
