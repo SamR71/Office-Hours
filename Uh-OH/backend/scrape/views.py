@@ -11,6 +11,8 @@ from .serializers import CourseSerializer
 def home(request):
     return render(request, template_name='base.html')
 
+#CourseAPIView Is The View Invoked By The Frontend To 
+#Return All Courses Present For The Main Search Page.
 class CourseAPIView(generics.ListCreateAPIView):
     search_fields = ['courseName', 'courseAbbrev', 'courseValue']
     filter_backends = (filters.SearchFilter,)
