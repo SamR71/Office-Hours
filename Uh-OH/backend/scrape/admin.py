@@ -3,6 +3,7 @@ from .models import Course, CourseSection, CourseMeetingTime
 from .models import Instructor, InstructorOfficeHours
 
 # Register your models here.
+#Used To Display Database Models On Admin Page:
 admin.site.register(Course)
 admin.site.register(CourseSection)
 admin.site.register(CourseMeetingTime)

@@ -19,7 +19,8 @@ class SignUp extends React.Component{
 
     handleClick(event)
     {
-        event.preventDefault();
+        event.preventDefault(); 
+        // Create POST request in backend requesting to register new user
         var url = 'http://localhost:8000/login/registeruser/';
         var xhr = new XMLHttpRequest()
         xhr.onreadystatechange = function() {
@@ -62,19 +63,19 @@ class SignUp extends React.Component{
 							<form action="#" name="registration">
 								<div class="form-group">
 									<label for="exampleInputEmail1">Name</label>
-									<input type="text"  name="fullName" class="form-control" id="fullName" aria-describedby="emailHelp" placeholder="FullName" onChange={this.handleChange} />
+									<input type="text"  name="fullName" class="form-control" id="fullName" aria-describedby="emailHelp" placeholder="Enter Name" onChange={this.handleChange} />
 								</div>
 								<div class="form-group">
 									<label for="exampleInputEmail1">Email</label>
-									<input type="email"  name="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter Lastname" onChange={this.handleChange} />
+									<input type="email"  name="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter Email" onChange={this.handleChange} />
 								</div>
 								<div class="form-group">
 									<label for="exampleInputEmail1">Password</label>
-									<input type="password" name="password"  class="form-control" id="password" aria-describedby="emailHelp" placeholder="Enter email" onChange={this.handleChange}/>
+									<input type="password" name="password"  class="form-control" id="password" aria-describedby="emailHelp" placeholder="Enter Password" onChange={this.handleChange}/>
 								</div>
 								<div class="form-group">
 									<label for="exampleInputEmail1">Confirm Password</label>
-									<input type="password" name="repeatPassword" id="repeatPassword"  class="form-control" aria-describedby="emailHelp" placeholder="Enter Password" onChange={this.handleChange}/>
+									<input type="password" name="repeatPassword" id="repeatPassword"  class="form-control" aria-describedby="emailHelp" placeholder="Confirm Password" onChange={this.handleChange}/>
 								</div>
 								<div class="col-md-12 text-center mb-3">
 									<button  onClick={this.handleClick} class=" btn btn-block mybtn btn-primary tx-tfm">Join Uh-OH!</button>
