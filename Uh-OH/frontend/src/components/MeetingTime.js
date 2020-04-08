@@ -1,7 +1,7 @@
 import React from 'react';
 import {withRouter} from 'react-router-dom';
 
-/* The MeetingTie component displays information about a CourseMeetingTime object.
+/* The MeetingTime component displays information about a CourseMeetingTime object.
  * It displays the information as a string but can be modified 
  */
 class MeetingTime extends React.Component {

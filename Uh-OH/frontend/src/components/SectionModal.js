@@ -8,7 +8,7 @@ import {withRouter} from "react-router-dom";
  */
 class SectionModal extends React.Component {
 	
-	// the state holds the name, id, meeting times, and isntructors of this section class
+	// the state holds the name, id, meeting times, and instructors of this section class
 	// as well as loggedin, which provides information about what account the user is logged in to
 	state = {
 		name: "",
@@ -82,14 +82,14 @@ class SectionModal extends React.Component {
 							{/* The Modal Body Content, displays meeting times and professors with their office hours */}
 							<div class="modal-body">
 								{/* Display the meeting times for the classes as MeetingTime components,
-									mapping each courseMeetingTime to a MeetingTime component with itself as a key*/}
+									mapping each courseMeetingTime to a MeetingTime component with its ID as a key*/}
 								{this.state.courseMeetingTimes.map(item => (
 									<div key = {item.id}>
 										<MeetingTime meeting={item} />
 									</div>
 								))}
 								{/* Display the instructors for the classes as InstructorInfo components,
-									mapping each Instructor to an InstructorInfo component with itself as a key*/}
+									mapping each Instructor to an InstructorInfo component with its ID as a key*/}
 								{this.state.instructors.map(item => (
 									<div key = {item.id}>
 										<InstructorInfo instructor={item} />
