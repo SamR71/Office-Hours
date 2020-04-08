@@ -28,7 +28,16 @@ class Home extends React.Component
 	        schedule = xhr.responseText;
 	        if(schedule !== "")
 	        {
-	        	this.setState({officeHours: schedule.split(",")});
+	        	// formatting the string given in by the post request
+	        	let finalOfficeHours = [];
+	        	let arr = schedule.split(",");
+	        	for(let i = 1; i < arr.length; i++)
+		        {
+		        	let strs = arr[i].split(" + ");
+		        	let str = strs[1] + " " + strs[2] + " (" + strs[3] + " - " + strs[4] + ")";
+			        finalOfficeHours.push(str)
+		        }
+	        	this.setState({officeHours: finalOfficeHours});
 	        }
 	    });
 
