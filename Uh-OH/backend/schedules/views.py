@@ -28,8 +28,16 @@ def addCourse(request):
     meetDates = request.data.get("dates")
 
     # create userScheduleItem
-    u = userScheduleItem(meetInstructor=meetInstructor, meetStartTime=meetStartTime, meetEndTime=meetEndTime, meetLocation=meetLocation, meetDates=meetDates)
-    u.save()
+    allExistingUserScheduleItems = userScheduleItem.objects.filter(meetInstructor=meetInstructor).filter(meetStartTime=meetStartTime).filter(meetEndTime=meetEndTime).filter(meetLocation=meetLocation).filter(meetDates=meetDates)
+    
+    #Initialize User Schedule Item Object To None:
+    #Will Be Either Newly Created/Set To Existing Item.
+    u = None;
+    if(len(allExistingUserScheduleItems) == 0):
+        u = userScheduleItem(meetInstructor=meetInstructor, meetStartTime=meetStartTime, meetEndTime=meetEndTime, meetLocation=meetLocation, meetDates=meetDates)
+        u.save()
+    else:
+        u = allExistingUserScheduleItems[0];
 
     # locate user in the database
     userSchedule = userSchedules.objects.filter(username=username)
@@ -40,7 +48,9 @@ def addCourse(request):
         userSchedule = list(userSchedule)[0]
     print(userSchedule)
     # concatenate new course's userScheduleItem to end of user's schedule
-    schedule = str(userSchedule) + "," + str(u)
+    schedule = str(userSchedule)
+    if(not(str(u) in str(userSchedule))):
+        schedule = str(userSchedule) + "," + str(u)
     print(schedule)
     userSchedule.schedule = schedule 
     userSchedule.save()
