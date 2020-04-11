@@ -62,7 +62,7 @@ class InstructorOHAPIView(object):
 		username = request.data.get("user")
 		#User Is Not Logged In So Cannot Update InstructorOfficeHours.
 		if(username == ''):
-			return HttpResponse("User Not Logged In", content_type="text/plain", status=403)
+			return HttpResponse("User Not Logged In!", content_type="text/plain", status=403)
 		#Get Old InstructorOfficeHours Attributes:
 		oldID = request.data.get("oldID")
 		#The Other Old Attributes Are As Follows:

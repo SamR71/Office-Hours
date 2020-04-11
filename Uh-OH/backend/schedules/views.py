@@ -14,22 +14,21 @@ from rest_framework.decorators import parser_classes
 @api_view(['POST'])
 @parser_classes([MultiPartParser, FormParser])
 def addCourse(request):
-    print("logged in user: " + str(request.data.get("user")))
-    # Extract username of logged in user
+    print("Logged In User: " + str(request.data.get("user")))
+    #Extract Username of Logged In User
     username = request.data.get("user")
     if username == '':
-        return HttpResponse("User not logged in", content_type="text/plain", status=403)
+        return HttpResponse("Error: User Not Logged In!", content_type="text/plain", status=403)
 
-    # Extract details from data in the POST request
+    #Extract Details From Data in the POST Request.
     meetInstructor = request.data.get("instructor")
     meetStartTime = request.data.get("startTime")
     meetEndTime = request.data.get("endTime")
     meetLocation = request.data.get("location")
     meetDates = request.data.get("dates")
 
-    # create userScheduleItem
+    #Create New userScheduleItem.
     allExistingUserScheduleItems = userScheduleItem.objects.filter(meetInstructor=meetInstructor).filter(meetStartTime=meetStartTime).filter(meetEndTime=meetEndTime).filter(meetLocation=meetLocation).filter(meetDates=meetDates)
-    
     #Initialize User Schedule Item Object To None:
     #Will Be Either Newly Created/Set To Existing Item.
     u = None;
@@ -39,47 +38,55 @@ def addCourse(request):
     else:
         u = allExistingUserScheduleItems[0];
 
-    # locate user in the database
+    #Locate User In The Database.
     userSchedule = userSchedules.objects.filter(username=username)
     if len(list(userSchedule)) == 0:
-        # user does not have entry in database; add entry with empty schedule
+        #User Does Not Have Entry In Database => Add Entry w/ Empty Schedule.
         userSchedule = userSchedules(username=username, schedule="")
     else:
+        #Grab Existing Schedule:
         userSchedule = list(userSchedule)[0]
     print(userSchedule)
-    # concatenate new course's userScheduleItem to end of user's schedule
+    #Concatenate New Course's userScheduleItem To End of User's Schedule.
     schedule = str(userSchedule)
+    #Only Append In Case The User Schedule Does Not Already Contain The Current Office Hours.
     if(not(str(u) in str(userSchedule))):
         schedule = str(userSchedule) + "," + str(u)
     print(schedule)
+    #Update userSchedule.schedule Attribute:
     userSchedule.schedule = schedule 
     userSchedule.save()
-    return HttpResponse("Office Hours Added", content_type="text/plain", status=200)
+    #Return Success:
+    return HttpResponse("Sucessfully Added Office Hours To Schedule!", content_type="text/plain", status=200)
 
 @api_view(['POST'])
 @parser_classes([MultiPartParser, FormParser])
 def getSchedule(request):
-    # Extract username of logged in user
-    print("logged in user: " + str(request.data.get("user")))
+    #Extract Username of Logged In User.
+    print("Logged In User: " + str(request.data.get("user")))
     username = request.data.get("user")
     if username == '':
-        return HttpResponse("User not logged in", content_type="text/plain", status=403)
-
-    # Find user's schedule
+        return HttpResponse("Error: User Not Logged In!", content_type="text/plain", status=403)
+    #Find User's Schedule:
     userSchedule = userSchedules.objects.filter(username=username)
     if len(list(userSchedule)) == 0:
-        # user does not have entry in database; add entry with empty schedule
+        #User Does Not Have Entry In Database => Add Entry w/ Empty Schedule.
         userSchedule = userSchedules(username=username, schedule="")
     else:
+        #Grab Existing User Schedule:
         userSchedule = list(userSchedule)[0]
+    #Return Sucesss:
     return HttpResponse(str(userSchedule), content_type="text/plain", status=200) # Return user's schedule
 
 @api_view(['POST'])
 @parser_classes([MultiPartParser, FormParser])
 def updateSchedules(request):
-    # Extract username of logged in user
-    print("logged in user: " + str(request.data.get("user")))
+    #Extract Username of Logged In User.
+    print("Logged In User: " + str(request.data.get("user")))
     username = request.data.get("user")
+    #Current User Does Not Exist/Not Logged In.
     if username == '':
-        return HttpResponse("User not logged in", content_type="text/plain", status=403)
-    return HttpResponse("Success", content_type="text/plain", status=200) 
+        #Return Failure:
+        return HttpResponse("Error: User Not Logged In!", content_type="text/plain", status=403)
+    #Return Success:
+    return HttpResponse("Successfully Update Schedule!", content_type="text/plain", status=200) 
