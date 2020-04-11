@@ -72,18 +72,20 @@ class InstructorOHAPIView(object):
 		newLocation = request.data.get("newLocation")
 		newDates = request.data.get("newDates")
 		#Filter + Obtain Old Existing InstructorOfficeHours Object.
-		currentOH = InstructorOfficeHours.objects.filter(pk=oldID)
+		allExistingOH = InstructorOfficeHours.objects.filter(pk=oldID)
 		#Error Checking For Accuracy of Database Filtering:
-		if(currentOH != 1):
+		if(len(allExistingOH) != 0):
 			return HttpResponse("Error: Specific InstructorOfficeHours Does Not Exist.", content_type="text/plain", status=403)
-		#Set New Values To Update Database Object:
-		#Dependency on Frontend To Check For Accuracy In Fields:
-		currentOH.meetStartTime = newStartTime
-		currentOH.meetEndTime = newEndTime
-		currentOH.meetLocation = newLocation
-		currentOH.meetDates = newDates
-		#Note: MeetInstructor Cannot Change.
-		#Save Changes To Database Object:
-		currentOH.save();
-		return HttpResponse("Sucessfully Updated InstructorOfficeHours!", content_type="text/plain", status=200)
+		else:
+			currentOH = allExistingOH[0]
+			#Set New Values To Update Database Object:
+			#Dependency on Frontend To Check For Accuracy In Fields:
+			currentOH.meetStartTime = newStartTime
+			currentOH.meetEndTime = newEndTime
+			currentOH.meetLocation = newLocation
+			currentOH.meetDates = newDates
+			#Note: MeetInstructor Cannot Change.
+			#Save Changes To Database Object:
+			currentOH.save();
+			return HttpResponse("Sucessfully Updated InstructorOfficeHours!", content_type="text/plain", status=200)
 		
