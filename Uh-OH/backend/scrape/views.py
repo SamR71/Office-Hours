@@ -54,7 +54,6 @@ class InstructorOHAPIView(object):
 		
 	@api_view(['POST'])
 	@parser_classes([MultiPartParser, FormParser])
-	@csrf_exempt
 	def update(request):
 		#Assert User Is Currently Logged-In.
 		print("Logged In User: " + str(request.data.get("user")))
