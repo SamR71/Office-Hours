@@ -102,18 +102,22 @@ def updateSchedules(request):
         currentScheduleItem = allExistingUserScheduleItems[0];
         #Store Previous ScheduleItem STR:
         prevScheduleItemSTR = str(currentScheduleItem)
+        #Update Database Object:
+        currentScheduleItem.meetStartTime = newStartTime
+        currentScheduleItem.meetEndTime = newEndTime
+        currentScheduleItem.meetLocation = newLocation
+        currentScheduleItem.meetDates = newDates
+        currentScheduleItem.save()
+        #Store New ScheduleItem STR:
+        newScheduleItemSTR = str(currentScheduleItem)
+        #Get All User Schedules:
         allUserSchedules = userSchedules.objects.all();
         for currentUserSchedule in allUserSchedules:        
             #Grab Existing User Schedule:
             if(currentScheduleItem in currentUserSchedule):
                 #Update User Schedule Item:
-                currentScheduleItem.meetStartTime = newStartTime
-                currentScheduleItem.meetEndTime = newEndTime
-                currentScheduleItem.meetLocation = newLocation
-                currentScheduleItem.meetDates = newDates
-                currentScheduleItem.save()
                 #Update CurrentUserSchedule w/ New Updated UserScheduleItem. 
-                currentUserSchedule.schedule = str(currentUserSchedule).replace(prevScheduleItemSTR, str(currentScheduleItem))
+                currentUserSchedule.schedule = str(currentUserSchedule).replace(prevScheduleItemSTR, newScheduleItemSTR)
                 currentUserSchedule.save()
     #Return Success:
     return HttpResponse("Successfully Update Schedule!", content_type="text/plain", status=200) 
