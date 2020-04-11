@@ -9,6 +9,15 @@ from .models import InstructorOfficeHours
 from .serializers import CourseSerializer
 from .serializers import InstructorSerializer
 
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.parsers import MultiPartParser, FormParser
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import api_view
+from rest_framework.decorators import parser_classes
+
 # Create your views here.
 def home(request):
 	return render(request, template_name='base.html')
@@ -50,10 +59,10 @@ class InstructorOHAPIView(object):
 		#Assert User Is Currently Logged-In.
 		print("Logged In User: " + str(request.data.get("user")))
 		#Get Current Username.
-	    username = request.data.get("user")
-	    #User Is Not Logged In So Cannot Update InstructorOfficeHours.
-	    if(username == ''):
-	        return HttpResponse("User Not Logged In", content_type="text/plain", status=403)
+		username = request.data.get("user")
+		#User Is Not Logged In So Cannot Update InstructorOfficeHours.
+		if(username == ''):
+			return HttpResponse("User Not Logged In", content_type="text/plain", status=403)
 		#Get Old InstructorOfficeHours Attributes:
 		oldID = request.data.get("oldID")
 		#The Other Old Attributes Are As Follows:
