@@ -57,7 +57,7 @@ class OfficeHourInfo extends React.Component {
 		form.set('location', this.state.location)
         form.set('startTime', this.state.startTime)
 		form.set('endTime', this.state.endTime)
-        form.set('instructor', this.state.instructor)
+        form.set('instructor', this.state.instructorName)
         form.set('user',this.state.loggedin)
         // send the form data to the post request
         xhr.send(form)
