@@ -68,9 +68,10 @@ class Schedule extends React.Component
 			{
 				const start = moment(info[3], "LT").day(this.numDay(days[j]));
 				const end = moment(info[4], "LT").day(this.numDay(days[j]));
-				const value = info[1];
+				const loc = info[1];
+				const prof = info[0];
 
-				intervals.push({start, end, value});
+				intervals.push({start, end, loc, prof});
 			}
 		}
 
