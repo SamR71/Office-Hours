@@ -61,7 +61,7 @@ class InstructorOHAPIView(object):
 		username = request.data.get("user")
 		#User Is Not Logged In So Cannot Update InstructorOfficeHours.
 		if(username == ''):
-			return HttpResponse("User Not Logged In!", content_type="text/plain", status=403)
+			return HttpResponse("Error: User Not Logged In!", content_type="text/plain", status=403)
 		#Get Old InstructorOfficeHours Attributes:
 		oldID = request.data.get("oldID")
 		#The Other Old Attributes Are As Follows:
@@ -75,8 +75,10 @@ class InstructorOHAPIView(object):
 		allExistingOH = InstructorOfficeHours.objects.filter(pk=oldID)
 		#Error Checking For Accuracy of Database Filtering:
 		if(len(allExistingOH) != 0):
-			return HttpResponse("Error: Specific InstructorOfficeHours Does Not Exist.", content_type="text/plain", status=403)
+			return HttpResponse("Error: Specific InstructorOfficeHours Does Not Exist!", content_type="text/plain", status=403)
 		else:
+			if(len(allExistingOH) > 1):
+				return HttpResponse("Error: Specific InstructorOfficeHours Exists More Than Once!", content_type="text/plain", status=403)
 			currentOH = allExistingOH[0]
 			#Set New Values To Update Database Object:
 			#Dependency on Frontend To Check For Accuracy In Fields:
