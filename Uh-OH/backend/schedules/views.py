@@ -73,3 +73,13 @@ def getSchedule(request):
     else:
         userSchedule = list(userSchedule)[0]
     return HttpResponse(str(userSchedule), content_type="text/plain", status=200) # Return user's schedule
+
+@api_view(['POST'])
+@parser_classes([MultiPartParser, FormParser])
+def updateSchedules(request):
+    # Extract username of logged in user
+    print("logged in user: " + str(request.data.get("user")))
+    username = request.data.get("user")
+    if username == '':
+        return HttpResponse("User not logged in", content_type="text/plain", status=403)
+    return HttpResponse("Success", content_type="text/plain", status=200) 
