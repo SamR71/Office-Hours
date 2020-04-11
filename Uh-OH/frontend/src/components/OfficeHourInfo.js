@@ -13,7 +13,9 @@ class OfficeHourInfo extends React.Component {
 		location: "",
 		startTime: "",
         endTime: "",
-        loggedin: ''
+        loggedin: '',
+        instructorName: "",
+        instructorType: ""
 	};
 
 	constructor(props) {
@@ -22,6 +24,8 @@ class OfficeHourInfo extends React.Component {
 					location: props.officeHour.meetLocation,
 					startTime: props.officeHour.meetStartTime,
 					endTime: props.officeHour.meetEndTime,
+					instructorName: props.instructorName,
+        			instructorType: props.instructorType,
                     instructor: props.officeHour.meetInstructor};
         // initialize the handleClick function to allow it to execute
         this.handleClick = this.handleClick.bind(this);
@@ -53,7 +57,7 @@ class OfficeHourInfo extends React.Component {
 		form.set('location', this.state.location)
         form.set('startTime', this.state.startTime)
 		form.set('endTime', this.state.endTime)
-        form.set('instructor', this.state.instructor)
+        form.set('instructor', this.state.instructorName)
         form.set('user',this.state.loggedin)
         // send the form data to the post request
         xhr.send(form)

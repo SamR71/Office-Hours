@@ -27,7 +27,7 @@ class InstructorInfo extends React.Component {
 		// for example "Professor First Last" becomes "First Last"
 		let newName = props.instructor.iName;
 		if(newName.indexOf("Professor") == 0){
-			newName = newName.substring(9);
+			newName = newName.substring(10);
 		}
 		this.state = {type: fullType,
 					name: newName,
@@ -52,7 +52,7 @@ class InstructorInfo extends React.Component {
 					OfficeHourInfo components with their ID as the key */}
 				{this.state.officeHours.map(item => (
 					<div key = {item.id}>
-						<OfficeHourInfo officeHour={item} />
+						<OfficeHourInfo officeHour={item} instructorName={this.state.name} instructorType={this.state.type}/>
 					</div>
 				))}
 			</div>
