@@ -28,12 +28,12 @@ def addCourse(request):
     meetDates = request.data.get("dates")
 
     #Create New userScheduleItem.
-    allExistingUserScheduleItems = userScheduleItem.objects.filter(meetInstructor=meetInstructor).filter(meetStartTime=meetStartTime).filter(meetEndTime=meetEndTime).filter(meetLocation=meetLocation).filter(meetDates=meetDates)
+    allExistingUserScheduleItems = userScheduleItem.objects.filter(username=username).filter(meetInstructor=meetInstructor).filter(meetStartTime=meetStartTime).filter(meetEndTime=meetEndTime).filter(meetLocation=meetLocation).filter(meetDates=meetDates)
     #Initialize User Schedule Item Object To None:
     #Will Be Either Newly Created/Set To Existing Item.
     u = None;
     if(len(allExistingUserScheduleItems) == 0):
-        u = userScheduleItem(meetInstructor=meetInstructor, meetStartTime=meetStartTime, meetEndTime=meetEndTime, meetLocation=meetLocation, meetDates=meetDates)
+        u = userScheduleItem(username=username, meetInstructor=meetInstructor, meetStartTime=meetStartTime, meetEndTime=meetEndTime, meetLocation=meetLocation, meetDates=meetDates)
         u.save()
     else:
         u = allExistingUserScheduleItems[0];
@@ -115,6 +115,8 @@ def updateSchedules(request):
             #User Has Empty Schedule.
             return HttpResponse("Error: User Schedule Is Empty!", content_type="text/plain", status=403)     
         else:
+            if(len(allExistingOH) > 1):
+                return HttpResponse("Error: Same User Schedule Exists More Than Once!", content_type="text/plain", status=403)
             #Grab Existing User Schedule:
             currentUserSchedule = list(allExistingUserSchedules)[0]
             if(not(currentScheduleItem in currentUserSchedule)):
@@ -130,4 +132,4 @@ def updateSchedules(request):
                 currentScheduleItem.save()
                 #Update CurrentUserSchedule w/ New Updated UserScheduleItem. 
                 currentUserSchedule.schedule = str(currentUserSchedule).replace(prevScheduleItemSTR, str(currentScheduleItem))
-
+                currentUserSchedule.save()
