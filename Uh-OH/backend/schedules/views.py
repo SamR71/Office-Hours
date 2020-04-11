@@ -88,8 +88,6 @@ def updateSchedules(request):
     if(username == ''):
         #Return Failure:
         return HttpResponse("Error: User Not Logged In!", content_type="text/plain", status=403)
-    #Return Success:
-    return HttpResponse("Successfully Update Schedule!", content_type="text/plain", status=200) 
     #Load Data From POST Request:
     #Get Old InstructorOfficeHours Attributes:
     oldID = request.data.get("oldID")
@@ -133,3 +131,4 @@ def updateSchedules(request):
                 #Update CurrentUserSchedule w/ New Updated UserScheduleItem. 
                 currentUserSchedule.schedule = str(currentUserSchedule).replace(prevScheduleItemSTR, str(currentScheduleItem))
                 currentUserSchedule.save()
+    return HttpResponse("Successfully Update Schedule!", content_type="text/plain", status=200) 
