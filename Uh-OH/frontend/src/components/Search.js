@@ -11,6 +11,20 @@ class Search extends React.Component {
 		search: "",
 	};
 	
+	// Formats the search query appropriately
+	formatSearchQuery(query) {
+		// if the query is empty, set it to null
+		// check if it is empty by replacing all whitespace with empty chars
+		var res = query.replace(/\s/g,'');
+		if(res == "")
+			query = null;
+
+		// replaces & with %26 to remove the default feature of searching
+		// with '&' to allow users to search for classes with '&' in their name
+		query = query.replace(/&/g, '%26');
+		return query;
+	}
+
 	async componentDidMount() {
 		try {
 			//get url to send to backend
@@ -18,6 +32,9 @@ class Search extends React.Component {
 			let searchURL = this.props.location.search;
 			let params = queryString.parse(searchURL);
 			var query = params["course_search_bar"];
+
+			// format the search query
+			query = this.formatSearchQuery(query);
 
 			//get response, convert to JSON
 			const res = await fetch(url + query);
@@ -35,7 +52,7 @@ class Search extends React.Component {
 
 			//storing what was searched
 			this.setState({
-				search: query
+				search: this.formatSearchQuery(query)
 			});
 		}
 		 catch(e){
