@@ -17,7 +17,7 @@ def addCourse(request):
     print("Logged In User: " + str(request.data.get("user")))
     #Extract Username of Logged In User
     username = request.data.get("user")
-    if username == '':
+    if(username == ''):
         return HttpResponse("Error: User Not Logged In!", content_type="text/plain", status=403)
 
     #Extract Details From Data in the POST Request.
@@ -40,7 +40,7 @@ def addCourse(request):
 
     #Locate User In The Database.
     userSchedule = userSchedules.objects.filter(username=username)
-    if len(list(userSchedule)) == 0:
+    if(len(list(userSchedule)) == 0):
         #User Does Not Have Entry In Database => Add Entry w/ Empty Schedule.
         userSchedule = userSchedules(username=username, schedule="")
     else:
@@ -65,11 +65,11 @@ def getSchedule(request):
     #Extract Username of Logged In User.
     print("Logged In User: " + str(request.data.get("user")))
     username = request.data.get("user")
-    if username == '':
+    if(username == ''):
         return HttpResponse("Error: User Not Logged In!", content_type="text/plain", status=403)
     #Find User's Schedule:
     userSchedule = userSchedules.objects.filter(username=username)
-    if len(list(userSchedule)) == 0:
+    if(len(list(userSchedule)) == 0):
         #User Does Not Have Entry In Database => Add Entry w/ Empty Schedule.
         userSchedule = userSchedules(username=username, schedule="")
     else:
@@ -85,9 +85,49 @@ def updateSchedules(request):
     print("Logged In User: " + str(request.data.get("user")))
     username = request.data.get("user")
     #Current User Does Not Exist/Not Logged In.
-    if username == '':
+    if(username == ''):
         #Return Failure:
         return HttpResponse("Error: User Not Logged In!", content_type="text/plain", status=403)
     #Return Success:
     return HttpResponse("Successfully Update Schedule!", content_type="text/plain", status=200) 
-    
+    #Load Data From POST Request:
+    #Get Old InstructorOfficeHours Attributes:
+    oldID = request.data.get("oldID")
+    oldStartTime = request.data.get("oldStartTime")
+    olEndTime = request.data.get("oldEndTime")
+    oldLocation = request.data.get("oldLocation")
+    oldDates = request.data.get("oldDates")
+    #Get New InstructorOfficeHours Attributes:
+    newStartTime = request.data.get("newStartTime")
+    newEndTime = request.data.get("newEndTime")
+    newLocation = request.data.get("newLocation")
+    newDates = request.data.get("newDates")
+    #Filter For Existing User Schedule Items:
+    allExistingUserScheduleItems = userScheduleItem.objects.filter(username=username).filter(meetInstructor=meetInstructor).filter(meetStartTime=meetStartTime).filter(meetEndTime=meetEndTime).filter(meetLocation=meetLocation).filter(meetDates=meetDates)
+    #Error Checking For No Found Items:
+    if(len(allExistingUserScheduleItems) == 0):
+        return HttpResponse("Error: UserScheduleItem To Be Updated Itself Does Not Exist!", content_type="text/plain", status=403)
+    else:
+        currentScheduleItem = allExistingUserScheduleItems[0];
+        #Find User's Schedule:
+        allExistingUserSchedules = userSchedules.objects.filter(username=username)
+        if(len(list(allExistingUserSchedules)) == 0):
+            #User Has Empty Schedule.
+            return HttpResponse("Error: User Schedule Is Empty!", content_type="text/plain", status=403)     
+        else:
+            #Grab Existing User Schedule:
+            currentUserSchedule = list(allExistingUserSchedules)[0]
+            if(not(currentScheduleItem in currentUserSchedule)):
+                return HttpResponse("Error: User Schedule Item Does Not Exist In Schedule!", content_type="text/plain", status=403)    
+            else:
+                #Store Previous ScheduleItem STR:
+                prevScheduleItemSTR = str(currentScheduleItem)
+                #Update User Schedule Item:
+                currentScheduleItem.meetStartTime = newStartTime
+                currentScheduleItem.meetEndTime = newEndTime
+                currentScheduleItem.meetLocation = newLocation
+                currentScheduleItem.meetDates = newDates
+                currentScheduleItem.save()
+                #Update CurrentUserSchedule w/ New Updated UserScheduleItem. 
+                currentUserSchedule.schedule = str(currentUserSchedule).replace(prevScheduleItemSTR, str(currentScheduleItem))
+
