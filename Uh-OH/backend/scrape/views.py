@@ -55,13 +55,6 @@ class InstructorOHAPIView(object):
 	@api_view(['POST'])
 	@parser_classes([MultiPartParser, FormParser])
 	def update(request):
-		#Assert User Is Currently Logged-In.
-		print("Logged In User: " + str(request.data.get("user")))
-		#Get Current Username.
-		username = request.data.get("user")
-		#User Is Not Logged In So Cannot Update InstructorOfficeHours.
-		if(username == ''):
-			return HttpResponse("Error: User Not Logged In!", content_type="text/plain", status=403)
 		#Get Old InstructorOfficeHours Attributes:
 		oldID = request.data.get("oldID")
 		#The Other Old Attributes Are As Follows:
