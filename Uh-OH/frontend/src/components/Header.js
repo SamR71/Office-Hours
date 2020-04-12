@@ -29,8 +29,7 @@ class Header extends React.Component
             this.props.history.push("/LogIn")
         }
         else{
-            localStorage.setItem("loggedinuser", "");
-            alert("Successfully Logged Out!")
+            this.props.history.push("/LogOut");
         }
     }
 

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from rest_framework.views import APIView
@@ -27,6 +27,13 @@ def userLogin(request):
     else:
         return HttpResponse("Invalid Login", content_type="text/plain", status=401)
     return HttpResponse(str(request.user), content_type="text/plain", status=200) # Return user login token to the frontend
+
+@api_view(['POST'])
+@parser_classes([MultiPartParser, FormParser])
+@csrf_exempt
+def userLogout(request):
+    logout(request)
+    return HttpResponse("", content_type="text/plain", status=200) 
 
 @api_view(['POST'])
 @parser_classes([MultiPartParser, FormParser])

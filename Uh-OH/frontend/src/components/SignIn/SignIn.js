@@ -22,8 +22,6 @@ class SignIn extends React.Component{
         this.props.handle_login(this.state.userName, this.state.password);
     }
 
-
-
     handleChange(event)
     {
         const input = event.target.name;
@@ -39,16 +37,16 @@ class SignIn extends React.Component{
 						<div class="myform form ">
 							<div class="logo mb-3">
 								<div class="col-md-12 text-center">
-									<h1>Login</h1>
+									<h1>Welcome To Uh-OH! Login:</h1>
 								</div>
 							</div>
 							<form action="" method="post" name="login">
 								<div class="form-group">
-									<label for="exampleInputEmail1">Email address</label>
-									<input type="email" name="userName"  class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email" onChange={this.handleChange}/>
+									<label for="exampleInputEmail1">Email Address:</label>
+									<input type="email" name="userName"  class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter Email Address" onChange={this.handleChange}/>
 								</div>
 								<div class="form-group">
-									<label for="exampleInputEmail1">Password</label>
+									<label for="exampleInputEmail1">Password:</label>
 									<input type="password" name="password" id="password"  class="form-control" aria-describedby="emailHelp" placeholder="Enter Password" onChange={this.handleChange}/>
 								</div>
 								<div class="col-md-12 text-center ">
@@ -60,7 +58,7 @@ class SignIn extends React.Component{
 									</div>
 								</div>
 								<div class="form-group">
-									<p class="text-center">Don't have account? <a href="/LogIn/CreateAccount" id="signup">Sign up here</a></p>
+									<p class="text-center">Don't Have An Uh-OH! Account? <a href="/LogIn/CreateAccount" id="signup">Please Sign Up Here!</a></p>
 								</div>
 							</form>
 						</div>

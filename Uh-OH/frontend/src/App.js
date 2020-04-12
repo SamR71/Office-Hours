@@ -4,7 +4,7 @@ import Search from "./components/Search";
 import Home from "./components/Home";
 import Header from "./components/Header";
 import LogInApp from "./components/SignIn/SignInApp";
-
+import LogOutApp from "./components/SignOut/SignOutApp";
 
 
 class App extends Component
@@ -17,6 +17,7 @@ class App extends Component
 		};
 		
 		this.handle_login = this.handle_login.bind(this);
+		this.handle_logout = this.handle_logout.bind(this);
 	}
 	
 	handle_login (username, password) {
@@ -32,7 +33,7 @@ class App extends Component
                     localStorage.setItem('loggedinuser', xhr.responseText);
                     // Redirect to homepage
 					window.location.href = "/"
-				}else{
+				} else{
                     // User did not log in correctly, display returned error message
 					alert(xhr.responseText);
 				}
@@ -45,6 +46,31 @@ class App extends Component
         xhr.send(form)
 	}
 	
+	handle_logout (username) {
+        // Send POST request to backend requesting to log user out
+		var url = 'http://localhost:8000/login/logoutuser/';
+        var xhr = new XMLHttpRequest()
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == XMLHttpRequest.DONE) {
+				if(xhr.status == 200){
+                    alert("User Logged Out!");
+                    // Store login token returned by the backend
+					this.setState({loggedin: xhr.responseText});
+                    localStorage.setItem('loggedinuser', xhr.responseText);
+                    // Redirect to homepage
+					window.location.href = "/"
+				} else{
+                    // User did not log out correctly, display returned error message
+					alert(xhr.responseText);
+				}
+            }
+        }.bind(this);
+        xhr.open('POST', url)
+        const form = new FormData()
+        form.set('username', username)
+        xhr.send(form)
+	}
+
 	render(){
 		return (
 			  <Router>
@@ -53,9 +79,13 @@ class App extends Component
 						  <Header/>
 						  <Search loggedin={this.state.loggedin}/>
 					  </Route>
-					  <Route path="/LogIn">
+					  <Route path="/LogIn"> 
 						  <Header/>
-						  <LogInApp handle_login={this.handle_login}/>
+						  <LogInApp handle_login={this.handle_login}/> 
+					  </Route>
+					  <Route path="/LogOut"> 
+						  <Header/>
+						  <LogOutApp handle_logout={this.handle_logout}/> 
 					  </Route>
 					  <Route path="/">
 						  <Header/>
