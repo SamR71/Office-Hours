@@ -8,7 +8,7 @@ class Home extends React.Component
 		super(props);
 		this.state =
 		{
-			officeHours: ["Search for office hours to display here..."]
+			officeHours: ["Search For Office Hours To Display Here..."]
 		}
 	}
 
