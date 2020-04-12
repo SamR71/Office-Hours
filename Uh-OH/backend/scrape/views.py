@@ -56,7 +56,7 @@ class InstructorOHAPIView(object):
 	@parser_classes([MultiPartParser, FormParser])
 	def update(request):
 		#Get Old InstructorOfficeHours Attributes:
-		oldID = request.data.get("oldID")
+		currentID = request.data.get("currentID")
 		#The Other Old Attributes Are As Follows:
 		#	oldStartTime, oldEndTime, oldLocation, oldDates.
 		#Get New InstructorOfficeHours Attributes:
@@ -65,7 +65,7 @@ class InstructorOHAPIView(object):
 		newLocation = request.data.get("newLocation")
 		newDates = request.data.get("newDates")
 		#Filter + Obtain Old Existing InstructorOfficeHours Object.
-		allExistingOH = InstructorOfficeHours.objects.filter(pk=oldID)
+		allExistingOH = InstructorOfficeHours.objects.filter(pk=currentID)
 		#Error Checking For Accuracy of Database Filtering:
 		if(len(allExistingOH) != 0):
 			return HttpResponse("Error: Specific InstructorOfficeHours Does Not Exist!", content_type="text/plain", status=403)

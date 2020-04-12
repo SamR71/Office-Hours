@@ -83,7 +83,7 @@ def getSchedule(request):
 def updateSchedules(request):
     #Load Data From POST Request:
     #Get Old InstructorOfficeHours Attributes:
-    oldID = request.data.get("oldID")
+    currentInstructor = request.data.get("currentInstructor")
     oldStartTime = request.data.get("oldStartTime")
     olEndTime = request.data.get("oldEndTime")
     oldLocation = request.data.get("oldLocation")
@@ -94,7 +94,7 @@ def updateSchedules(request):
     newLocation = request.data.get("newLocation")
     newDates = request.data.get("newDates")
     #Filter For Existing User Schedule Items:
-    allExistingUserScheduleItems = userScheduleItem.objects.filter(meetInstructor=meetInstructor).filter(meetStartTime=meetStartTime).filter(meetEndTime=meetEndTime).filter(meetLocation=meetLocation).filter(meetDates=meetDates)
+    allExistingUserScheduleItems = userScheduleItem.objects.filter(meetInstructor=currentInstructor).filter(meetStartTime=oldStartTime).filter(meetEndTime=oldEndTime).filter(meetLocation=oldLocation).filter(meetDates=oldDates)
     #Error Checking For No Found Items:
     if(len(allExistingUserScheduleItems) == 0):
         return HttpResponse("Error: UserScheduleItem To Be Updated Itself Does Not Exist!", content_type="text/plain", status=403)
