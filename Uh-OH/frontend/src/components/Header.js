@@ -14,7 +14,7 @@ class Header extends React.Component
         this.redirectSearch = this.redirectSearch.bind(this);
 
         this.state = {
-            displayLogInButton: localStorage.getItem("loggedinuser") ? localStorage.getItem("loggedinuser") : "Log In",
+            displayLogInButton: localStorage.getItem("loggedinuser") != "" ? localStorage.getItem("loggedinuser") : "Log In",
         }
     }
 
@@ -23,10 +23,17 @@ class Header extends React.Component
         this.props.history.push("/")
     }
 
-    redirectLogIn()
+    redirectLogIn(currentButtonValue)
     {
-        this.props.history.push("/LogIn")
+        if(currentButtonValue == "Log In"){
+            this.props.history.push("/LogIn")
+        }
+        else{
+            localStorage.setItem("loggedinuser", "");
+            alert("Successfully Logged Out!")
+        }
     }
+
 
     redirectSearch()
     {
@@ -78,7 +85,7 @@ class Header extends React.Component
                                    onClick={this.redirectSearch}
                                    name="course_search_bar"/>
                             <span class="input-group-append">
-                                <button onClick={this.redirectLogIn} className="btn btn-light ml-3" type="button">{this.state.displayLogInButton}</button>;
+                                <button onClick={() => this.redirectLogIn(this.state.displayLogInButton)} className="btn btn-light ml-3" type="button">{this.state.displayLogInButton}</button>;
                             </span>
                         </div>
                     </form>
