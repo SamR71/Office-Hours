@@ -40,7 +40,16 @@ class OfficeHourInfo extends React.Component {
     // adds the current office hour to the schedule of the logged in user
     addToSchedule(){
         // Send POST request to backend to add this office hour object to the user's schedule
-        var url = 'http://localhost:8000/schedules/add/';
+        var addURL = 'http://localhost:8000/schedules/add/';
+        this.runSendPOSTRequestToBackend(addURL);
+    }
+
+    removeFromSchedule(){
+        var removeURL = 'http://localhost:8000/schedules/remove/';
+        this.runSendPOSTRequestToBackend(removeURL); 
+    }
+
+    runSendPOSTRequestToBackend(url){
         var xhr = new XMLHttpRequest()
         xhr.onreadystatechange = function() {
             if (xhr.readyState == XMLHttpRequest.DONE) {
@@ -52,22 +61,28 @@ class OfficeHourInfo extends React.Component {
         // open a post request at the specified url
         xhr.open('POST', url)
         // create a form with the office hour information
-		const form = new FormData()
-		form.set('dates', this.state.dates)
-		form.set('location', this.state.location)
+        const form = new FormData()
+        form.set('dates', this.state.dates)
+        form.set('location', this.state.location)
         form.set('startTime', this.state.startTime)
-		form.set('endTime', this.state.endTime)
+        form.set('endTime', this.state.endTime)
         form.set('instructor', this.state.instructorName)
         form.set('user',this.state.loggedin)
         // send the form data to the post request
         xhr.send(form)
     }
     
-    // executes on the button click to call the addToSchedule() function
-	handleClick(event)
+    //executes on the button click to call the addToSchedule() function
+	handleClick(event, clickType)
     {
         event.preventDefault();
-        this.addToSchedule();
+        if(clickType == "Add"){
+            this.addToSchedule();
+        }
+        else{
+            this.removeFromSchedule();
+        }
+
     }
 
 	render() {
@@ -75,11 +90,13 @@ class OfficeHourInfo extends React.Component {
 			<div>
 				{/* The Body Content of the OfficeHourInfo component */}
 				{this.state.dates + " | " + this.state.location + " | " + this.state.startTime + "-" + this.state.endTime + " "}
-				{/* For more info on customizing and adding functionality:
+				
+                {/* For more info on customizing and adding functionality:
 					https://react-bootstrap.github.io/components/buttons/ */}
-				{/* The button to add this office hour to the user schedule */}
-				<button onClick={this.handleClick} type="button" class="btn btn-sm btn-outline-primary">Add</button>
-			</div>
+				{/*These Are The Buttons To Add/Remove Instructor Office Hours To The User Schedule */}
+				<button onClick={(event) => this.handleClick(event, "Add")} type="button" class="btn btn-sm btn-outline-primary">Add</button>
+                {<button onClick={(event) => this.handleClick(event, "Remove")} type="button" class="btn btn-sm btn-outline-primary">Remove</button>}
+            </div>
 		);
 	}
 
