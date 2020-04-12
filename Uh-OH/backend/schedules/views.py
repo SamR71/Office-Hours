@@ -120,4 +120,4 @@ def updateSchedules(request):
                 currentUserSchedule.schedule = str(currentUserSchedule).replace(prevScheduleItemSTR, newScheduleItemSTR)
                 currentUserSchedule.save()
     #Return Success:
-    return HttpResponse("Successfully Update Schedule!", content_type="text/plain", status=200) 
+    return HttpResponse("Successfully Updated UserScheduleItem + All UserSchedules!", content_type="text/plain", status=200) 
