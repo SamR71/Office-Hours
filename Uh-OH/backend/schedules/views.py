@@ -11,9 +11,16 @@ from rest_framework.decorators import api_view
 from rest_framework.decorators import parser_classes
 
 # Create your views here.
+
+#------------------------------------------------------------------------------------------------------------#
+
+#This Function Serves As Handling Adding Office Hours
+#To A User's Specific UserSchedule.
+
+#Format addOH For POST Request.
 @api_view(['POST'])
 @parser_classes([MultiPartParser, FormParser])
-def addCourse(request):
+def addOH(request):
     print("Logged In User: " + str(request.data.get("user")))
     #Extract Username of Logged In User
     username = request.data.get("user")
@@ -59,6 +66,66 @@ def addCourse(request):
     #Return Success:
     return HttpResponse("Sucessfully Added Office Hours To Schedule!", content_type="text/plain", status=200)
 
+#------------------------------------------------------------------------------------------------------------#
+
+#This Function Serves As Handling Removing Office Hours
+#From A User's Specific UserSchedule.
+
+#Format removeOH For POST Request.
+@api_view(['POST'])
+@parser_classes([MultiPartParser, FormParser])
+def removeOH(request):
+    print("Logged In User: " + str(request.data.get("user")))
+    #Extract Username of Logged In User
+    username = request.data.get("user")
+    if(username == ''):
+        return HttpResponse("Error: User Not Logged In!", content_type="text/plain", status=403)
+
+    #Extract Details From Data in the POST Request.
+    meetInstructor = request.data.get("instructor")
+    meetStartTime = request.data.get("startTime")
+    meetEndTime = request.data.get("endTime")
+    meetLocation = request.data.get("location")
+    meetDates = request.data.get("dates")
+
+    #Create New userScheduleItem.
+    allExistingUserScheduleItems = userScheduleItem.objects.filter(meetInstructor=meetInstructor).filter(meetStartTime=meetStartTime).filter(meetEndTime=meetEndTime).filter(meetLocation=meetLocation).filter(meetDates=meetDates)
+    #Initialize User Schedule Item Object To None:
+    #Will Be Either Newly Created/Set To Existing Item.
+    currentOH = None;
+    if(len(allExistingUserScheduleItems) == 0):
+        return HttpResponse("Error: OfficeHours Does Not Exist In Any User Schedule!", content_type="text/plain", status=403)
+    else:
+        currentOH = allExistingUserScheduleItems[0];
+
+    #Locate User In The Database.
+    userSchedule = userSchedules.objects.filter(username=username)
+    if(len(list(userSchedule)) == 0):
+        #User Does Not Have Entry In Database => Add Entry w/ Empty Schedule.
+        return HttpResponse("Error: User Has Empty Schedule => Cannot Remove Anything From Empty Schedule", content_type="text/plain", status=403)
+    else:
+        #Grab Existing Schedule:
+        userSchedule = list(userSchedule)[0]
+    print(userSchedule)
+    #Concatenate New Course's userScheduleItem To End of User's Schedule.
+    schedule = str(userSchedule)
+    #Only Append In Case The User Schedule Does Not Already Contain The Current Office Hours.
+    if((str(currentOH) in str(userSchedule))):
+        searchValue = "," + str(currentOH)
+        schedule = str(userSchedule).replace(searchValue, "")
+    print(schedule)
+    #Update userSchedule.schedule Attribute:
+    userSchedule.schedule = schedule 
+    userSchedule.save()
+    #Return Success:
+    return HttpResponse("Sucessfully Removed Office Hours From Schedule!", content_type="text/plain", status=200)
+
+#------------------------------------------------------------------------------------------------------------#
+
+#This Function Serves As Returning The Schedule 
+#From The Currently Logged In User.
+
+#Format getSchedule For POST Request.
 @api_view(['POST'])
 @parser_classes([MultiPartParser, FormParser])
 def getSchedule(request):
@@ -78,6 +145,12 @@ def getSchedule(request):
     #Return Sucesss:
     return HttpResponse(str(userSchedule), content_type="text/plain", status=200) # Return user's schedule
 
+#------------------------------------------------------------------------------------------------------------#
+
+#This Function Serves As Updating All of User Schedules Present In The Database
+#Based On The Frontend Requesting To Update A Particular InstructorOfficeHours.
+
+#Format updateSchedules For POST Request.
 @api_view(['POST'])
 @parser_classes([MultiPartParser, FormParser])
 def updateSchedules(request):
@@ -121,3 +194,5 @@ def updateSchedules(request):
                 currentUserSchedule.save()
     #Return Success:
     return HttpResponse("Successfully Updated UserScheduleItem + All UserSchedules!", content_type="text/plain", status=200) 
+
+#------------------------------------------------------------------------------------------------------------#
