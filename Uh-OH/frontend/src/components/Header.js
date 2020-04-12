@@ -12,6 +12,10 @@ class Header extends React.Component
         this.redirectHome = this.redirectHome.bind(this);
         this.redirectLogIn = this.redirectLogIn.bind(this);
         this.redirectSearch = this.redirectSearch.bind(this);
+
+        this.state = {
+            displayLogInButton: localStorage.getItem("loggedinuser") ? localStorage.getItem("loggedinuser") : "Log In",
+        }
     }
 
     redirectHome()
@@ -74,7 +78,7 @@ class Header extends React.Component
                                    onClick={this.redirectSearch}
                                    name="course_search_bar"/>
                             <span class="input-group-append">
-                                <button onClick={this.redirectLogIn} className="btn btn-light ml-3" type="button">Log In</button>;
+                                <button onClick={this.redirectLogIn} className="btn btn-light ml-3" type="button">{this.state.displayLogInButton}</button>;
                             </span>
                         </div>
                     </form>
