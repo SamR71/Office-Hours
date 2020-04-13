@@ -14,7 +14,8 @@ class Home extends React.Component
 		super(props);
 		this.state =
 		{
-			officeHours: ["Hello! Login + Search For Office Hours To Display Here..."]
+			officeHours: ["Hello! Login + Search For Office Hours To Display Here..."],
+			instructorHours: ["You do not run any Office Hours"]
 		}
 	}
 
@@ -24,15 +25,19 @@ class Home extends React.Component
         //Retrive Login Token = Whether User Is Logged In.
         var user = localStorage.getItem("loggedinuser");
 
-		//Sends GET Request To Backend To Receive Schedule Data.
+		//Sends POST Requests To Backend To Receive Schedule Data.
         let schedule = null;
-        let url = "http://localhost:8000/schedules/get/";
-        let xhr = new XMLHttpRequest();
+		let hours = null
+        let url1 = "http://localhost:8000/schedules/get/";
+		let url2 = "http://localhost:8000/hours/";
+        let xhr1 = new XMLHttpRequest();
+        let xhr2 = new XMLHttpRequest();
+		
 
         //Receives Callback When localhost:8000 Backend Server Responds...
-	    xhr.addEventListener("load", () => {
+	    xhr1.addEventListener("load", () => {
 	        //Updates the State of the Component with the result here.
-	        schedule = xhr.responseText;
+	        schedule = xhr1.responseText;
 	        if(schedule !== "")
 	        {
 	        	//Special Formatting of the returned string supplied by the POST Request from Backend.
@@ -49,12 +54,41 @@ class Home extends React.Component
 	        	this.setState({officeHours: finalOfficeHours});
 	        }
 	    });
+		
+		xhr2.addEventListener("load", () => {
+	        //Updates the State of the Component with the result here.
+	        hours = xhr2.responseText;
+			console.log(hours);
+			
+			if(hours !== "")
+	        {
+	        	//Special Formatting of the returned string supplied by the POST Request from Backend.
+	        	let finalHours = [];
+                //Office Hours Are Spilt By Commas...
+	        	let arr = hours.split(",");
+				console.log(arr);
+	        	for(let i = 0; i < arr.length; i++)
+		        {
+		        	let strs = arr[i];
+					console.log(strs);
+		        	//let str = strs[0] + ": " + strs[1] + " " + strs[2] + " (" + strs[3] + " - " + strs[4] + ")";
+			        finalHours.push(strs)
+		        }
+                //Updates State Accordingly = Final Office Hours Received From Backend.
+	        	this.setState({instructorHours: finalHours});
+	        }
+	    });
 
-        xhr.open("POST", url);
+        xhr1.open("POST", url1);
+        xhr2.open("POST", url2);
+		
         const form = new FormData();
         //Sends Along Login Username Token To Backend To Query For Specific User Schedule Data.
         form.set("user",user);
-        xhr.send(form);
+        xhr1.send(form);
+        xhr2.send(form);
+		
+		
 	}
 
     render()
@@ -73,6 +107,8 @@ class Home extends React.Component
                         <br></br>
                         <h2>Office Hours:</h2>
                         <p>{this.state.officeHours.map(item => <ul>{item}</ul>)}</p>
+						<h2>My Sections</h2>
+						<p>{this.state.instructorHours.map(item => <ul>{item}</ul>)}</p>
                     </div>
                 </div>
             </div>

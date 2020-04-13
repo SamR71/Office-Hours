@@ -8,7 +8,7 @@ from .models import Instructor
 from .models import InstructorOfficeHours
 from .serializers import CourseSerializer
 from .serializers import InstructorSerializer
-
+from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from rest_framework.views import APIView
@@ -34,12 +34,24 @@ class CourseAPIView(generics.ListCreateAPIView):
 #To Return All Instructors + InstructorOfficeHours Present
 #On The Main Homepage.
 #This Will Be Used For Updating Office Hours.
-class InstructorAPIView(generics.ListCreateAPIView):
-	"""docstring for InstructorOfficeHours"""
-	search_fields = ['iEmail']
-	filter_backends = (filters.SearchFilter,)
-	queryset = Instructor.objects.all()
-	serializer_class = InstructorSerializer
+@api_view(['POST'])
+@parser_classes([MultiPartParser, FormParser])
+def InstructorAPIView(request):
+    #Extract Username of Logged In User.
+    print("Logged In User: " + str(request.data.get("user")))
+    username = request.data.get("user")
+    if(username == ''):
+        return HttpResponse("Error: User Not Logged In!", content_type="text/plain", status=403)
+    #Find User's Schedule:
+    instructorHours = InstructorOfficeHours.objects.filter(meetInstructor__iEmail=username)
+    if(len(list(instructorHours)) == 0):
+        #User Does Not Have Entry In Database => Add Entry w/ Empty Schedule.
+        instructorHours = instructorHours(iEmail=username)
+    else:
+        #Grab Existing User Schedule:
+        instructorHours = list(instructorHours)[0]
+    #Return Sucesss:
+    return HttpResponse(str(instructorHours), content_type="text/plain", status=200) # Return user's schedule
 		
 #UpdateOHAPIView Is The View Invoked By The Frontend
 #To Update A Specific Office Hours Section.
