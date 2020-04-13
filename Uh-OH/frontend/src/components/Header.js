@@ -91,7 +91,7 @@ class Header extends React.Component
                         <div class="input-group">
                             <input class="form-control"
                                    type="search"
-                                   placeholder="Search for your courses..."
+                                   placeholder="Search For Your Courses..."
                                    aria-label="Search"
                                    onClick={this.redirectSearch}
                                    name="course_search_bar"/>
