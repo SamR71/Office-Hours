@@ -4,13 +4,19 @@ import WeekCalendar from "react-week-calendar";
 import customEvent from "./customEvent";
 import "./ScheduleStyle.css";
 
+/*
+The Schedule React Component Serves As The Main Way For User
+To View All Their Office Hours Data.
+*/
 class Schedule extends React.Component
 {
 
+	//State Stores Currently Logged In User, OR "" If Not Applicable.
     state = {
         loggedin: ""
     };
     
+    //Initializes All Helper Functions/State Releated Data.
     constructor(props)
 	{
         super(props);
@@ -23,19 +29,20 @@ class Schedule extends React.Component
         this.numDay = this.numDay.bind(this);
     }
 
+    //Main Mounting Function To Real-Time Update + Retrive + Display User Schedule Data.
     async componentDidMount()
 	{
-        // Retrieve login token
+        //Retrieves Login Token = Current Logged In User.
         var user = localStorage.getItem("loggedinuser");
         
-		// GET request to get the schedule data.
+		//Send GET Request To Obtain User Schedule Data.
         let schedule = null;
         let url = "http://localhost:8000/schedules/get/";
         let xhr = new XMLHttpRequest();
 
-        // get a callback when the server responds
+        //Get A Callback When Backend Server Responds.
 	    xhr.addEventListener("load", () => {
-	        // update the state of the component with the result here
+	        //Update the State of the Component with the result here.
 	        schedule = xhr.responseText;
 		    this.setState({rawData: schedule.split(",")});
 		    this.helpFormatStrings();
@@ -43,21 +50,21 @@ class Schedule extends React.Component
 
         xhr.open("POST", url);
         const form = new FormData();
-
-        // Send along login token
+        //Send Along Login Token.
         form.set("user",user);
         xhr.send(form);
 	}
 
-	// this helper functoin takes the raw string data and converts to event interval object
+	//Helper Function:
+	//Takes the Raw String Data + Converts To Event Intervals For React Schedule.
 	helpFormatStrings()
 	{
-		// clear intervals of any old data
+		//RESET: Clear Intervals of Old Data.
 		this.setState({eventIntervals: []});
 
 		let intervals = [];
 		let officeHour = "";
-		//looping over all office hours to turn into intervals
+		//Loop Over All Office Hours To Turn Into Intervals:
 		for(let i = 1; i < this.state.rawData.length; i++)
 		{
 			officeHour = this.state.rawData[i];
@@ -74,11 +81,12 @@ class Schedule extends React.Component
 				intervals.push({start, end, loc, prof});
 			}
 		}
-
+		//Update Event Intervals:
 		this.setState({eventIntervals: intervals})
 	}
 
-	// this helper function takes in the charcter for a day and trurns the number for it for moments
+	//Helper Function:
+	//Takes Character Sepcifying Day Of Week + Converts Into Number For Moments.
 	numDay(day)
 	{
 		switch(day)
@@ -100,6 +108,7 @@ class Schedule extends React.Component
 		}
 	}
 
+	//Primary Rendering of User Schedule:
     render()
     {
 

@@ -2,12 +2,12 @@ import React from 'react';
 import OfficeHourInfo from "./OfficeHourInfo";
 import {withRouter} from 'react-router-dom';
 
-/* The InstructorInfo component displays information about an Instructor object.
+/* The InstructorInfo Component displays information about an Instructor Object.
  * It displays the information as a string but can be modified. It also uses
  * OfficeHourInfo components to display the current instructor's InstructorsOfficeHours
  */
 class InstructorInfo extends React.Component {
-	// the state holds the fields of an Instructor object, as well as an array of InstructorOfficeHours
+	//State holds the fields of an Instructor object, as well as an array of InstructorOfficeHours.
 	state = {
 		type: "",
 		name: "",
@@ -18,30 +18,35 @@ class InstructorInfo extends React.Component {
 	
 	constructor(props) {
 		super(props);
-		// Change the "P" or "T" that represents the type to a full readable string
+		// Change the "P" or "T" that represents the type to a full readable string.
 		let fullType = "Professor";
 		if(props.instructor.iType == "T"){
 			fullType="TA";
 		}
-		// if the name starts with "Professor", remove it
-		// for example "Professor First Last" becomes "First Last"
+		//If the name starts with "Professor", remove it...
+		//Used To Extract Instructor Type + Name Separately + Store Separrately.
+		//For example, "Professor First Last" becomes just "First Last".
 		let newName = props.instructor.iName;
 		if(newName.indexOf("Professor") == 0){
 			newName = newName.substring(10);
 		}
+		//Update Stae Values:
 		this.state = {type: fullType,
 					name: newName,
 					email: props.instructor.iEmail,
 					officeHours: props.instructor.iOfficeHours};
     }
     
-    // Add all office hours for this instructor to the schedule at once
+    //Adds All Office Hours For This Instructor To User Schedule At Once
     addToSchedule(){
+    	//Simple For Loop Through All Office Hour Data:
         this.state.officeHours.forEach(function(officehour){
             officehour.addToSchedule()
         })
     }
 	
+	//Main Rendering For Each Instructor Information + Office Hours:
+	//To Be Displayed Under SectionModal From SectionModal.js.
 	render() {
 		return (
 			<div>

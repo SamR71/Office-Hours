@@ -3,7 +3,11 @@ import queryString from "query-string";
 import CourseDropDown from "./CourseDropDown";
 import {withRouter} from "react-router-dom";
 
+/*
+The Search React Component = Main Component For User's Searching Class + Office Hours.
+*/
 class Search extends React.Component {
+	//State Stores Courses, If Data Found, + Search Query Entered By User. 
 	state =
 	{
 		courses: [],
@@ -11,46 +15,47 @@ class Search extends React.Component {
 		search: "",
 	};
 	
-	// Formats the search query appropriately
+	//Helper Function:
+	//Formats Search Query Appropriately.
 	formatSearchQuery(query) {
-		// if the query is empty, set it to null
-		// check if it is empty by replacing all whitespace with empty chars
+		//If the query is empty, set it to null.
+		//Checks if it is empty by replacing all whitespace with empty characters.
 		var res = query.replace(/\s/g,'');
 		if(res == "")
 			query = null;
 
-		// replaces & with %26 to remove the default feature of searching
-		// with '&' to allow users to search for classes with '&' in their name
+		//Replaces & with %26 to remove the default feature of searching
+		//with '&' to allow users to search for classes with '&' in their name.
 		query = query.replace(/&/g, '%26');
 		return query;
 	}
 
 	async componentDidMount() {
 		try {
-			//get url to send to backend
+			//Get URL To Send To Backend For Search API Calls.
 			var url = 'http://localhost:8000/courses/?search=';
 			let searchURL = this.props.location.search;
 			let params = queryString.parse(searchURL);
 			var query = params["course_search_bar"];
 
-			// format the search query
+			//Format Search Query.
 			query = this.formatSearchQuery(query);
 
-			//get response, convert to JSON
+			//Get Response + Convert To JSON.
 			const res = await fetch(url + query);
 			const coursesjson = await res.json();
 
-			//set state
+			//Set State For Courses Found.
 			this.setState({
 				courses: coursesjson
 			});
 
-			//updating the flag for if there are results yet
+			//Update Flag For If There Are Results Yet.
 			this.setState({
 				results: this.state.courses.length !== 0
 			});
 
-			//storing what was searched
+			//Store What Was Searched By User.
 			this.setState({
 				search: this.formatSearchQuery(query)
 			});
@@ -60,6 +65,7 @@ class Search extends React.Component {
 		}
 	}
 	
+	//Main Rendering For Search Results:
 	render()
 	{
 		if(this.state.results)
@@ -81,8 +87,8 @@ class Search extends React.Component {
 				<div style={{paddingLeft: "50px"}}>
 					<br/><br/><br/>
 					<h4>
-						No results found for: {this.state.search} <br/> <br/>
-						Search for:
+						No Results Found For: {this.state.search} <br/> <br/>
+						Search For:
 						<li>Course Names</li>
 						<li>CRNs</li>
 						<li>Course Numbers</li>

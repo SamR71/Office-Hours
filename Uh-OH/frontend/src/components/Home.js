@@ -1,35 +1,43 @@
 import React from "react";
 import Schedule from "./Schedule";
 
+/*
+The Home React Component = Main Uh-OH! Homepage Containing The User Schedule.
+*/
 class Home extends React.Component
 {
+    //State Stores All User Office Hours.
+    //Displays "Hello! Login + Search For Office Hours To Display Here"
+    //In Case User Is Not Logged In.
 	constructor(props)
 	{
 		super(props);
 		this.state =
 		{
-			officeHours: ["Search For Office Hours To Display Here..."]
+			officeHours: ["Hello! Login + Search For Office Hours To Display Here..."]
 		}
 	}
 
+    //Main Mounting For Homepage Component:
 	async componentDidMount()
 	{
-        // Retrieve login token
+        //Retrive Login Token = Whether User Is Logged In.
         var user = localStorage.getItem("loggedinuser");
 
-		// GET request to get the schedule data.
+		//Sends GET Request To Backend To Receive Schedule Data.
         let schedule = null;
         let url = "http://localhost:8000/schedules/get/";
         let xhr = new XMLHttpRequest();
 
-        // get a callback when the server responds
+        //Receives Callback When localhost:8000 Backend Server Responds...
 	    xhr.addEventListener("load", () => {
-	        // update the state of the component with the result here
+	        //Updates the State of the Component with the result here.
 	        schedule = xhr.responseText;
 	        if(schedule !== "")
 	        {
-	        	// formatting the string given in by the post request
+	        	//Special Formatting of the returned string supplied by the POST Request from Backend.
 	        	let finalOfficeHours = [];
+                //Office Hours Are Spilt By Commas...
 	        	let arr = schedule.split(",");
 	        	for(let i = 1; i < arr.length; i++)
 		        {
@@ -37,14 +45,14 @@ class Home extends React.Component
 		        	let str = strs[0] + ": " + strs[1] + " " + strs[2] + " (" + strs[3] + " - " + strs[4] + ")";
 			        finalOfficeHours.push(str)
 		        }
+                //Updates State Accordingly = Final Office Hours Received From Backend.
 	        	this.setState({officeHours: finalOfficeHours});
 	        }
 	    });
 
         xhr.open("POST", url);
         const form = new FormData();
-
-        // Send along login token
+        //Sends Along Login Username Token To Backend To Query For Specific User Schedule Data.
         form.set("user",user);
         xhr.send(form);
 	}

@@ -14,7 +14,10 @@ class MeetingTime extends React.Component {
 		endTime: "",
 	};
 	
-	
+	//Constructor:
+	//State Stores All Meeting Time Attributes (i.e., meetType = Lecture, Recitation, Lab, ... 
+	//meetDates = MTWRF, ..., meetInstructor = Instructor, meetStartTime = 10:00 AM, ...,
+	//meetEndTime = 12:00 PM, ... )
 	constructor(props) {
 		super(props);
 		this.state = {type: props.meeting.meetType,
@@ -24,6 +27,7 @@ class MeetingTime extends React.Component {
 					endTime: props.meeting.meetEndTime,};
 	}
 	
+	//Main Rendering/Displaying of Meeting Time Data Under SectionModal.
 	render() {
 		return (
 			<div>
