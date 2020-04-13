@@ -1,11 +1,20 @@
 import React from "react"
 import "./SignIn.css"
 
+/*
+The SignUp React Component Serves As The Main Page
+For New Users Joining Uh-OH!
+The Component Will Display Fields/Data For The User To Specify
+So That They Can Login After This Point On ...
+*/
 class SignUp extends React.Component{
 
+    //State Stores Key user Information To Provide Backend For Saving Data.
     constructor(props)
     {
         super(props);
+        //Repeat Password Ensures That The User Has Entered Their Password The Same Twice.
+        //Ensures They Are Aware Of Their Password At The Time Of Signing Up.
         this.state =
         {
             fullName: "",
@@ -17,20 +26,28 @@ class SignUp extends React.Component{
         this.handleChange = this.handleChange.bind(this);
     }
 
+    //Click Indicates User Has Entered "Join Uh-OH!" Button.
     handleClick(event)
     {
         event.preventDefault(); 
-        // Create POST request in backend requesting to register new user
+        //Create POST Request In Backend Requesting To Register New User + Saves User Data.
         var url = 'http://localhost:8000/login/registeruser/';
         var xhr = new XMLHttpRequest()
         xhr.onreadystatechange = function() {
+            //Case 1: Successful Register
             if (xhr.readyState == XMLHttpRequest.DONE) {
                 alert(xhr.responseText);
                 if (xhr.responseText == "Registration Successful!") {
                     window.location.href = "/LogIn"
                 }
             }
+            //Alert User of Failure In Registration:
+            else{
+                alert("Error: Failure In User Registration!")
+                alert(xhr.responseText)
+            }
         }
+        //Supply/Send Form Data To Backend.
         xhr.open('POST', url)
         const form = new FormData()
         form.set('fullName', this.state.fullName)
@@ -39,9 +56,9 @@ class SignUp extends React.Component{
         form.set('repeatPassword', this.state.repeatPassword)
         xhr.send(form)
         
-   
-    }
+    }   
 
+    //Similar To Other Files, Function Listens For + Adjusts State Fields Based On Changes.
     handleChange(event)
     {
         const input = event.target.name;
@@ -49,6 +66,9 @@ class SignUp extends React.Component{
         this.setState({ [input]: value })
     }
 
+    //Main React Displaying of Sign Up Page:
+    //Contains Full Name, Email, Passsword, Repeat Password Fields
+    //+ Join Uh-OH! Button ...
     render(){
         return(
 			<div class="container">
@@ -57,7 +77,7 @@ class SignUp extends React.Component{
 						<div class="myform form">
 							<div class="logo mb-3">
 								<div class="col-md-12 text-center">
-									<h1 >Signup</h1>
+									<h1 >Welcome To Uh-OH! Signup</h1>
 								</div>
 							</div>
 							<form action="#" name="registration">
@@ -82,7 +102,7 @@ class SignUp extends React.Component{
 								</div>
 								<div class="col-md-12 ">
 									<div class="form-group">
-										<p class="text-center"><a href="/LogIn/" id="signin">Already have an account?</a></p>
+										<p class="text-center"><a href="/LogIn/" id="signin">Already Have An Uh-OH! Account?</a></p>
 									</div>
 								</div>
 							</form>

@@ -7,7 +7,7 @@ import {withRouter} from 'react-router-dom';
  * is toggled to show every section of the respective course.
  */
 class CourseDropDown extends React.Component {
-	/* The state holds the name of the Course, as well as two arrays of
+	/* The State holds the name of the Course, as well as two arrays of
 	 * the Intructors and CourseSections that belongs to the Course. 
 	*/
 	state = {
@@ -15,17 +15,18 @@ class CourseDropDown extends React.Component {
 		sections: [],
 		instructors: [],
 	};
-	
-	
+
+	//Initializes State Variables Based on props Passed In...
 	constructor(props) {
 		super(props);
 		this.state = {name: props.course.courseName, sections: props.course.sections, instructors: props.course.instructors};
 	}
 	
+	//Main Rendering For The Course Drop Down That Helps Display All Course Sections For A Particular Course.
 	render() {
 		return (
 			<div>
-				{/* The DropDown button is labeled as the name of the course 
+				{/* The DropDown button is labeled as the name of the Course 
 					and assigned to toggle the collapsable dropdown menu */}
 				<a  class="btn btn-link"
 					data-toggle="collapse"
@@ -35,12 +36,12 @@ class CourseDropDown extends React.Component {
 					{this.state.name}
 				</a>
 				<br></br>
-				{/* The DropDown Content that displays each section of the course.
+				{/* The DropDown Content that displays each section of the Course.
 					Each SectionModal must be given the name of the course as well as
 					the CourseSection class itself and the array of instructors. */}
 				<div class="collapse" id={"collapseCourse"+this.state.name}>
 					<div class="card card-body">
-						{	//Each section is mapped to a <div> class with its ID as the key, and mapped to a SectionModal
+						{	//Each Section is mapped to a <div> class with its ID as the key, and mapped to a SectionModal.
 							this.state.sections.map(item => (
 							<div key={item.id}>
 								<SectionModal name={this.state.name} section={item} instructors={this.state.instructors} loggedin={this.props.loggedin}/>

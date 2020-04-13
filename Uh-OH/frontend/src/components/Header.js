@@ -2,6 +2,8 @@ import React from "react";
 import logo from "./UhOhLogo.png";
 import {withRouter} from "react-router-dom";
 
+//The Header Component Serves As The Top Toolbar For Uh-OH!
+//This Component Illustrates Our Logo + Any/All Login Buttons + Search Bars.
 
 class Header extends React.Component
 {
@@ -9,30 +11,46 @@ class Header extends React.Component
     {
         super(props);
 
+        //Currently Supported Redirections Based On User Navigation:
         this.redirectHome = this.redirectHome.bind(this);
         this.redirectLogIn = this.redirectLogIn.bind(this);
         this.redirectSearch = this.redirectSearch.bind(this);
 
+        //State Only Stores The Value Of The Currently Logged In User.
+        //Case 1: User Logged In => Button Displays User's Username.
+        //Case 2: Not Logged In => Button Displays Log In Which Prompts User To Join/Log In w/ Uh-OH!
         this.state = {
-            displayLogInButton: localStorage.getItem("loggedinuser") ? localStorage.getItem("loggedinuser") : "Log In",
+            displayLogInButton: localStorage.getItem("loggedinuser") != "" ? localStorage.getItem("loggedinuser") : "Log In",
         }
     }
 
+    //Redirects User Back To Homepaage.
     redirectHome()
     {
         this.props.history.push("/")
     }
 
-    redirectLogIn()
+    //Redirects User Back To Login Or Logout Page 
+    //Based On Whether They Are Logged In Or Not.
+    redirectLogIn(currentButtonValue)
     {
-        this.props.history.push("/LogIn")
+        //Case 1: User Not Logged In.
+        if(currentButtonValue == "Log In"){
+            this.props.history.push("/LogIn")
+        }
+        //Case 2: User Logged In + Clicked Button.
+        else{
+            this.props.history.push("/LogOut");
+        }
     }
 
+    //Redirect To Search Page Based On User Clicking Search Bar.
     redirectSearch()
     {
         this.props.history.push("/Search")
     }
 
+    //Main Render Function That Handles/Invokes Above Redirections Based On User Input.
     render()
     {
         const headerStyle =
@@ -73,12 +91,12 @@ class Header extends React.Component
                         <div class="input-group">
                             <input class="form-control"
                                    type="search"
-                                   placeholder="Search for your courses..."
+                                   placeholder="Search For Your Courses..."
                                    aria-label="Search"
                                    onClick={this.redirectSearch}
                                    name="course_search_bar"/>
                             <span class="input-group-append">
-                                <button onClick={this.redirectLogIn} className="btn btn-light ml-3" type="button">{this.state.displayLogInButton}</button>;
+                                <button onClick={() => this.redirectLogIn(this.state.displayLogInButton)} className="btn btn-light ml-3" type="button">{this.state.displayLogInButton}</button>;
                             </span>
                         </div>
                     </form>
