@@ -83,7 +83,7 @@ class Home extends React.Component
 					hour.day = allstr[6];
 					hour.start = allstr[7];
 					hour.end = allstr[8];
-					hour.id = i;
+					hour.id = allstr[9];
 					
 		        	let str = allstr[1] + ", " + allstr[0] + ": " + allstr[7] + " to " + allstr[8] + ", " + allstr[6] + ", " + allstr[5];
 					hour.strrep = str;

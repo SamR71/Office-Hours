@@ -47,7 +47,7 @@ def InstructorAPIView(request):
     resultOHData = "";
     for k in range(0, len(allExistingOH)):
     	currentOH = allExistingOH[k]
-    	resultOHData += str(currentOH)
+    	resultOHData += str(currentOH) + " + " + str(currentOH.id)
     	if(k != len(allExistingOH)-1):
     		resultOHData += ", "
     #Return Sucesss:
