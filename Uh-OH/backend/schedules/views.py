@@ -158,7 +158,7 @@ def updateSchedules(request):
     #Get Old InstructorOfficeHours Attributes:
     currentInstructor = request.data.get("currentInstructor")
     oldStartTime = request.data.get("oldStartTime")
-    olEndTime = request.data.get("oldEndTime")
+    oldEndTime = request.data.get("oldEndTime")
     oldLocation = request.data.get("oldLocation")
     oldDates = request.data.get("oldDates")
     #Get New InstructorOfficeHours Attributes:

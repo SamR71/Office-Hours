@@ -34,11 +34,11 @@ class Home extends React.Component
         let xhr1 = new XMLHttpRequest();
         let xhr2 = new XMLHttpRequest();
 		
-
         //Receives Callback When localhost:8000 Backend Server Responds...
 	    xhr1.addEventListener("load", () => {
 	        //Updates the State of the Component with the result here.
 	        schedule = xhr1.responseText;
+            alert(schedule)
 	        if(schedule !== "")
 	        {
 	        	//Special Formatting of the returned string supplied by the POST Request from Backend.
@@ -60,7 +60,7 @@ class Home extends React.Component
 	        //Updates the State of the Component with the result here.
 	        hours = xhr2.responseText;
 			console.log(hours);
-			
+			alert(hours)
 			if(hours !== "")
 	        {
 	        	//Special Formatting of the returned string supplied by the POST Request from Backend.

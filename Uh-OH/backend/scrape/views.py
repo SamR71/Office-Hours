@@ -42,16 +42,15 @@ def InstructorAPIView(request):
     username = request.data.get("user")
     if(username == ''):
         return HttpResponse("Error: User Not Logged In!", content_type="text/plain", status=403)
-    #Find User's Schedule:
-    instructorHours = InstructorOfficeHours.objects.filter(meetInstructor__iEmail=username)
-    if(len(list(instructorHours)) == 0):
-        #User Does Not Have Entry In Database => Add Entry w/ Empty Schedule.
-        instructorHours = instructorHours(iEmail=username)
-    else:
-        #Grab Existing User Schedule:
-        instructorHours = list(instructorHours)[0]
+    #Extract All Existing Instructor Office Hours:
+    allExistingOH = InstructorOfficeHours.objects.filter(meetInstructor__iEmail=username)
+    resultOHData = "";
+    for k in range(0, len(allExistingOH)):
+    	resultOHData += currentOH.meetInstructor.iName + " + " + currentOH.meetLocation + " + " + currentOH.meetDates + " + " + currentOH.meetStartTime + " + " + currentOH.meetEndTime
+    	if(k != len(allExistingOH)-1):
+    		resultOHData += ", "
     #Return Sucesss:
-    return HttpResponse(str(instructorHours), content_type="text/plain", status=200) # Return user's schedule
+    return HttpResponse(resultOHData, content_type="text/plain", status=200) # Return user's schedule
 		
 #UpdateOHAPIView Is The View Invoked By The Frontend
 #To Update A Specific Office Hours Section.
@@ -77,14 +76,16 @@ class InstructorOHAPIView(object):
 		newLocation = request.data.get("newLocation")
 		newDates = request.data.get("newDates")
 		#Filter + Obtain Old Existing InstructorOfficeHours Object.
+		print(currentID)
 		allExistingOH = InstructorOfficeHours.objects.filter(pk=currentID)
 		#Error Checking For Accuracy of Database Filtering:
-		if(len(allExistingOH) != 0):
+		if(len(allExistingOH) == 0):
 			return HttpResponse("Error: Specific InstructorOfficeHours Does Not Exist!", content_type="text/plain", status=403)
 		else:
 			if(len(allExistingOH) > 1):
 				return HttpResponse("Error: Specific InstructorOfficeHours Exists More Than Once!", content_type="text/plain", status=403)
-			currentOH = allExistingOH[0]
+			currentOH = allExistingOH
+			print(currentOH)
 			#Set New Values To Update Database Object:
 			#Dependency on Frontend To Check For Accuracy In Fields:
 			currentOH.meetStartTime = newStartTime
@@ -93,6 +94,7 @@ class InstructorOHAPIView(object):
 			currentOH.meetDates = newDates
 			#Note: MeetInstructor Cannot Change.
 			#Save Changes To Database Object:
+			print(currentOH)
 			currentOH.save();
 			return HttpResponse("Sucessfully Updated InstructorOfficeHours!", content_type="text/plain", status=200)
 		

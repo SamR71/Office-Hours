@@ -70,8 +70,9 @@ class EditModal extends React.Component {
         //Open A POST Request At The Specified URL.
         xhr1.open('POST', url1);
         xhr2.open('POST', url2);
-        //Create A Form w/ Appropraite Office Hour Information Padded.
+        //Create A Form w/ Appropriate Office Hour Information Padded.
         const form = new FormData();
+        form.set('currentID', this.state.id)
         form.set('currentInstructor', this.state.Instructor);
         form.set('oldStartTime', this.state.start);
         form.set('oldEndTime', this.state.end);
