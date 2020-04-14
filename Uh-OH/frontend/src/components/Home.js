@@ -103,7 +103,8 @@ class Home extends React.Component
         form.set("user",user);
         xhr1.send(form);
         xhr2.send(form);
-		
+        
+
 		
 	}
 
@@ -113,26 +114,44 @@ class Home extends React.Component
         {
             margin: "20px"
         };
-
-        return(
-            <div style={homePageStyle} class="container-fluid">
-                <div class="row justify-content-center">
-                    <div class="col-xl-9 mr-5">
-                        <h2>My Schedule:</h2>
-                        <Schedule />
-                        <br></br>
-                        <h2>Office Hours:</h2>
-                        <p>{this.state.officeHours.map(item => <ul>{item}</ul>)}</p>
-						<h2>My Sections:</h2>
-						{this.state.instructorHours.map(item => (
-							<div key={item.strrep}>
-								<EditModal hour={item}/>
-							</div>
-						))}
+        if(this.state.instructorHours != "You Currently Do Not Run Any Office Hours."){
+            return(
+                <div style={homePageStyle} class="container-fluid">
+                    <div class="row justify-content-center">
+                        <div class="col-xl-9 mr-5">
+                            <h2>My Schedule:</h2>
+                            <Schedule />
+                            <br></br>
+                            <h2>Office Hours:</h2>
+                            <p>{this.state.officeHours.map(item => <ul>{item}</ul>)}</p><br></br>
+                            <h2>My Sections:</h2>
+                            {this.state.instructorHours.map(item => (
+                                <div key={item.strrep}>
+                                    <EditModal hour={item}/>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
-            </div>
-        );
+            );
+                            }
+                            else{
+                                return(
+                                    <div style={homePageStyle} class="container-fluid">
+                                        <div class="row justify-content-center">
+                                            <div class="col-xl-9 mr-5">
+                                                <h2>My Schedule:</h2>
+                                                <Schedule />
+                                                <br></br>
+                                                <h2>Office Hours:</h2>
+                                                <p>{this.state.officeHours.map(item => <ul>{item}</ul>)}</p><br></br>
+                                                <h2>My Sections:</h2><br></br>
+                                                You Currently Do Not Run Any Office Hours.
+                                            </div>
+                                        </div>
+                                    </div>
+                                );
+                            }
     }
 }
 
