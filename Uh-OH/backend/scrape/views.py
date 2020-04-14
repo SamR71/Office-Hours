@@ -85,7 +85,7 @@ class InstructorOHAPIView(object):
 		else:
 			if(len(allExistingOH) > 1):
 				return HttpResponse("Error: Specific InstructorOfficeHours Exists More Than Once!", content_type="text/plain", status=403)
-			currentOH = allExistingOH
+			currentOH = allExistingOH[0]
 			print(currentOH)
 			#Set New Values To Update Database Object:
 			#Dependency on Frontend To Check For Accuracy In Fields:

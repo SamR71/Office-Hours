@@ -73,7 +73,7 @@ class EditModal extends React.Component {
         //Create A Form w/ Appropriate Office Hour Information Padded.
         const form = new FormData();
         form.set('currentID', this.state.id)
-        form.set('currentInstructor', this.state.Instructor);
+        form.set('currentInstructor', this.state.instructor);
         form.set('oldStartTime', this.state.start);
         form.set('oldEndTime', this.state.end);
         form.set('oldLocation', this.state.place);

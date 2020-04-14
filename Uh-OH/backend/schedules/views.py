@@ -157,10 +157,15 @@ def updateSchedules(request):
     #Load Data From POST Request:
     #Get Old InstructorOfficeHours Attributes:
     currentInstructor = request.data.get("currentInstructor")
+    print(currentInstructor)
     oldStartTime = request.data.get("oldStartTime")
     oldEndTime = request.data.get("oldEndTime")
     oldLocation = request.data.get("oldLocation")
     oldDates = request.data.get("oldDates")
+    print(oldStartTime)
+    print(oldEndTime)
+    print(oldLocation)
+    print(oldDates)
     #Get New InstructorOfficeHours Attributes:
     newStartTime = request.data.get("newStartTime")
     newEndTime = request.data.get("newEndTime")
@@ -172,6 +177,7 @@ def updateSchedules(request):
     if(len(allExistingUserScheduleItems) == 0):
         return HttpResponse("Error: UserScheduleItem To Be Updated Itself Does Not Exist!", content_type="text/plain", status=403)
     else:
+        print("2")
         currentScheduleItem = allExistingUserScheduleItems[0];
         #Store Previous ScheduleItem STR:
         prevScheduleItemSTR = str(currentScheduleItem)
