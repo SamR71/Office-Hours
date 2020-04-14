@@ -15,9 +15,13 @@ class EditModal extends React.Component {
 		instructorID: "",
 		type: "",
 		place: "",
+		newplace: "",
 		day: "",
+		newday: "",
 		start: "",
+		newstart: "",
 		end: "",
+		newend: "",
 		id: "",
 		strrep: "",
 		loggedin: ""
@@ -31,12 +35,20 @@ class EditModal extends React.Component {
 						instructorID: props.hour.instructorID,
 						type: props.hour.type,
 						place: props.hour.place,
+						newplace: props.hour.place,
 						day: props.hour.day,
+						newday: props.hour.day,
 						start: props.hour.start,
+						newstart: props.hour.start,
 						end: props.hour.end,
+						newend: props.hour.end,
 						id: props.hour.id,
 						strrep: props.hour.strrep};
 		this.handleClick = this.handleClick.bind(this);
+		this.handleChangeStart = this.handleChangeStart.bind(this);
+		this.handleChangeEnd = this.handleChangeEnd.bind(this);
+		this.handleChangeDay = this.handleChangeDay.bind(this);
+		this.handleChangePlace = this.handleChangePlace.bind(this);
 	}
 	
 	//Set the loggedin state to represent the account the user is logged in with.
@@ -49,8 +61,53 @@ class EditModal extends React.Component {
 	handleClick(event)
     {
         event.preventDefault();
-    }
+		
+		let url1 = "http://localhost:8000/update/";
+		let url2 = "http://localhost:8000/schedules/update/";
+		
+		var xhr1 = new XMLHttpRequest();
+		var xhr2 = new XMLHttpRequest();
+        //Open A POST Request At The Specified URL.
+        xhr1.open('POST', url1);
+        xhr2.open('POST', url2);
+        //Create A Form w/ Appropraite Office Hour Information Padded.
+        const form = new FormData();
+        form.set('currentInstructor', this.state.Instructor);
+        form.set('oldStartTime', this.state.start);
+        form.set('oldEndTime', this.state.end);
+        form.set('oldLocation', this.state.place);
+        form.set('oldDates', this.state.day);
+        form.set('newStartTime', this.state.newstart);
+        form.set('newEndTime', this.state.newend);
+        form.set('newLocation', this.state.newplace);
+        form.set('newDates', this.state.newday);
+        form.set('user', this.state.loggedin);
+		
 
+        //Send The Form Data To The POST Request.
+        xhr1.send(form);
+        xhr2.send(form);
+
+    }
+	
+	handleChangeStart(event) {
+		this.setState({newstart: event.target.value});
+	}
+	
+	handleChangeEnd(event) {
+		this.setState({newend: event.target.value});
+	}
+	
+	handleChangeDay(event) {
+		this.setState({newday: event.target.value});
+	}
+	
+	handleChangePlace(event) {
+		this.setState({newplace: event.target.value});
+	}
+	
+	
+	
     //Main Rendering of SectionModal For All Courses:
     //Contains Applicable Meeting Times, Instructor Data, + InstructorOfficeHours Data
     //As Supplied By Backend.
@@ -91,7 +148,19 @@ class EditModal extends React.Component {
 							</div>
 							{/* The Modal Body Content, displays meeting times and professors with their office hours */}
 							<div class="modal-body">
-
+							<h3>{"Start Time: " + this.state.start}</h3>
+							{" Edit:  "} 
+							<input type="text" value={this.state.newstart} onChange={this.handleChangeStart} />
+							<br></br>
+							<h3>{"End Time: " + this.state.end}</h3>
+							{" Edit:  "} 
+							<input type="text" value={this.state.newend} onChange={this.handleChangeEnd} />
+							<h3>{"Location: " + this.state.place}</h3>
+							{" Edit:  "} 
+							<input type="text" value={this.state.place} onChange={this.handleChangePlace} />
+							<h3>{"Days: " + this.state.day}</h3>
+							{" Edit:  "} 
+							<input type="text" value={this.state.day} onChange={this.handleChangeDay} />
 							</div>
 							{/* The Modal Footer Content: Holds buttons to interact with the section,
 								the first button being to close the modal */}
