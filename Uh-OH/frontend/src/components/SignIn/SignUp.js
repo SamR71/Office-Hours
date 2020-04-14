@@ -41,11 +41,6 @@ class SignUp extends React.Component{
                     window.location.href = "/LogIn"
                 }
             }
-            //Alert User of Failure In Registration:
-            else{
-                alert("Error: Failure In User Registration!")
-                alert(xhr.responseText)
-            }
         }
         //Supply/Send Form Data To Backend.
         xhr.open('POST', url)
