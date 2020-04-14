@@ -46,7 +46,8 @@ def InstructorAPIView(request):
     allExistingOH = InstructorOfficeHours.objects.filter(meetInstructor__iEmail=username)
     resultOHData = "";
     for k in range(0, len(allExistingOH)):
-    	resultOHData += currentOH.meetInstructor.iName + " + " + currentOH.meetLocation + " + " + currentOH.meetDates + " + " + currentOH.meetStartTime + " + " + currentOH.meetEndTime
+    	currentOH = allExistingOH[k]
+    	resultOHData += str(currentOH)
     	if(k != len(allExistingOH)-1):
     		resultOHData += ", "
     #Return Sucesss:
