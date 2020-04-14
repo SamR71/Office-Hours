@@ -19,6 +19,7 @@ from rest_framework.decorators import api_view
 from rest_framework.decorators import parser_classes
 
 # Create your views here.
+#Test/Sample View:
 def home(request):
 	return render(request, template_name='base.html')
 
@@ -47,23 +48,26 @@ def InstructorAPIView(request):
     resultOHData = "";
     for k in range(0, len(allExistingOH)):
     	currentOH = allExistingOH[k]
+    	#Append Object ID For Frontend To Maintain.
     	resultOHData += str(currentOH) + " + " + str(currentOH.id)
+    	#Separate OH Data By ", " For Frontend To Easily Extract.
     	if(k != len(allExistingOH)-1):
     		resultOHData += ", "
     #Return Sucesss:
     return HttpResponse(resultOHData, content_type="text/plain", status=200) # Return user's schedule
 		
-#UpdateOHAPIView Is The View Invoked By The Frontend
+#InstructorOHAPIView Is The View Invoked By The Frontend
 #To Update A Specific Office Hours Section.
 	#Note: Need To Figure Out How Frontend Is Going To Send 
 	#The Office Hours Section They Are Trying To Modify 
 	# + The New Data For The Office Hours.
 class InstructorOHAPIView(object):
-	"""docstring for UpdateOHAPIView"""
+	"""docstring for InstructorOHAPIView"""
 	def __init__(self, arg):
-		super(UpdateOHAPIView, self).__init__()
+		super(InstructorOHAPIView, self).__init__()
 		self.arg = arg
-		
+	
+	#Main Driver OH Update To SQLite3 Database.
 	@api_view(['POST'])
 	@parser_classes([MultiPartParser, FormParser])
 	def update(request):
