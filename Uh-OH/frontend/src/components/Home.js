@@ -16,7 +16,7 @@ class Home extends React.Component
 		this.state =
 		{
 			officeHours: ["Hello! Login + Search For Office Hours To Display Here..."],
-			instructorHours: ["You do not run any Office Hours"]
+			instructorHours: ["You Currently Do Not Run Any Office Hours."]
 		}
 	}
 
@@ -28,17 +28,17 @@ class Home extends React.Component
 
 		//Sends POST Requests To Backend To Receive Schedule Data.
         let schedule = null;
-		let hours = null
+		let hours = null;
         let url1 = "http://localhost:8000/schedules/get/";
 		let url2 = "http://localhost:8000/hours/";
         let xhr1 = new XMLHttpRequest();
         let xhr2 = new XMLHttpRequest();
 		
+        //Handles All User Schedule Office Hours:
         //Receives Callback When localhost:8000 Backend Server Responds...
 	    xhr1.addEventListener("load", () => {
 	        //Updates the State of the Component with the result here.
 	        schedule = xhr1.responseText;
-            alert(schedule)
 	        if(schedule !== "")
 	        {
 	        	//Special Formatting of the returned string supplied by the POST Request from Backend.
@@ -56,11 +56,11 @@ class Home extends React.Component
 	        }
 	    });
 		
+        //Handles Instructor Office Hours To Be Displayed Specific To Logged In User:
 		xhr2.addEventListener("load", () => {
 	        //Updates the State of the Component with the result here.
 	        hours = xhr2.responseText;
 			console.log(hours);
-			alert(hours)
 			if(hours !== "")
 	        {
 	        	//Special Formatting of the returned string supplied by the POST Request from Backend.
@@ -92,6 +92,7 @@ class Home extends React.Component
                 //Updates State Accordingly = Final Office Hours Received From Backend.
 	        	this.setState({instructorHours: finalHours});
 	        }
+
 	    });
 
         xhr1.open("POST", url1);
@@ -122,7 +123,7 @@ class Home extends React.Component
                         <br></br>
                         <h2>Office Hours:</h2>
                         <p>{this.state.officeHours.map(item => <ul>{item}</ul>)}</p>
-						<h2>My Sections</h2>
+						<h2>My Sections:</h2>
 						{this.state.instructorHours.map(item => (
 							<div key={item.strrep}>
 								<EditModal hour={item}/>

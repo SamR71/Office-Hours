@@ -41,7 +41,7 @@ def InstructorAPIView(request):
     print("Logged In User: " + str(request.data.get("user")))
     username = request.data.get("user")
     if(username == ''):
-        return HttpResponse("Error: User Not Logged In!", content_type="text/plain", status=403)
+        return HttpResponse("", content_type="text/plain", status=403)
     #Extract All Existing Instructor Office Hours:
     allExistingOH = InstructorOfficeHours.objects.filter(meetInstructor__iEmail=username)
     resultOHData = "";
@@ -77,7 +77,6 @@ class InstructorOHAPIView(object):
 		newLocation = request.data.get("newLocation")
 		newDates = request.data.get("newDates")
 		#Filter + Obtain Old Existing InstructorOfficeHours Object.
-		print(currentID)
 		allExistingOH = InstructorOfficeHours.objects.filter(pk=currentID)
 		#Error Checking For Accuracy of Database Filtering:
 		if(len(allExistingOH) == 0):
@@ -86,7 +85,6 @@ class InstructorOHAPIView(object):
 			if(len(allExistingOH) > 1):
 				return HttpResponse("Error: Specific InstructorOfficeHours Exists More Than Once!", content_type="text/plain", status=403)
 			currentOH = allExistingOH[0]
-			print(currentOH)
 			#Set New Values To Update Database Object:
 			#Dependency on Frontend To Check For Accuracy In Fields:
 			currentOH.meetStartTime = newStartTime
@@ -95,7 +93,6 @@ class InstructorOHAPIView(object):
 			currentOH.meetDates = newDates
 			#Note: MeetInstructor Cannot Change.
 			#Save Changes To Database Object:
-			print(currentOH)
 			currentOH.save();
 			return HttpResponse("Sucessfully Updated InstructorOfficeHours!", content_type="text/plain", status=200)
 		
