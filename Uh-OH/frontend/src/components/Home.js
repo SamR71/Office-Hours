@@ -1,5 +1,6 @@
 import React from "react";
 import Schedule from "./Schedule";
+import EditModal from "./EditModal";
 
 /*
 The Home React Component = Main Uh-OH! Homepage Containing The User Schedule.
@@ -70,9 +71,23 @@ class Home extends React.Component
 	        	for(let i = 0; i < arr.length; i++)
 		        {
 		        	let strs = arr[i];
-					console.log(strs);
-		        	//let str = strs[0] + ": " + strs[1] + " " + strs[2] + " (" + strs[3] + " - " + strs[4] + ")";
-			        finalHours.push(strs)
+					let allstr = strs.split(" + ");
+					console.log(allstr);
+					let hour = {}
+					hour.course = allstr[0];
+					hour.instructorType = allstr[1];
+					hour.instructor = allstr[2];
+					hour.instructorID = allstr[3];
+					hour.type = allstr[4];
+					hour.place = allstr[5];
+					hour.day = allstr[6];
+					hour.start = allstr[7];
+					hour.end = allstr[8];
+					hour.id = i;
+					
+		        	let str = allstr[1] + ", " + allstr[0] + ": " + allstr[7] + " to " + allstr[8] + ", " + allstr[6] + ", " + allstr[5];
+					hour.strrep = str;
+			        finalHours.push(hour)
 		        }
                 //Updates State Accordingly = Final Office Hours Received From Backend.
 	        	this.setState({instructorHours: finalHours});
@@ -108,7 +123,11 @@ class Home extends React.Component
                         <h2>Office Hours:</h2>
                         <p>{this.state.officeHours.map(item => <ul>{item}</ul>)}</p>
 						<h2>My Sections</h2>
-						<p>{this.state.instructorHours.map(item => <ul>{item}</ul>)}</p>
+						{this.state.instructorHours.map(item => (
+							<div key={item.strrep}>
+								<EditModal hour={item}/>
+							</div>
+						))}
                     </div>
                 </div>
             </div>
