@@ -158,10 +158,10 @@ class EditModal extends React.Component {
 							<input type="text" value={this.state.newend} onChange={this.handleChangeEnd} />
 							<h3>{"Location: " + this.state.place}</h3>
 							{" Edit:  "} 
-							<input type="text" value={this.state.place} onChange={this.handleChangePlace} />
+							<input type="text" value={this.state.newplace} onChange={this.handleChangePlace} />
 							<h3>{"Days: " + this.state.day}</h3>
 							{" Edit:  "} 
-							<input type="text" value={this.state.day} onChange={this.handleChangeDay} />
+							<input type="text" value={this.state.newday} onChange={this.handleChangeDay} />
 							</div>
 							{/* The Modal Footer Content: Holds buttons to interact with the section,
 								the first button being to close the modal */}
