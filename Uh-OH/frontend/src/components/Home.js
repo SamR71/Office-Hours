@@ -23,7 +23,7 @@ class Home extends React.Component
     //Main Mounting For Homepage Component:
 	async componentDidMount()
 	{
-        //Retrive Login Token = Whether User Is Logged In.
+        //Retrieve Login Token = Whether User Is Logged In.
         var user = localStorage.getItem("loggedinuser");
 
 		//Sends POST Requests To Backend To Receive Schedule Data.
@@ -103,11 +103,10 @@ class Home extends React.Component
         form.set("user",user);
         xhr1.send(form);
         xhr2.send(form);
-        
-
-		
 	}
 
+	//Main Rendering For Homepage Data:
+	//Includes Schedule, Office Hours, Sections:
     render()
     {
     	const homePageStyle =

@@ -1,13 +1,15 @@
 import React from "react";
 import {withRouter} from "react-router-dom";
 
-/* The SectionModal Component displays information about a CourseSection in a Modal Window.
- * The SectionModal displays information from the Meeting Times and Instructors. 
+/* The EditModal Component Displays Office Hours Data Pertinent 
+ * To Currently Logged In User. 
  */
 class EditModal extends React.Component {
 	
-	//State holds the name, id, meeting times, and instructors of this section class
-	//as well as loggedin, which provides information about what account the user is logged in to...
+	
+	//State Holds All Data For The Desired Office Hour To Be Updated
+	// + All The New Data To Be Updated w/ For The Office Hour
+	// + Other Relevant Data Such As Currently Logged In User.
 	state = {
 		name: "",
 		instructorType: "",
@@ -27,6 +29,7 @@ class EditModal extends React.Component {
 		loggedin: ""
 	};
 	
+	//Constructor That Creates Edit Modal Based On Properties Passed In.
 	constructor(props) {
 		super(props);
 		this.state = {name: props.hour.course,
@@ -44,6 +47,7 @@ class EditModal extends React.Component {
 						newend: props.hour.end,
 						id: props.hour.id,
 						strrep: props.hour.strrep};
+		//Initialize Calls To Functions.
 		this.handleClick = this.handleClick.bind(this);
 		this.handleChangeStart = this.handleChangeStart.bind(this);
 		this.handleChangeEnd = this.handleChangeEnd.bind(this);
@@ -62,7 +66,10 @@ class EditModal extends React.Component {
     {
         event.preventDefault();
 		
+		//Backend URL For Updating SQLite3 Database Object For Office Hours.
 		let url1 = "http://localhost:8000/update/";
+		//Backend URL For Updating User Schedules That Contain The Old Office Hours.
+		//User Schedules Need To Be Updated To Reflect Changes In Office Hours.
 		let url2 = "http://localhost:8000/schedules/update/";
 		
 		var xhr1 = new XMLHttpRequest();
@@ -70,7 +77,9 @@ class EditModal extends React.Component {
         //Open A POST Request At The Specified URL.
         xhr1.open('POST', url1);
         xhr2.open('POST', url2);
-        //Create A Form w/ Appropriate Office Hour Information Padded.
+        //Create A Form w/ Appropriate Old Office Hour + New Office Hours Data Padded.
+        //Used For Updating Office Hours.
+        //Provides Backend w/ Desired OH To Be Updated + New Data To Be Updated.
         const form = new FormData();
         form.set('currentID', this.state.id)
         form.set('currentInstructor', this.state.instructor);
@@ -83,33 +92,35 @@ class EditModal extends React.Component {
         form.set('newLocation', this.state.newplace);
         form.set('newDates', this.state.newday);
         form.set('user', this.state.loggedin);
-		
-
         //Send The Form Data To The POST Request.
         xhr1.send(form);
         xhr2.send(form);
-
+        //Alert User + Refresh Homepage To Reflect New Changes.
+        alert("Successfully Updated Office Hours!");
+        window.location.href = '/';
     }
 	
+	//Reacts To Clicks To Update Start Time.
 	handleChangeStart(event) {
 		this.setState({newstart: event.target.value});
 	}
-	
+
+	//Reacts To Clicks To Update End Time.
 	handleChangeEnd(event) {
 		this.setState({newend: event.target.value});
 	}
 	
+	//Reacts To Clicks To Update Dates.
 	handleChangeDay(event) {
 		this.setState({newday: event.target.value});
 	}
 	
+	//Reacts To Clicks To Update Location.
 	handleChangePlace(event) {
 		this.setState({newplace: event.target.value});
 	}
 	
-	
-	
-    //Main Rendering of SectionModal For All Courses:
+    //Main Rendering of EditModal For All Courses:
     //Contains Applicable Meeting Times, Instructor Data, + InstructorOfficeHours Data
     //As Supplied By Backend.
 	render() {
