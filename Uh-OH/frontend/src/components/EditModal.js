@@ -95,7 +95,9 @@ class EditModal extends React.Component {
         //Send The Form Data To The POST Request.
         xhr1.send(form);
         xhr2.send(form);
-
+        //Alert User + Refresh Homepage To Reflect New Changes.
+        alert("Successfully Updated Office Hours!");
+        window.location.href = '/';
     }
 	
 	//Reacts To Clicks To Update Start Time.
