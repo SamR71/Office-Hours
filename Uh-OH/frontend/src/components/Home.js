@@ -48,7 +48,7 @@ class Home extends React.Component
 	        	for(let i = 1; i < arr.length; i++)
 		        {
 		        	let strs = arr[i].split(" + ");
-		        	let str = strs[0] + ": " + strs[1] + " " + strs[2] + " (" + strs[3] + " - " + strs[4] + ")";
+		        	let str = strs[0] + " " + strs[1] + ": " + strs[2] + " " + strs[3] + " (" + strs[4] + " - " + strs[5] + ")";
 			        finalOfficeHours.push(str)
 		        }
                 //Updates State Accordingly = Final Office Hours Received From Backend.

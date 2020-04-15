@@ -59,7 +59,7 @@ class InstructorInfo extends React.Component {
 					OfficeHourInfo components with their ID as the key */}
 				{this.state.officeHours.map(item => (
 					<div key = {item.id}>
-						<OfficeHourInfo officeHour={item} instructorName={this.state.name} instructorType={this.state.type}/>
+						<OfficeHourInfo officeHour={item} instructorName={this.state.name} instructorType={this.state.type} courseName={this.state.courseName}/>
 					</div>
 				))}
 			</div>
