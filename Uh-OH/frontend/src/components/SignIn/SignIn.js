@@ -51,7 +51,7 @@ class SignIn extends React.Component{
 							{/*Main Login Header:*/}
 							<div class="logo mb-3">
 								<div class="col-md-12 text-center">
-									<h1>Welcome To Uh-OH! Login</h1>
+									<h1>Official Uh-OH! Login</h1>
 								</div>
 							</div>
 							<form action="" method="post" name="login">
