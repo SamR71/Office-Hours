@@ -49,9 +49,9 @@ def userRegister(request):
     repeatpassword = request.data.get("repeatPassword")
     name = request.data.get("fullName")
     # Verify User Has @rpi.edu Email.
-    if username[len(username)-8:len(username)] != "@rpi.edu":
+    if username[len(username)-7:len(username)] != "rpi.edu" or "@" not in username:
         print("not an rpi email\n")
-        return Response('Invalid email: Must end in @rpi.edu', status=422)
+        return Response('Invalid email: Must be an emailing ending in rpi.edu', status=422)
     #Verify Matching Passwords:
     if password != repeatpassword:
         print("passwords do not match\n")

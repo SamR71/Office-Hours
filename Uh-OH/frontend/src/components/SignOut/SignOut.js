@@ -36,11 +36,10 @@ class SignOut extends React.Component{
 						<div class="myform form ">
 							<div class="logo mb-3">
 								<div class="col-md-12 text-center">
-									<h1>Hello {this.state.userName}, Would You Like To Logout?</h1>
+									<h1>Hello {this.state.userName}</h1>
+                                    <h4>Would You Like To Logout?</h4>
 								</div>
-								<div class="col-md-12 text-center">
-									Click The Button Below To Sign Out From Uh-OH!
-								</div>
+								<br></br>
 								<div class="col-md-12 text-center ">
 									<button onClick={this.handleClick} class=" btn btn-block mybtn btn-primary tx-tfm">Logout</button>
 								</div>
