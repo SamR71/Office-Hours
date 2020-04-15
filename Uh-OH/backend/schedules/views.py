@@ -61,6 +61,8 @@ def addOH(request):
     #Only Append In Case The User Schedule Does Not Already Contain The Current Office Hours.
     if(not(str(u) in str(userSchedule))):
         schedule = str(userSchedule) + "," + str(u)
+    else:
+        return HttpResponse("You already added this to your schedule.", content_type="text/plain", status=500)
     print(schedule)
     #Update userSchedule.schedule Attribute:
     userSchedule.schedule = schedule 
@@ -117,6 +119,8 @@ def removeOH(request):
     if((str(currentOH) in str(userSchedule))):
         searchValue = "," + str(currentOH)
         schedule = str(userSchedule).replace(searchValue, "")
+    else:
+        return HttpResponse("You do not have this office hour added this to your schedule.", content_type="text/plain", status=500)
     print(schedule)
     #Update userSchedule.schedule Attribute:
     userSchedule.schedule = schedule 
