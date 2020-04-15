@@ -15,8 +15,8 @@ class Home extends React.Component
 		super(props);
 		this.state =
 		{
-			officeHours: ["Hello! Login + Search For Office Hours To Display Here..."],
-			instructorHours: ["You Currently Do Not Run Any Office Hours."]
+			officeHours: ["Hello! Login and search for office hours to display them here."],
+			instructorHours: ["You currently do not run any office hours."]
 		}
 	}
 
@@ -113,7 +113,8 @@ class Home extends React.Component
         {
             margin: "20px"
         };
-        if(this.state.instructorHours != "You Currently Do Not Run Any Office Hours."){
+        alert(localStorage.getItem("loggedinuser"))
+        if(localStorage.getItem("loggedinuser") != ''){
             return(
                 <div style={homePageStyle} class="container-fluid">
                     <div class="row justify-content-center">
@@ -143,9 +144,9 @@ class Home extends React.Component
                                                 <Schedule />
                                                 <br></br>
                                                 <h2>Office Hours:</h2>
-                                                <p>{this.state.officeHours.map(item => <ul>{item}</ul>)}</p><br></br>
-                                                <h2>My Sections:</h2><br></br>
-                                                You Currently Do Not Run Any Office Hours.
+                                                <p>Login and search for office hours to display here...</p><br></br>
+                                                <h2>My Sections:</h2>
+                                                Please log in to access your sections.
                                             </div>
                                         </div>
                                     </div>
