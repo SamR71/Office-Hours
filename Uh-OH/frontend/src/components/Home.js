@@ -47,8 +47,13 @@ class Home extends React.Component
 	        	let arr = schedule.split(",");
 	        	for(let i = 1; i < arr.length; i++)
 		        {
-		        	let strs = arr[i].split(" + ");
-		        	let str = strs[0] + " " + strs[1] + ": " + strs[2] + " " + strs[3] + " (" + strs[4] + " - " + strs[5] + ")";
+                    let strs = arr[i].split(" + ");
+                    let courseName = strs[0]
+                    let courseNameTitleCase = courseName.replace(
+                        /(\w)(\w*)/g,
+                        (_, firstChar, rest) => firstChar + rest.toLowerCase()
+                      );
+		        	let str = courseNameTitleCase + ", " + strs[1] + ": " + strs[2] + " " + strs[3] + " (" + strs[4] + " - " + strs[5] + ")";
 			        finalOfficeHours.push(str)
 		        }
                 //Updates State Accordingly = Final Office Hours Received From Backend.
