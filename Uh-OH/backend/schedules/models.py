@@ -15,9 +15,10 @@ class userScheduleItem(models.Model):
 	meetEndTime = models.CharField(max_length=7)
 	meetLocation = models.CharField(max_length=23)
 	meetDates = models.CharField(max_length=7)
+	meetCourseName = models.CharField(max_length=50);
 
 	def __str__(self):
-		return str(self.meetInstructor) + " + " + str(self.meetLocation) + " + " + str(self.meetDates) + " + " + str(self.meetStartTime) + " + " + str(self.meetEndTime)
+		return str(self.meetCourseName) + " + " + str(self.meetInstructor) + " + " + str(self.meetLocation) + " + " + str(self.meetDates) + " + " + str(self.meetStartTime) + " + " + str(self.meetEndTime)
 
 class userSchedules(models.Model):
 	"""

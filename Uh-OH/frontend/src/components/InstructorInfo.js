@@ -13,6 +13,7 @@ class InstructorInfo extends React.Component {
 		name: "",
 		email: "",
 		officeHours: "",
+		courseName: "",
 	};
 	
 	
@@ -30,11 +31,12 @@ class InstructorInfo extends React.Component {
 		if(newName.indexOf("Professor") == 0){
 			newName = newName.substring(10);
 		}
-		//Update Stae Values:
+		//Update State Values:
 		this.state = {type: fullType,
 					name: newName,
 					email: props.instructor.iEmail,
-					officeHours: props.instructor.iOfficeHours};
+					officeHours: props.instructor.iOfficeHours,
+					courseName: props.courseName};
     }
     
     //Adds All Office Hours For This Instructor To User Schedule At Once
@@ -50,14 +52,15 @@ class InstructorInfo extends React.Component {
 	render() {
 		return (
 			<div>
-			{/* The Body Content of the InstructorInfo, displays the info as text */}
+			{/* The Body Content For InstructorInfo, Displays Information As Text*/}
 			<br></br>
 			<b> {this.state.type+ ": " + this.state.name} </b> {this.state.email}
-				{/* For all office hours the instructor holds, map them to
-					OfficeHourInfo components with their ID as the key */}
+				{/* For all Office Hours the Instructor holds, map them to
+					OfficeHourInfo components with their ID as the key, 
+					+ Also Provides Instructor Name, Type, Course Name Explicitly */}
 				{this.state.officeHours.map(item => (
 					<div key = {item.id}>
-						<OfficeHourInfo officeHour={item} instructorName={this.state.name} instructorType={this.state.type}/>
+						<OfficeHourInfo officeHour={item} instructorName={this.state.name} instructorType={this.state.type} courseName={this.state.courseName}/>
 					</div>
 				))}
 			</div>

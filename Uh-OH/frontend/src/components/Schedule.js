@@ -69,16 +69,17 @@ class Schedule extends React.Component
 		{
 			officeHour = this.state.rawData[i];
 			const info = officeHour.split(" + ");
-			const days = info[2].split("");
+			const days = info[3].split("");
 
 			for(let j = 0; j < days.length; j++)
 			{
-				const start = moment(info[3], "LT").day(this.numDay(days[j]));
-				const end = moment(info[4], "LT").day(this.numDay(days[j]));
-				const loc = info[1];
-				const prof = info[0];
+				const start = moment(info[4], "LT").day(this.numDay(days[j]));
+				const end = moment(info[5], "LT").day(this.numDay(days[j]));
+				const loc = info[2];
+				const prof = info[1];
+				const courseName = info[0];
 
-				intervals.push({start, end, loc, prof});
+				intervals.push({start, end, loc, prof, courseName});
 			}
 		}
 		//Update Event Intervals:

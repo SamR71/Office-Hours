@@ -36,7 +36,7 @@ class SignOut extends React.Component{
 						<div class="myform form ">
 							<div class="logo mb-3">
 								<div class="col-md-12 text-center">
-									<h1>Hello {this.state.userName}</h1>
+									<h1>Hello {this.state.userName}!</h1>
                                     <h4>Would You Like To Logout?</h4>
 								</div>
 								<br></br>

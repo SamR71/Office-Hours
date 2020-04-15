@@ -33,14 +33,16 @@ def addOH(request):
     meetEndTime = request.data.get("endTime")
     meetLocation = request.data.get("location")
     meetDates = request.data.get("dates")
+    meetCourseName = request.data.get("courseName")
+    print(meetCourseName)
 
     #Create New userScheduleItem.
-    allExistingUserScheduleItems = userScheduleItem.objects.filter(meetInstructor=meetInstructor).filter(meetStartTime=meetStartTime).filter(meetEndTime=meetEndTime).filter(meetLocation=meetLocation).filter(meetDates=meetDates)
+    allExistingUserScheduleItems = userScheduleItem.objects.filter(meetCourseName=meetCourseName).filter(meetInstructor=meetInstructor).filter(meetStartTime=meetStartTime).filter(meetEndTime=meetEndTime).filter(meetLocation=meetLocation).filter(meetDates=meetDates)
     #Initialize User Schedule Item Object To None:
     #Will Be Either Newly Created/Set To Existing Item.
     u = None;
     if(len(allExistingUserScheduleItems) == 0):
-        u = userScheduleItem(meetInstructor=meetInstructor, meetStartTime=meetStartTime, meetEndTime=meetEndTime, meetLocation=meetLocation, meetDates=meetDates)
+        u = userScheduleItem(meetCourseName=meetCourseName, meetInstructor=meetInstructor, meetStartTime=meetStartTime, meetEndTime=meetEndTime, meetLocation=meetLocation, meetDates=meetDates)
         u.save()
     else:
         u = allExistingUserScheduleItems[0];
@@ -87,9 +89,11 @@ def removeOH(request):
     meetEndTime = request.data.get("endTime")
     meetLocation = request.data.get("location")
     meetDates = request.data.get("dates")
+    meetCourseName = request.data.get("courseName")
+    print(meetCourseName)
 
     #Create New userScheduleItem.
-    allExistingUserScheduleItems = userScheduleItem.objects.filter(meetInstructor=meetInstructor).filter(meetStartTime=meetStartTime).filter(meetEndTime=meetEndTime).filter(meetLocation=meetLocation).filter(meetDates=meetDates)
+    allExistingUserScheduleItems = userScheduleItem.objects.filter(meetCourseName=meetCourseName).filter(meetInstructor=meetInstructor).filter(meetStartTime=meetStartTime).filter(meetEndTime=meetEndTime).filter(meetLocation=meetLocation).filter(meetDates=meetDates)
     #Initialize User Schedule Item Object To None:
     #Will Be Either Newly Created/Set To Existing Item.
     currentOH = None;
