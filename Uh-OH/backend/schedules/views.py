@@ -158,7 +158,7 @@ def updateSchedules(request):
     #Get Old InstructorOfficeHours Attributes:
     currentInstructor = request.data.get("currentInstructor")
     oldStartTime = request.data.get("oldStartTime")
-    olEndTime = request.data.get("oldEndTime")
+    oldEndTime = request.data.get("oldEndTime")
     oldLocation = request.data.get("oldLocation")
     oldDates = request.data.get("oldDates")
     #Get New InstructorOfficeHours Attributes:
@@ -187,7 +187,7 @@ def updateSchedules(request):
         allUserSchedules = userSchedules.objects.all();
         for currentUserSchedule in allUserSchedules:        
             #Grab Existing User Schedule:
-            if(currentScheduleItem in currentUserSchedule):
+            if(prevScheduleItemSTR in str(currentUserSchedule)):
                 #Update User Schedule Item:
                 #Update CurrentUserSchedule w/ New Updated UserScheduleItem. 
                 currentUserSchedule.schedule = str(currentUserSchedule).replace(prevScheduleItemSTR, newScheduleItemSTR)

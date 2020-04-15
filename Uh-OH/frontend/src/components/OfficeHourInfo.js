@@ -62,8 +62,6 @@ class OfficeHourInfo extends React.Component {
                 alert(xhr.responseText); // display results of POST request to user
             }
         }
-        xhr.onreadystatechange = function() {
-        }
         //Open A POST Request At The Specified URL.
         xhr.open('POST', url)
         //Create A Form w/ Appropraite Office Hour Information Padded.

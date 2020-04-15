@@ -8,7 +8,7 @@ from .models import Instructor
 from .models import InstructorOfficeHours
 from .serializers import CourseSerializer
 from .serializers import InstructorSerializer
-
+from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from rest_framework.views import APIView
@@ -19,6 +19,7 @@ from rest_framework.decorators import api_view
 from rest_framework.decorators import parser_classes
 
 # Create your views here.
+#Test/Sample View:
 def home(request):
 	return render(request, template_name='base.html')
 
@@ -34,24 +35,39 @@ class CourseAPIView(generics.ListCreateAPIView):
 #To Return All Instructors + InstructorOfficeHours Present
 #On The Main Homepage.
 #This Will Be Used For Updating Office Hours.
-class InstructorAPIView(generics.ListCreateAPIView):
-	"""docstring for InstructorOfficeHours"""
-	search_fields = ['iEmail']
-	filter_backends = (filters.SearchFilter,)
-	queryset = Instructor.objects.all()
-	serializer_class = InstructorSerializer
+@api_view(['POST'])
+@parser_classes([MultiPartParser, FormParser])
+def InstructorAPIView(request):
+    #Extract Username of Logged In User.
+    print("Logged In User: " + str(request.data.get("user")))
+    username = request.data.get("user")
+    if(username == ''):
+        return HttpResponse("", content_type="text/plain", status=403)
+    #Extract All Existing Instructor Office Hours:
+    allExistingOH = InstructorOfficeHours.objects.filter(meetInstructor__iEmail=username)
+    resultOHData = "";
+    for k in range(0, len(allExistingOH)):
+    	currentOH = allExistingOH[k]
+    	#Append Object ID For Frontend To Maintain.
+    	resultOHData += str(currentOH) + " + " + str(currentOH.id)
+    	#Separate OH Data By ", " For Frontend To Easily Extract.
+    	if(k != len(allExistingOH)-1):
+    		resultOHData += ", "
+    #Return Sucesss:
+    return HttpResponse(resultOHData, content_type="text/plain", status=200) # Return user's schedule
 		
-#UpdateOHAPIView Is The View Invoked By The Frontend
+#InstructorOHAPIView Is The View Invoked By The Frontend
 #To Update A Specific Office Hours Section.
 	#Note: Need To Figure Out How Frontend Is Going To Send 
 	#The Office Hours Section They Are Trying To Modify 
 	# + The New Data For The Office Hours.
 class InstructorOHAPIView(object):
-	"""docstring for UpdateOHAPIView"""
+	"""docstring for InstructorOHAPIView"""
 	def __init__(self, arg):
-		super(UpdateOHAPIView, self).__init__()
+		super(InstructorOHAPIView, self).__init__()
 		self.arg = arg
-		
+	
+	#Main Driver OH Update To SQLite3 Database.
 	@api_view(['POST'])
 	@parser_classes([MultiPartParser, FormParser])
 	def update(request):
@@ -67,7 +83,7 @@ class InstructorOHAPIView(object):
 		#Filter + Obtain Old Existing InstructorOfficeHours Object.
 		allExistingOH = InstructorOfficeHours.objects.filter(pk=currentID)
 		#Error Checking For Accuracy of Database Filtering:
-		if(len(allExistingOH) != 0):
+		if(len(allExistingOH) == 0):
 			return HttpResponse("Error: Specific InstructorOfficeHours Does Not Exist!", content_type="text/plain", status=403)
 		else:
 			if(len(allExistingOH) > 1):
