@@ -15,8 +15,8 @@ class Home extends React.Component
 		super(props);
 		this.state =
 		{
-			officeHours: ["Hello! Login and search for office hours to display them here."],
-			instructorHours: ["You currently do not run any office hours."]
+			officeHours: ["N/A"],
+			instructorHours: ["N/A"]
 		}
 	}
 
@@ -113,45 +113,26 @@ class Home extends React.Component
         {
             margin: "20px"
         };
-        alert(localStorage.getItem("loggedinuser"))
-        if(localStorage.getItem("loggedinuser") != ''){
-            return(
-                <div style={homePageStyle} class="container-fluid">
-                    <div class="row justify-content-center">
-                        <div class="col-xl-9 mr-5">
-                            <h2>My Schedule:</h2>
-                            <Schedule />
-                            <br></br>
-                            <h2>Office Hours:</h2>
-                            <p>{this.state.officeHours.map(item => <ul>{item}</ul>)}</p><br></br>
-                            <h2>My Sections:</h2>
-                            {this.state.instructorHours.map(item => (
-                                <div key={item.strrep}>
-                                    <EditModal hour={item}/>
-                                </div>
-                            ))}
-                        </div>
+        //alert(localStorage.getItem("loggedinuser"))
+        return(
+            <div style={homePageStyle} class="container-fluid">
+                <div class="row justify-content-center">
+                    <div class="col-xl-9 mr-5">
+                        <h2>My Schedule:</h2>
+                        <Schedule />
+                        <br></br>
+                        <h2>Office Hours:</h2>
+                        <p>{this.state.officeHours == "N/A" ? "Hello! Login and Search For Office Hours To Display Them Here." : this.state.officeHours.map(item => <ul>{item}</ul>)}</p><br></br>
+                        <h2>My Sections:</h2>
+                        {this.state.instructorHours == "N/A" ? "You Currently Do Not Run Any Office Hours": this.state.instructorHours.map(item => (
+                            <div key={item.strrep}>
+                                <EditModal hour={item}/>
+                            </div>
+                        ))}
                     </div>
                 </div>
-            );
-                            }
-                            else{
-                                return(
-                                    <div style={homePageStyle} class="container-fluid">
-                                        <div class="row justify-content-center">
-                                            <div class="col-xl-9 mr-5">
-                                                <h2>My Schedule:</h2>
-                                                <Schedule />
-                                                <br></br>
-                                                <h2>Office Hours:</h2>
-                                                <p>Login and search for office hours to display here...</p><br></br>
-                                                <h2>My Sections:</h2>
-                                                Please log in to access your sections.
-                                            </div>
-                                        </div>
-                                    </div>
-                                );
-                            }
+            </div>
+        );
     }
 }
 
