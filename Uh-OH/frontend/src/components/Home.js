@@ -113,7 +113,7 @@ class Home extends React.Component
         {
             margin: "20px"
         };
-        //alert(localStorage.getItem("loggedinuser"))
+
         return(
             <div style={homePageStyle} class="container-fluid">
                 <div class="row justify-content-center">
@@ -122,7 +122,7 @@ class Home extends React.Component
                         <Schedule />
                         <br></br>
                         <h2>Office Hours:</h2>
-                        <p>{this.state.officeHours == "N/A" ? "Hello! Login and Search For Office Hours To Display Them Here." : this.state.officeHours.map(item => <ul>{item}</ul>)}</p><br></br>
+                        <p>{this.state.officeHours == "N/A" || this.state.officeHours == "" ? "Hello! Login and Search For Office Hours To Display Them Here." : this.state.officeHours.map(item => <ul>{item}</ul>)}</p><br></br>
                         <h2>My Sections:</h2>
                         {this.state.instructorHours == "N/A" ? "You Currently Do Not Run Any Office Hours": this.state.instructorHours.map(item => (
                             <div key={item.strrep}>
