@@ -15,7 +15,8 @@ class OfficeHourInfo extends React.Component {
         endTime: "",
         loggedin: '',
         instructorName: "",
-        instructorType: ""
+        instructorType: "",
+        courseName: ""
 	};
 
 	constructor(props) {
@@ -26,7 +27,8 @@ class OfficeHourInfo extends React.Component {
 					endTime: props.officeHour.meetEndTime,
 					instructorName: props.instructorName,
         			instructorType: props.instructorType,
-                    instructor: props.officeHour.meetInstructor};
+                    instructor: props.officeHour.meetInstructor,
+                    courseName: props.instructor.courseName};
         //Initialize the handleClick Function to allow it to properly execute.
         this.handleClick = this.handleClick.bind(this);
 	}
@@ -42,6 +44,7 @@ class OfficeHourInfo extends React.Component {
         //Send POST Request To Backend To Add Office Hour To User's Schedule.
         //That is, it will add iff the Office Hours does not already exist in the User's Schedule.
         var addURL = 'http://localhost:8000/schedules/add/';
+        alert(this.state.courseName)
         this.runSendPOSTRequestToBackend(addURL);
     }
 
@@ -72,6 +75,7 @@ class OfficeHourInfo extends React.Component {
         form.set('endTime', this.state.endTime)
         form.set('instructor', this.state.instructorName)
         form.set('user',this.state.loggedin)
+        form.set('courseName', this.state.courseName)
         //Send The Form Data To The POST Request.
         xhr.send(form)
     }

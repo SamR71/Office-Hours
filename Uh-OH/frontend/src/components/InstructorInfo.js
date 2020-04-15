@@ -13,6 +13,7 @@ class InstructorInfo extends React.Component {
 		name: "",
 		email: "",
 		officeHours: "",
+		courseName: "",
 	};
 	
 	
@@ -30,11 +31,12 @@ class InstructorInfo extends React.Component {
 		if(newName.indexOf("Professor") == 0){
 			newName = newName.substring(10);
 		}
-		//Update Stae Values:
+		//Update State Values:
 		this.state = {type: fullType,
 					name: newName,
 					email: props.instructor.iEmail,
-					officeHours: props.instructor.iOfficeHours};
+					officeHours: props.instructor.iOfficeHours,
+					courseName: props.courseName};
     }
     
     //Adds All Office Hours For This Instructor To User Schedule At Once

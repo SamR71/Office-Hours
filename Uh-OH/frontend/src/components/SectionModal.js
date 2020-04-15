@@ -95,7 +95,7 @@ class SectionModal extends React.Component {
 									mapping each Instructor to an InstructorInfo component with its ID as a key*/}
 								{this.state.instructors.map(item => (
 									<div key = {item.id}>
-										<InstructorInfo instructor={item} />
+										<InstructorInfo instructor={item} courseName ={this.state.name}/>
 									</div>
 								))}
 							</div>
