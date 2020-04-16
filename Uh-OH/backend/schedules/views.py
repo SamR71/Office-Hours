@@ -62,7 +62,7 @@ def addOH(request):
     if(not(str(u) in str(userSchedule))):
         schedule = str(userSchedule) + "," + str(u)
     else:
-        return HttpResponse("You already added this to your schedule.", content_type="text/plain", status=500)
+        return HttpResponse("Error: You Already Added This To Your Schedule.", content_type="text/plain", status=500)
     print(schedule)
     #Update userSchedule.schedule Attribute:
     userSchedule.schedule = schedule 
@@ -108,7 +108,7 @@ def removeOH(request):
     userSchedule = userSchedules.objects.filter(username=username)
     if(len(list(userSchedule)) == 0):
         #User Does Not Have Entry In Database => Add Entry w/ Empty Schedule.
-        return HttpResponse("Error: User Has Empty Schedule => Cannot Remove Anything From Empty Schedule", content_type="text/plain", status=403)
+        return HttpResponse("Error: User Has Empty Schedule => Cannot Remove Anything From Empty Schedule.", content_type="text/plain", status=403)
     else:
         #Grab Existing Schedule:
         userSchedule = list(userSchedule)[0]
@@ -120,7 +120,7 @@ def removeOH(request):
         searchValue = "," + str(currentOH)
         schedule = str(userSchedule).replace(searchValue, "")
     else:
-        return HttpResponse("You do not have this office hour added this to your schedule.", content_type="text/plain", status=500)
+        return HttpResponse("Error: You Do Not Have This Office Hour Currently Present In Your Schedule.", content_type="text/plain", status=500)
     print(schedule)
     #Update userSchedule.schedule Attribute:
     userSchedule.schedule = schedule 
