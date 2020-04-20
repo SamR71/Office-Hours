@@ -14,7 +14,7 @@ class OfficeHourInfo extends React.Component
 		location: "",
 		startTime: "",
         endTime: "",
-        loggedin: '',
+        loggedIn: '',
         instructorName: "",
         instructorType: "",
         courseName: ""
@@ -35,11 +35,11 @@ class OfficeHourInfo extends React.Component
         this.handleClick = this.handleClick.bind(this);
 	}
     
-    // adds the loggedin information to the state
+    //Adds the loggedIn information to the state
     componentDidMount()
     {
 		var user = localStorage.getItem('loggedinuser');
-		this.setState({loggedin: user});
+		this.setState({loggedIn: user});
     }
 
     //Adds The Current Office Hour To The Schedule Of The Logged In User.
@@ -80,7 +80,7 @@ class OfficeHourInfo extends React.Component
         form.set('startTime', this.state.startTime)
         form.set('endTime', this.state.endTime)
         form.set('instructor', this.state.instructorName)
-        form.set('user',this.state.loggedin)
+        form.set('user',this.state.loggedIn)
         form.set('courseName', this.state.courseName)
         //Send The Form Data To The POST Request.
         xhr.send(form)
