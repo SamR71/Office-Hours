@@ -18,6 +18,9 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 from rest_framework.decorators import parser_classes
 
+# NOTICE: Some of the variables in this file are based on the Django API and must be named using the snake_case format instead of camelCase.
+
+
 # Create your views here.
 #Test/Sample View:
 def home(request):
