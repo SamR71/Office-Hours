@@ -19,13 +19,13 @@ class App extends Component
 			loggedIn: ''
 		};
 		
-		this.handle_login = this.handle_login.bind(this);
-		this.handle_logout = this.handle_logout.bind(this);
+		this.handle_login = this.handleLogin.bind(this);
+		this.handle_logout = this.handleLogout.bind(this);
 	}
 	
 	//Main Driver Function That Handles User Login.
 	//Makes API Calls To Django Backend Login Application.
-    handle_login (username, password) 
+    handleLogin (username, password) 
     {
         //Sends POST Request To Backend Requesting To Log User Into Uh-OH!
 		var url = 'http://localhost:8000/login/loginuser/';
@@ -60,7 +60,7 @@ class App extends Component
 	
 	//Main LogOut Functionality. 
 	//Similar To Login w/ Backend API Calls Through POST Request.
-    handle_logout (username) 
+    handleLogout (username) 
     {
         //Send POST Request To Backend Requesting User To Log Out Via Django Authentication.
 		var url = 'http://localhost:8000/login/logoutuser/';
