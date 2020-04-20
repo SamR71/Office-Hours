@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import userScheduleItem, userSchedules
+from .models import UserScheduleItem, UserSchedules
 # Register your models here.
-admin.site.register(userScheduleItem)
-admin.site.register(userSchedules)
+admin.site.register(UserScheduleItem)
+admin.site.register(UserSchedules)

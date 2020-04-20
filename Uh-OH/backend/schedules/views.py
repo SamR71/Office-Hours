@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import userScheduleItem, userSchedules
+from .models import UserScheduleItem, UserSchedules
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from rest_framework.views import APIView
@@ -37,21 +37,21 @@ def addOH(request):
     print(meetCourseName)
 
     #Create New userScheduleItem.
-    allExistingUserScheduleItems = userScheduleItem.objects.filter(meetCourseName=meetCourseName).filter(meetInstructor=meetInstructor).filter(meetStartTime=meetStartTime).filter(meetEndTime=meetEndTime).filter(meetLocation=meetLocation).filter(meetDates=meetDates)
+    allExistingUserScheduleItems = UserScheduleItem.objects.filter(meetCourseName=meetCourseName).filter(meetInstructor=meetInstructor).filter(meetStartTime=meetStartTime).filter(meetEndTime=meetEndTime).filter(meetLocation=meetLocation).filter(meetDates=meetDates)
     #Initialize User Schedule Item Object To None:
     #Will Be Either Newly Created/Set To Existing Item.
     u = None;
     if(len(allExistingUserScheduleItems) == 0):
-        u = userScheduleItem(meetCourseName=meetCourseName, meetInstructor=meetInstructor, meetStartTime=meetStartTime, meetEndTime=meetEndTime, meetLocation=meetLocation, meetDates=meetDates)
+        u = UserScheduleItem(meetCourseName=meetCourseName, meetInstructor=meetInstructor, meetStartTime=meetStartTime, meetEndTime=meetEndTime, meetLocation=meetLocation, meetDates=meetDates)
         u.save()
     else:
         u = allExistingUserScheduleItems[0];
 
     #Locate User In The Database.
-    userSchedule = userSchedules.objects.filter(username=username)
+    userSchedule = UserSchedules.objects.filter(username=username)
     if(len(list(userSchedule)) == 0):
         #User Does Not Have Entry In Database => Add Entry w/ Empty Schedule.
-        userSchedule = userSchedules(username=username, schedule="")
+        userSchedule = UserSchedules(username=username, schedule="")
     else:
         #Grab Existing Schedule:
         userSchedule = list(userSchedule)[0]
@@ -95,7 +95,7 @@ def removeOH(request):
     print(meetCourseName)
 
     #Create New userScheduleItem.
-    allExistingUserScheduleItems = userScheduleItem.objects.filter(meetCourseName=meetCourseName).filter(meetInstructor=meetInstructor).filter(meetStartTime=meetStartTime).filter(meetEndTime=meetEndTime).filter(meetLocation=meetLocation).filter(meetDates=meetDates)
+    allExistingUserScheduleItems = UserScheduleItem.objects.filter(meetCourseName=meetCourseName).filter(meetInstructor=meetInstructor).filter(meetStartTime=meetStartTime).filter(meetEndTime=meetEndTime).filter(meetLocation=meetLocation).filter(meetDates=meetDates)
     #Initialize User Schedule Item Object To None:
     #Will Be Either Newly Created/Set To Existing Item.
     currentOH = None;
@@ -105,7 +105,7 @@ def removeOH(request):
         currentOH = allExistingUserScheduleItems[0];
 
     #Locate User In The Database.
-    userSchedule = userSchedules.objects.filter(username=username)
+    userSchedule = UserSchedules.objects.filter(username=username)
     if(len(list(userSchedule)) == 0):
         #User Does Not Have Entry In Database => Add Entry w/ Empty Schedule.
         return HttpResponse("Error: User Has Empty Schedule => Cannot Remove Anything From Empty Schedule.", content_type="text/plain", status=403)
@@ -143,10 +143,10 @@ def getSchedule(request):
     if(username == ''):
         return HttpResponse("Error: User Not Logged In!", content_type="text/plain", status=403)
     #Find User's Schedule:
-    userSchedule = userSchedules.objects.filter(username=username)
+    userSchedule = UserSchedules.objects.filter(username=username)
     if(len(list(userSchedule)) == 0):
         #User Does Not Have Entry In Database => Add Entry w/ Empty Schedule.
-        userSchedule = userSchedules(username=username, schedule="")
+        userSchedule = UserSchedules(username=username, schedule="")
     else:
         #Grab Existing User Schedule:
         userSchedule = list(userSchedule)[0]
@@ -175,7 +175,7 @@ def updateSchedules(request):
     newLocation = request.data.get("newLocation")
     newDates = request.data.get("newDates")
     #Filter For Existing User Schedule Items:
-    allExistingUserScheduleItems = userScheduleItem.objects.filter(meetInstructor=currentInstructor).filter(meetStartTime=oldStartTime).filter(meetEndTime=oldEndTime).filter(meetLocation=oldLocation).filter(meetDates=oldDates)
+    allExistingUserScheduleItems = UserScheduleItem.objects.filter(meetInstructor=currentInstructor).filter(meetStartTime=oldStartTime).filter(meetEndTime=oldEndTime).filter(meetLocation=oldLocation).filter(meetDates=oldDates)
     #Error Checking For No Found Items:
     if(len(allExistingUserScheduleItems) == 0):
         return HttpResponse("Error: UserScheduleItem To Be Updated Itself Does Not Exist!", content_type="text/plain", status=403)
@@ -192,7 +192,7 @@ def updateSchedules(request):
         #Store New ScheduleItem STR:
         newScheduleItemSTR = str(currentScheduleItem)
         #Get All User Schedules:
-        allUserSchedules = userSchedules.objects.all();
+        allUserSchedules = UserSchedules.objects.all();
         for currentUserSchedule in allUserSchedules:        
             #Grab Existing User Schedule:
             if(prevScheduleItemSTR in str(currentUserSchedule)):

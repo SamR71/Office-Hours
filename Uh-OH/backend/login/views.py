@@ -46,14 +46,14 @@ def userRegister(request):
     #Extract Email, Password From POST Request Data
     username = request.data.get('email')
     password = request.data.get("password")
-    repeatpassword = request.data.get("repeatPassword")
+    repeatPassword = request.data.get("repeatPassword")
     name = request.data.get("fullName")
     # Verify User Has @rpi.edu Email.
     if username[len(username)-7:len(username)] != "rpi.edu" or "@" not in username:
         print("not an rpi email\n")
         return Response('Invalid email: Must be an emailing ending in rpi.edu', status=422)
     #Verify Matching Passwords:
-    if password != repeatpassword:
+    if password != repeatPassword:
         print("passwords do not match\n")
         return Response('Passwords do not match', status=422)
     #Create User Account + Add To User Database.

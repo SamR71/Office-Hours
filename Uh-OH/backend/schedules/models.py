@@ -1,9 +1,9 @@
 from django.db import models
 
 # Create your models here.
-class userScheduleItem(models.Model):
+class UserScheduleItem(models.Model):
 	"""
-	userScheduleItem Class represents a single schedule item for a user
+	UserScheduleItem Class represents a single schedule item for a user
 	"""
 	class Meta:
 		verbose_name = 'User Schedule Item'
@@ -20,9 +20,9 @@ class userScheduleItem(models.Model):
 	def __str__(self):
 		return str(self.meetCourseName) + " + " + str(self.meetInstructor) + " + " + str(self.meetLocation) + " + " + str(self.meetDates) + " + " + str(self.meetStartTime) + " + " + str(self.meetEndTime)
 
-class userSchedules(models.Model):
+class UserSchedules(models.Model):
 	"""
-	userSchedules Class represents a database that associates usernames with schedules
+	UserSchedules Class represents a database that associates usernames with schedules
 	"""
 	class Meta:
 		verbose_name = 'User Schedule'
