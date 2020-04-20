@@ -43,11 +43,11 @@ class Search extends React.Component {
 
 			//Get Response + Convert To JSON.
 			const res = await fetch(url + query);
-			const coursesjson = await res.json();
+			const coursesJson = await res.json();
 
 			//Set State For Courses Found.
 			this.setState({
-				courses: coursesjson
+				courses: coursesJson
 			});
 
 			//Update Flag For If There Are Results Yet.

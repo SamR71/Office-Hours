@@ -23,7 +23,7 @@ class SignOut extends React.Component{
     handleClick(event)
     {
         event.preventDefault();
-        this.props.handle_logout(this.state.userName);
+        this.props.handleLogout(this.state.userName);
     }
 
     //Render = Main Display For Sign Out Page

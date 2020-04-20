@@ -15,7 +15,7 @@ class SectionModal extends React.Component {
 		id: "",
 		courseMeetingTimes: [],
 		instructors: [],
-		loggedin: ""
+		loggedIn: ""
 	};
 	
 	constructor(props) {
@@ -30,7 +30,7 @@ class SectionModal extends React.Component {
 	//Set the loggedin state to represent the account the user is logged in with.
 	componentDidMount(){
 		var user = localStorage.getItem("loggedinuser");
-		this.setState({loggedin: user});
+		this.setState({loggedIn: user});
 	}
 
 	//Handles Click/Opening/Closing of Modal:

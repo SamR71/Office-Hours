@@ -11,7 +11,7 @@ class SignOutApp extends React.Component{
     render() {
         return(
             <Route exact path="/LogOut">
-				<SignOut handle_logout={this.props.handle_logout}/>
+				<SignOut handleLogout={this.props.handle_logout}/>
 			</Route>
         )
     }

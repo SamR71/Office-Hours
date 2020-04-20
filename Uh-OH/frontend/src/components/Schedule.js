@@ -13,7 +13,7 @@ class Schedule extends React.Component
 
 	//State Stores Currently Logged In User, OR "" If Not Applicable.
     state = {
-        loggedin: ""
+        loggedIn: ""
     };
     
     //Initializes All Helper Functions/State Releated Data.

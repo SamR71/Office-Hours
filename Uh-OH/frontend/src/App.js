@@ -16,7 +16,7 @@ class App extends Component
 	constructor(props) {
 		super(props);
 		this.state = {
-			loggedin: ''
+			loggedIn: ''
 		};
 		
 		this.handle_login = this.handle_login.bind(this);
@@ -35,7 +35,7 @@ class App extends Component
 				if(xhr.status == 200){
                     alert("Successfully Logged In!");
                     //Store Login Token Return By Backend = Name of Logged In User.
-					this.setState({loggedin: xhr.responseText});
+					this.setState({loggedIn: xhr.responseText});
                     localStorage.setItem('loggedinuser', xhr.responseText);
                     //Redirect User Now To Homepage.
 					window.location.href = "/"
@@ -66,7 +66,7 @@ class App extends Component
 				if(xhr.status == 200){
                     alert("Successfully Logged Out!");
                     // Store login token returned by the backend
-					this.setState({loggedin: xhr.responseText});
+					this.setState({loggedIn: xhr.responseText});
                     localStorage.setItem('loggedinuser', xhr.responseText);
                     // Redirect to homepage
 					window.location.href = "/"
