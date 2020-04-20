@@ -8,8 +8,10 @@ const propTypes = {
 	prof: PropTypes.string.isRequired,
 };
 
-class customEvent extends React.PureComponent {
-  render() {
+class customEvent extends React.PureComponent 
+{
+  render() 
+  {
     const {
       start,
       end,

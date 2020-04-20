@@ -4,9 +4,11 @@ import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import ForgotPassword from "./ForgotPassword";
 
-class SignInApp extends React.Component{
+class SignInApp extends React.Component
+{
 
-    render() {
+    render() 
+    {
         return(
             <Switch>
                 <Route exact path="/LogIn">

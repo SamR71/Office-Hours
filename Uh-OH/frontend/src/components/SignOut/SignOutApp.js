@@ -6,9 +6,11 @@ import SignOut from "./SignOut";
 SignOutApp Serves As A Helper Application Component
 To Route The User's Attempt To Logout To The SignOut.js File.
 */
-class SignOutApp extends React.Component{
+class SignOutApp extends React.Component
+{
 
-    render() {
+    render() 
+    {
         return(
             <Route exact path="/LogOut">
 				<SignOut handleLogout={this.props.handle_logout}/>

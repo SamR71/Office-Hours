@@ -35,11 +35,13 @@ class Header extends React.Component
     redirectLogIn(currentButtonValue)
     {
         //Case 1: User Not Logged In.
-        if(currentButtonValue == "Log In"){
+        if (currentButtonValue == "Log In")
+        {
             this.props.history.push("/LogIn")
         }
         //Case 2: User Logged In + Clicked Button.
-        else{
+        else
+        {
             this.props.history.push("/LogOut");
         }
     }

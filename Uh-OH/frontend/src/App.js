@@ -25,14 +25,17 @@ class App extends Component
 	
 	//Main Driver Function That Handles User Login.
 	//Makes API Calls To Django Backend Login Application.
-	handle_login (username, password) {
+    handle_login (username, password) 
+    {
         //Sends POST Request To Backend Requesting To Log User Into Uh-OH!
 		var url = 'http://localhost:8000/login/loginuser/';
         var xhr = new XMLHttpRequest()
         xhr.onreadystatechange = function() {
         	//Case 1: Login Successful
-            if (xhr.readyState == XMLHttpRequest.DONE) {
-				if(xhr.status == 200){
+            if (xhr.readyState == XMLHttpRequest.DONE) 
+            {
+                if (xhr.status == 200)
+                {
                     alert("Successfully Logged In!");
                     //Store Login Token Return By Backend = Name of Logged In User.
 					this.setState({loggedIn: xhr.responseText});
@@ -41,7 +44,8 @@ class App extends Component
 					window.location.href = "/"
 				} 
 				//Case 2: User Login Failed + Display Error Message.
-				else{
+                else
+                {
 					alert(xhr.responseText);
 				}
             }
@@ -56,14 +60,17 @@ class App extends Component
 	
 	//Main LogOut Functionality. 
 	//Similar To Login w/ Backend API Calls Through POST Request.
-	handle_logout (username) {
+    handle_logout (username) 
+    {
         //Send POST Request To Backend Requesting User To Log Out Via Django Authentication.
 		var url = 'http://localhost:8000/login/logoutuser/';
         var xhr = new XMLHttpRequest()
         xhr.onreadystatechange = function() {
         	//Case 1: Sucessfully Logged Out.
-            if (xhr.readyState == XMLHttpRequest.DONE) {
-				if(xhr.status == 200){
+            if (xhr.readyState == XMLHttpRequest.DONE) 
+            {
+                if (xhr.status == 200)
+                {
                     alert("Successfully Logged Out!");
                     // Store login token returned by the backend
 					this.setState({loggedIn: xhr.responseText});
@@ -73,7 +80,8 @@ class App extends Component
 				}
 				//Case 2: Failed Logged Out (i.e., User Was Never Logged In?) 
 				//Display Returned Error Message From Backend
-				else{
+                else
+                {
 					alert(xhr.responseText);
 				}
             }
@@ -87,7 +95,8 @@ class App extends Component
 
 	//Main Rendering of Uh-OH! Applicaton.
 	//Routes User To Correct Pages As Indicated Below.
-	render(){
+    render()
+    {
 		return (
 			  <Router>
 				  <Switch>

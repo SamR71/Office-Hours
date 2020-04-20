@@ -8,7 +8,8 @@ The SignOut React Component Serves As The Main Component
 For Handling The Main Uh-OH! Logout Page.
 This Component Will Allow Users To Enter Their Login Data.
 */
-class SignOut extends React.Component{
+class SignOut extends React.Component
+{
 	
 	//State Stores Current User's Username To Be Logged Out.
     constructor(props) {
@@ -28,7 +29,8 @@ class SignOut extends React.Component{
 
     //Render = Main Display For Sign Out Page
     //Prompts User To Logout By Clicking Button.
-    render() {
+    render() 
+    {
         return(
 			<div class="container">
 				<div class="row">

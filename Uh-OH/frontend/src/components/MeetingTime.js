@@ -4,7 +4,8 @@ import {withRouter} from 'react-router-dom';
 /* The MeetingTime component displays information about a CourseMeetingTime object.
  * It displays the information as a string but can be modified 
  */
-class MeetingTime extends React.Component {
+class MeetingTime extends React.Component 
+{
 	// the state holds standard info of the fields of a CourseMeetingTime object
 	state = {
 		type: "",
@@ -28,7 +29,8 @@ class MeetingTime extends React.Component {
 	}
 	
 	//Main Rendering/Displaying of Meeting Time Data Under SectionModal.
-	render() {
+    render() 
+    {
 		return (
 			<div>
 			{/* The Body Content of the MeetingTime, currently displays just as text */}

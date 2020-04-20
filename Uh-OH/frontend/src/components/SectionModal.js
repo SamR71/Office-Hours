@@ -6,7 +6,8 @@ import {withRouter} from "react-router-dom";
 /* The SectionModal Component displays information about a CourseSection in a Modal Window.
  * The SectionModal displays information from the Meeting Times and Instructors. 
  */
-class SectionModal extends React.Component {
+class SectionModal extends React.Component 
+{
 	
 	//State holds the name, id, meeting times, and instructors of this section class
 	//as well as loggedin, which provides information about what account the user is logged in to...
@@ -18,7 +19,8 @@ class SectionModal extends React.Component {
 		loggedIn: ""
 	};
 	
-	constructor(props) {
+    constructor(props) 
+    {
 		super(props);
 		this.state = {name: props.name,
 						id: props.section.sectionID,
@@ -28,7 +30,8 @@ class SectionModal extends React.Component {
 	}
 	
 	//Set the loggedin state to represent the account the user is logged in with.
-	componentDidMount(){
+    componentDidMount()
+    {
 		var user = localStorage.getItem("loggedinuser");
 		this.setState({loggedIn: user});
 	}
@@ -46,7 +49,8 @@ class SectionModal extends React.Component {
     //Main Rendering of SectionModal For All Courses:
     //Contains Applicable Meeting Times, Instructor Data, + InstructorOfficeHours Data
     //As Supplied By Backend.
-	render() {
+    render() 
+    {
 		return (
 			<div>
 				{/* The button for the modal, labeled by the section number.

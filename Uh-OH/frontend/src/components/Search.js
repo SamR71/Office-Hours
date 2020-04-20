@@ -6,7 +6,8 @@ import {withRouter} from "react-router-dom";
 /*
 The Search React Component = Main Component For User's Searching Class + Office Hours.
 */
-class Search extends React.Component {
+class Search extends React.Component 
+{
 	//State Stores Courses, If Data Found, + Search Query Entered By User. 
 	state =
 	{
@@ -30,7 +31,8 @@ class Search extends React.Component {
 		return query;
 	}
 
-	async componentDidMount() {
+    async componentDidMount() 
+    {
 		try {
 			//Get URL To Send To Backend For Search API Calls.
 			var url = 'http://localhost:8000/courses/?search=';

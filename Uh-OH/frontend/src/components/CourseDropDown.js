@@ -6,7 +6,8 @@ import {withRouter} from 'react-router-dom';
  * as a drop down menu. When the course is clicked, the dropdown menu
  * is toggled to show every section of the respective course.
  */
-class CourseDropDown extends React.Component {
+class CourseDropDown extends React.Component 
+{
 	/* The State holds the name of the Course, as well as two arrays of
 	 * the Intructors and CourseSections that belongs to the Course. 
 	*/
@@ -23,7 +24,8 @@ class CourseDropDown extends React.Component {
 	}
 	
 	//Main Rendering For The Course Drop Down That Helps Display All Course Sections For A Particular Course.
-	render() {
+    render() 
+    {
 		return (
 			<div>
 				{/* The DropDown button is labeled as the name of the Course 

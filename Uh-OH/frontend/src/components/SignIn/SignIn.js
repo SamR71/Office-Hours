@@ -9,7 +9,8 @@ The SignIn React Component Serves As The Main Component
 For Handling The Main Uh-OH! Login Page.
 This Component Will Allow Users To Enter Their Login Data.
 */
-class SignIn extends React.Component{
+class SignIn extends React.Component
+{
 	
 	//State Stores Current User's Username + Password.
     constructor(props) {
@@ -42,7 +43,8 @@ class SignIn extends React.Component{
 
     //Render = Main Display For Sign In Page
     //Includes All Email + Password Fields + Buttons To Login.
-    render() {
+    render() 
+    {
         return(
 			<div class="container">
 				<div class="row">

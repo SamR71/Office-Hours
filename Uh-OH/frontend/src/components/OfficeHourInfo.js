@@ -5,7 +5,8 @@ import {withRouter} from 'react-router-dom';
  * It Displays The Information As A String, But Can Be Modified. Further, It Also Handles 
  * Adding/Removing Current Office Hour To/From The User's Schedule.
  */
-class OfficeHourInfo extends React.Component {
+class OfficeHourInfo extends React.Component 
+{
 	//The State holds information from the fields of the InstructorOfficeHour Class
 	//as well as loggedin to determine the account the User is logged in to.
 	state = {
@@ -19,7 +20,8 @@ class OfficeHourInfo extends React.Component {
         courseName: ""
 	};
 
-	constructor(props) {
+    constructor(props) 
+    {
 		super(props);
 		this.state = {dates: props.officeHour.meetDates,
 					location: props.officeHour.meetLocation,
@@ -34,13 +36,15 @@ class OfficeHourInfo extends React.Component {
 	}
     
     // adds the loggedin information to the state
-    componentDidMount(){
+    componentDidMount()
+    {
 		var user = localStorage.getItem('loggedinuser');
 		this.setState({loggedin: user});
     }
 
     //Adds The Current Office Hour To The Schedule Of The Logged In User.
-    addToSchedule(){
+    addToSchedule()
+    {
         //Send POST Request To Backend To Add Office Hour To User's Schedule.
         //That is, it will add iff the Office Hours does not already exist in the User's Schedule.
         var addURL = 'http://localhost:8000/schedules/add/';
@@ -48,7 +52,8 @@ class OfficeHourInfo extends React.Component {
     }
 
     //Removes The Current Office Hour To The Schedule Of The Logged In User.
-    removeFromSchedule(){
+    removeFromSchedule()
+    {
         //Send POST Request To Backend To Remove Office Hour From User's Schedule.
         //That is, it will remove iff the Office Hours exists in the User's Schedule.
         var removeURL = 'http://localhost:8000/schedules/remove/';
@@ -57,10 +62,12 @@ class OfficeHourInfo extends React.Component {
 
     //Common Helper Function Used By addToSchedule()/removeFromSchedule() 
     //To Send POST Request Data To The Backend.
-    runSendPOSTRequestToBackend(url){
+    runSendPOSTRequestToBackend(url)
+    {
         var xhr = new XMLHttpRequest()
         xhr.onreadystatechange = function() {
-            if (xhr.readyState == XMLHttpRequest.DONE) {
+            if (xhr.readyState == XMLHttpRequest.DONE) 
+            {
                 alert(xhr.responseText); // display results of POST request to user
             }
         }
@@ -85,18 +92,21 @@ class OfficeHourInfo extends React.Component {
     {
         event.preventDefault();
         //Case 1: Add Office Hours
-        if(clickType == "Add"){
+        if (clickType == "Add")
+        {
             this.addToSchedule();
         }
         //Case 2: Remove Office Hours
-        if(clickType == "Remove"){
+        if (clickType == "Remove")
+        {
             this.removeFromSchedule();
         }
 
     }
 
     //Main Rendering Function For Display Of Buttons:
-	render() {
+    render() 
+    {
 		return (
 			<div>
 				{/* The Body Content of the OfficeHourInfo component */}

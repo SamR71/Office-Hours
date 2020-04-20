@@ -39,13 +39,13 @@ class Home extends React.Component
 	    xhr1.addEventListener("load", () => {
 	        //Updates the State of the Component with the result here.
 	        schedule = xhr1.responseText;
-	        if(schedule !== "")
+	        if (schedule !== "")
 	        {
 	        	//Special Formatting of the returned string supplied by the POST Request from Backend.
 	        	let finalOfficeHours = [];
                 //Office Hours Are Spilt By Commas...
 	        	let arr = schedule.split(",");
-	        	for(let i = 1; i < arr.length; i++)
+	        	for (let i = 1; i < arr.length; i++)
 		        {
                     let strs = arr[i].split(" + ");
                     let courseName = strs[0]
@@ -66,14 +66,14 @@ class Home extends React.Component
 	        //Updates the State of the Component with the result here.
 	        hours = xhr2.responseText;
 			console.log(hours);
-			if(hours !== "")
+			if (hours !== "")
 	        {
 	        	//Special Formatting of the returned string supplied by the POST Request from Backend.
 	        	let finalHours = [];
                 //Office Hours Are Spilt By Commas...
 	        	let arr = hours.split(",");
 				console.log(arr);
-	        	for(let i = 0; i < arr.length; i++)
+	        	for (let i = 0; i < arr.length; i++)
 		        {
 		        	let strs = arr[i];
 					let allstr = strs.split(" + ");

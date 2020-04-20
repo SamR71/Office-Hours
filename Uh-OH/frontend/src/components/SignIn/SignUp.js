@@ -7,7 +7,8 @@ For New Users Joining Uh-OH!
 The Component Will Display Fields/Data For The User To Specify
 So That They Can Login After This Point On ...
 */
-class SignUp extends React.Component{
+class SignUp extends React.Component
+{
 
     //State Stores Key user Information To Provide Backend For Saving Data.
     constructor(props)
@@ -35,9 +36,11 @@ class SignUp extends React.Component{
         var xhr = new XMLHttpRequest()
         xhr.onreadystatechange = function() {
             //Case 1: Successful Register
-            if (xhr.readyState == XMLHttpRequest.DONE) {
+            if (xhr.readyState == XMLHttpRequest.DONE) 
+            {
                 alert(xhr.responseText);
-                if (xhr.responseText == "Registration Successful!") {
+                if (xhr.responseText == "Registration Successful!") 
+                {
                     window.location.href = "/LogIn"
                 }
             }
@@ -64,7 +67,8 @@ class SignUp extends React.Component{
     //Main React Displaying of Sign Up Page:
     //Contains Full Name, Email, Passsword, Repeat Password Fields
     //+ Join Uh-OH! Button ...
-    render(){
+    render()
+    {
         return(
 			<div class="container">
 				<div class="row">

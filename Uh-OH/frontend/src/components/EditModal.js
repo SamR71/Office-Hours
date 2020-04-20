@@ -4,7 +4,8 @@ import {withRouter} from "react-router-dom";
 /* The EditModal Component Displays Office Hours Data Pertinent 
  * To Currently Logged In User. 
  */
-class EditModal extends React.Component {
+class EditModal extends React.Component 
+{
 	
 	
 	//State Holds All Data For The Desired Office Hour To Be Updated
@@ -30,7 +31,8 @@ class EditModal extends React.Component {
 	};
 	
 	//Constructor That Creates Edit Modal Based On Properties Passed In.
-	constructor(props) {
+    constructor(props) 
+    {
 		super(props);
 		this.state = {name: props.hour.course,
 						instructorType: props.hour.instructorType,
@@ -56,7 +58,8 @@ class EditModal extends React.Component {
 	}
 	
 	//Set the loggedin state to represent the account the user is logged in with.
-	componentDidMount(){
+    componentDidMount()
+    {
 		var user = localStorage.getItem("loggedinuser");
 		this.setState({loggedin: user});
 	}
@@ -101,29 +104,34 @@ class EditModal extends React.Component {
     }
 	
 	//Reacts To Clicks To Update Start Time.
-	handleChangeStart(event) {
+    handleChangeStart(event) 
+    {
 		this.setState({newstart: event.target.value});
 	}
 
 	//Reacts To Clicks To Update End Time.
-	handleChangeEnd(event) {
+    handleChangeEnd(event) 
+    {
 		this.setState({newend: event.target.value});
 	}
 	
 	//Reacts To Clicks To Update Dates.
-	handleChangeDay(event) {
+    handleChangeDay(event) 
+    {
 		this.setState({newday: event.target.value});
 	}
 	
 	//Reacts To Clicks To Update Location.
-	handleChangePlace(event) {
+    handleChangePlace(event) 
+    {
 		this.setState({newplace: event.target.value});
 	}
 	
     //Main Rendering of EditModal For All Courses:
     //Contains Applicable Meeting Times, Instructor Data, + InstructorOfficeHours Data
     //As Supplied By Backend.
-	render() {
+    render() 
+    {
 		return (
 			<div>
 				{/* The button for the modal, labeled by the section number.

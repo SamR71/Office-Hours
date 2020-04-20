@@ -6,7 +6,8 @@ The ForgotPassword Component Represents The Component
 That Will Be Triggered In The Case The User Forgets Their Password
 + Desires To Reset Its Value.
 */
-class ForgotPassword extends React.Component{
+class ForgotPassword extends React.Component
+{
 
     //State Stores Email Address of Current User.
     constructor(props)

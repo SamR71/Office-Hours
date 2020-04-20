@@ -65,13 +65,13 @@ class Schedule extends React.Component
 		let intervals = [];
 		let officeHour = "";
 		//Loop Over All Office Hours To Turn Into Intervals:
-		for(let i = 1; i < this.state.rawData.length; i++)
+		for (let i = 1; i < this.state.rawData.length; i++)
 		{
 			officeHour = this.state.rawData[i];
 			const info = officeHour.split(" + ");
 			const days = info[3].split("");
 
-			for(let j = 0; j < days.length; j++)
+			for (let j = 0; j < days.length; j++)
 			{
 				const start = moment(info[4], "LT").day(this.numDay(days[j]));
 				const end = moment(info[5], "LT").day(this.numDay(days[j]));
@@ -112,7 +112,6 @@ class Schedule extends React.Component
 	//Primary Rendering of User Schedule:
     render()
     {
-
         return(
             <div>
                 <WeekCalendar

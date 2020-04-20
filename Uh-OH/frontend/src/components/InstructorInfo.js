@@ -6,7 +6,8 @@ import {withRouter} from 'react-router-dom';
  * It displays the information as a string but can be modified. It also uses
  * OfficeHourInfo components to display the current instructor's InstructorsOfficeHours
  */
-class InstructorInfo extends React.Component {
+class InstructorInfo extends React.Component 
+{
 	//State holds the fields of an Instructor object, as well as an array of InstructorOfficeHours.
 	state = {
 		type: "",
@@ -17,18 +18,21 @@ class InstructorInfo extends React.Component {
 	};
 	
 	
-	constructor(props) {
+    constructor(props) 
+    {
 		super(props);
 		// Change the "P" or "T" that represents the type to a full readable string.
 		let fullType = "Professor";
-		if(props.instructor.iType == "T"){
+        if (props.instructor.iType == "T")
+        {
 			fullType="TA";
 		}
 		//If the name starts with "Professor", remove it...
 		//Used To Extract Instructor Type + Name Separately + Store Separrately.
 		//For example, "Professor First Last" becomes just "First Last".
 		let newName = props.instructor.iName;
-		if(newName.indexOf("Professor") == 0){
+        if (newName.indexOf("Professor") == 0)
+        {
 			newName = newName.substring(10);
 		}
 		//Update State Values:
@@ -40,7 +44,8 @@ class InstructorInfo extends React.Component {
     }
     
     //Adds All Office Hours For This Instructor To User Schedule At Once
-    addToSchedule(){
+    addToSchedule()
+    {
     	//Simple For Loop Through All Office Hour Data:
         this.state.officeHours.forEach(function(officehour){
             officehour.addToSchedule()
@@ -49,7 +54,8 @@ class InstructorInfo extends React.Component {
 	
 	//Main Rendering For Each Instructor Information + Office Hours:
 	//To Be Displayed Under SectionModal From SectionModal.js.
-	render() {
+    render() 
+    {
 		return (
 			<div>
 			{/* The Body Content For InstructorInfo, Displays Information As Text*/}
