@@ -83,7 +83,7 @@ class Schedule extends React.Component
 			}
 		}
 		//Update Event Intervals:
-		this.setState({eventIntervals: intervals})
+		this.setState({eventIntervals: intervals});
 	}
 
 	//Helper Function:
@@ -104,8 +104,10 @@ class Schedule extends React.Component
 				return 5;
 			case "S":
 				return 6;
-			default:
+			case "U":
 				return 7;
+			default: 
+				return -1;
 		}
 	}
 

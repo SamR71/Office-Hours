@@ -69,6 +69,25 @@ class EditModal extends React.Component
     {
         event.preventDefault();
 		
+		//Error Checking For New Days of Week:
+		const days = this.state.newday.split("")
+		//Error Checking For Days of Week Entered By User:
+		let visitedDaysOfWeek = [];
+		for (let j = 0; j < days.length; j++){
+			//Invalid Day Specified:
+			if (days[j] != 'M' && days[j] != 'T' && days[j] != 'W' && days[j] != 'R' && days[j] != 'F' && days[j] != 'S' && days[j] != 'U')
+			{
+				alert("Error: Day of Week Must Be Only: M = Monday, T = Tuesday, W = Wednesday, R = Thursday, F = Friday, S = Saturday, U = Sunday. Try Again.");
+				return;
+			}
+			//Already Specified Day:
+			if(visitedDaysOfWeek.includes(days[j])){
+				alert("Error: Current Day of Week " + days[j] + " Specified More Than Once. Try Again.");
+				return;
+			}
+			visitedDaysOfWeek.push(days[j]);
+		}
+
 		//Backend URL For Updating SQLite3 Database Object For Office Hours.
 		let url1 = "http://localhost:8000/update/";
 		//Backend URL For Updating User Schedules That Contain The Old Office Hours.
@@ -178,7 +197,7 @@ class EditModal extends React.Component
 							<h3>{"Location: " + this.state.place}</h3>
 							{" Edit:  "} 
 							<input type="text" value={this.state.newplace} onChange={this.handleChangePlace} />
-							<h3>{"Days: " + this.state.day}</h3>
+							<h3>{"Days (Must Be Only MTWRFSU): " + this.state.day}</h3>
 							{" Edit:  "} 
 							<input type="text" value={this.state.newday} onChange={this.handleChangeDay} />
 							</div>
