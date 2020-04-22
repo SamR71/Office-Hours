@@ -62,7 +62,7 @@ def userRegister(request):
     #Check For Existing User In Django User Objects To Ensure User Is New.
     try:
         user = User.objects.get(username=username)
-    except user.DoesNotExist:
+    except User.DoesNotExist:
         user = User.objects.create_user(username, username, password)
         user.save()
         return HttpResponse("Registration Successful!", content_type="text/plain", status=200)
