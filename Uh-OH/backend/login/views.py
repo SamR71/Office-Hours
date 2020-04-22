@@ -50,13 +50,21 @@ def userRegister(request):
     name = request.data.get("fullName")
     # Verify User Has @rpi.edu Email.
     if username[len(username)-7:len(username)] != "rpi.edu" or "@" not in username:
-        print("not an rpi email\n")
-        return Response('Invalid email: Must be an emailing ending in rpi.edu', status=422)
+        print("Not An RPI Email\n")
+        return HttpResponse("Invalid Email: Must Be An Email Ending in rpi.edu + Must Contain @", content_type="text/plain", status=422)
     #Verify Matching Passwords:
     if password != repeatPassword:
-        print("passwords do not match\n")
-        return Response('Passwords do not match', status=422)
+        print("Passwords Do Not Match\n")
+        return Response("Passwords Do Not Match", status=422)
+    if len(password) == 0:
+        return HttpResponse("Must Specify A Valid Password.", content_type="text/plain", status=422)
     #Create User Account + Add To User Database.
-    user = User.objects.create_user(username, username, password)
-    user.save()
-    return HttpResponse("Registration Successful!", content_type="text/plain", status=200)
+    #Check For Existing User In Django User Objects To Ensure User Is New.
+    try:
+        user = User.objects.get(username=username)
+    except user.DoesNotExist:
+        user = User.objects.create_user(username, username, password)
+        user.save()
+        return HttpResponse("Registration Successful!", content_type="text/plain", status=200)
+    #User Account Already Exists:
+    return HttpResponse("Error: Registration Unsucessful. Account w/ Same Username Already Exists.", content_type="text/plain", status=422)
