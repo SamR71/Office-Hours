@@ -8,16 +8,6 @@ import {withRouter} from 'react-router-dom';
  */
 class InstructorInfo extends React.Component 
 {
-	//State holds the fields of an Instructor object, as well as an array of InstructorOfficeHours.
-	state = {
-		type: "",
-		name: "",
-		email: "",
-		officeHours: "",
-		courseName: "",
-	};
-	
-	
     constructor(props) 
     {
 		super(props);

@@ -10,12 +10,6 @@ To View All Their Office Hours Data.
 */
 class Schedule extends React.Component
 {
-
-	//State Stores Currently Logged In User, OR "" If Not Applicable.
-    state = {
-        loggedIn: ""
-    };
-    
     //Initializes All Helper Functions/State Releated Data.
     constructor(props)
 	{

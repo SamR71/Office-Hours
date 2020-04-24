@@ -8,14 +8,6 @@ import {withRouter} from 'react-router-dom';
  */
 class CourseDropDown extends React.Component 
 {
-	/* The State holds the name of the Course, as well as two arrays of
-	 * the Intructors and CourseSections that belongs to the Course. 
-	*/
-	state = {
-		name: "",
-		sections: [],
-		instructors: [],
-	};
 
 	//Initializes State Variables Based on props Passed In...
 	constructor(props) {
@@ -30,7 +22,7 @@ class CourseDropDown extends React.Component
 			<div>
 				{/* The DropDown button is labeled as the name of the Course 
 					and assigned to toggle the collapsable dropdown menu */}
-				<a  class="btn btn-link"
+				<a  className="btn btn-link"
 					data-toggle="collapse"
 					href={"#collapseCourse"+this.state.name}
 					role="button" aria-expanded="false"
@@ -41,8 +33,8 @@ class CourseDropDown extends React.Component
 				{/* The DropDown Content that displays each section of the Course.
 					Each SectionModal must be given the name of the course as well as
 					the CourseSection class itself and the array of instructors. */}
-				<div class="collapse" id={"collapseCourse"+this.state.name}>
-					<div class="card card-body">
+				<div className="collapse" id={"collapseCourse"+this.state.name}>
+					<div className="card card-body">
 						{	//Each Section is mapped to a <div> class with its ID as the key, and mapped to a SectionModal.
 							this.state.sections.map(item => (
 							<div key={item.id}>

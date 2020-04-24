@@ -71,33 +71,33 @@ class Header extends React.Component
         };
 
         return (
-             <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style={headerStyle}>
-                <a class="navbar-brand" href="">
+             <nav className="navbar navbar-expand-lg navbar-dark bg-dark" style={headerStyle}>
+                <a className="navbar-brand" href="">
                     <img onClick={this.redirectHome} style={logoStyle} src={logo} alt="Uh-OH! Logo" height="75" width="75" />
                 </a>
-                <button class="navbar-toggler"
+                <button className="navbar-toggler"
                         type="button"
                         data-toggle="collapse"
                         data-target="#navbarSupportedContent"
                         aria-controls="navbarSupportedContent"
                         aria-expanded="false"
                         aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+                    <span className="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="navbar-collapse collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav mr-auto">
+                <div className="navbar-collapse collapse" id="navbarSupportedContent">
+                    <ul className="navbar-nav mr-auto">
                     
                     </ul>
-                    <form class="mx-2 my-auto d-inline w-100">
-                        <div class="input-group">
-                            <input class="form-control"
+                    <form className="mx-2 my-auto d-inline w-100">
+                        <div className="input-group">
+                            <input className="form-control"
                                    type="search"
                                    placeholder="Search For Your Courses..."
                                    aria-label="Search"
                                    onClick={this.redirectSearch}
                                    name="course_search_bar"/>
-                            <span class="input-group-append">
+                            <span className="input-group-append">
                                 <button onClick={() => this.redirectLogIn(this.state.displayLogInButton)} className="btn btn-light ml-3" type="button">{this.state.displayLogInButton}</button>;
                             </span>
                         </div>

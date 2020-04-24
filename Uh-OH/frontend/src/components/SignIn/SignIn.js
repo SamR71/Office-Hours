@@ -46,37 +46,37 @@ class SignIn extends React.Component
     render() 
     {
         return(
-			<div class="container">
-				<div class="row">
-					<div class="col-md-5 mx-auto">
-						<div class="myform form ">
+			<div className="container">
+				<div className="row">
+					<div className="col-md-5 mx-auto">
+						<div className="myform form ">
 							{/*Main Login Header:*/}
-							<div class="logo mb-3">
-								<div class="col-md-12 text-center">
+							<div className="logo mb-3">
+								<div className="col-md-12 text-center">
 									<h1>Official Uh-OH! Login</h1>
 								</div>
 							</div>
 							<form action="" method="post" name="login">
 								{/*All Form Data Specifiying User Information = Username + Password*/}
-								<div class="form-group">
-									<label for="exampleInputEmail1">Email Address:</label>
-									<input type="email" name="userName"  class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter Email Address" onChange={this.handleChange}/>
+								<div className="form-group">
+									<label htmlFor="exampleInputEmail1">Email Address:</label>
+									<input type="email" name="userName"  className="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter Email Address" onChange={this.handleChange}/>
 								</div>
-								<div class="form-group">
-									<label for="exampleInputEmail1">Password:</label>
-									<input type="password" name="password" id="password"  class="form-control" aria-describedby="emailHelp" placeholder="Enter Password" onChange={this.handleChange}/>
+								<div className="form-group">
+									<label htmlFor="exampleInputEmail1">Password:</label>
+									<input type="password" name="password" id="password"  className="form-control" aria-describedby="emailHelp" placeholder="Enter Password" onChange={this.handleChange}/>
 								</div>
-								<div class="col-md-12 text-center ">
-									<button onClick={this.handleClick} class=" btn btn-block mybtn btn-primary tx-tfm">Login</button>
+								<div className="col-md-12 text-center ">
+									<button onClick={this.handleClick} className=" btn btn-block mybtn btn-primary tx-tfm">Login</button>
 								</div>
-								<div class="col-md-12 ">
-									<div class="login-or">
-										<hr class="hr-or"/>
+								<div className="col-md-12 ">
+									<div className="login-or">
+										<hr className="hr-or"/>
 									</div>
 								</div>
 								{/*Unregistered User.*/}
-								<div class="form-group">
-									<p class="text-center">Don't Have An Uh-OH! Account? <a href="/LogIn/CreateAccount" id="signup">Please Sign Up Here!</a></p>
+								<div className="form-group">
+									<p className="text-center">Don't Have An Uh-OH! Account? <a href="/LogIn/CreateAccount" id="signup">Please Sign Up Here!</a></p>
 								</div>
 							</form>
 						</div>

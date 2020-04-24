@@ -32,18 +32,18 @@ class SignOut extends React.Component
     render() 
     {
         return(
-			<div class="container">
-				<div class="row">
-					<div class="col-md-5 mx-auto">
-						<div class="myform form ">
-							<div class="logo mb-3">
-								<div class="col-md-12 text-center">
+			<div className="container">
+				<div className="row">
+					<div className="col-md-5 mx-auto">
+						<div className="myform form ">
+							<div className="logo mb-3">
+								<div className="col-md-12 text-center">
 									<h1>Hello {this.state.userName}!</h1>
                                     <h4>Would You Like To Logout?</h4>
 								</div>
 								<br></br>
-								<div class="col-md-12 text-center ">
-									<button onClick={this.handleClick} class=" btn btn-block mybtn btn-primary tx-tfm">Logout</button>
+								<div className="col-md-12 text-center ">
+									<button onClick={this.handleClick} className=" btn btn-block mybtn btn-primary tx-tfm">Logout</button>
 								</div>
 							</div>
 						</div>

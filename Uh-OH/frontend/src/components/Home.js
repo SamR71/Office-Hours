@@ -120,14 +120,14 @@ class Home extends React.Component
         };
 
         return(
-            <div style={homePageStyle} class="container-fluid">
-                <div class="row justify-content-center">
-                    <div class="col-xl-9 mr-5">
+            <div style={homePageStyle} className="container-fluid">
+                <div className="row justify-content-center">
+                    <div className="col-xl-9 mr-5">
                         <h2>My Schedule:</h2>
                         <Schedule />
                         <br></br>
                         <h2>Office Hours:</h2>
-                        <p>{this.state.officeHours == "N/A" || this.state.officeHours == "" ? "Hello! Login and Search For Office Hours To Display Them Here." : this.state.officeHours.map(item => <ul>{item}</ul>)}</p><br></br>
+                        <p>{this.state.officeHours == "N/A" || this.state.officeHours == "" ? "Hello! Login and Search For Office Hours To Display Them Here." : this.state.officeHours.map(item => <ul key={item.id}>{item}</ul>)}</p><br></br>
                         <h2>My Sections:</h2>
                         {this.state.instructorHours == "N/A" ? "You Currently Do Not Run Any Office Hours": this.state.instructorHours.map(item => (
                             <div key={item.strrep}>

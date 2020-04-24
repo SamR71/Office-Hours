@@ -6,15 +6,6 @@ import {withRouter} from 'react-router-dom';
  */
 class MeetingTime extends React.Component 
 {
-	// the state holds standard info of the fields of a CourseMeetingTime object
-	state = {
-		type: "",
-		dates: "",
-		instructor: "",
-		startTime: "",
-		endTime: "",
-	};
-	
 	//Constructor:
 	//State Stores All Meeting Time Attributes (i.e., meetType = Lecture, Recitation, Lab, ... 
 	//meetDates = MTWRF, ..., meetInstructor = Instructor, meetStartTime = 10:00 AM, ...,

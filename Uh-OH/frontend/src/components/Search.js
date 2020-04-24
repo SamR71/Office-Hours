@@ -8,13 +8,16 @@ The Search React Component = Main Component For User's Searching Class + Office 
 */
 class Search extends React.Component 
 {
-	//State Stores Courses, If Data Found, + Search Query Entered By User. 
-	state =
+    constructor(props)
 	{
-		courses: [],
-		results: false,
-		search: "",
-	};
+        super(props);
+        this.state =
+        {
+            courses: [],
+		    results: false,
+		    search: "",
+        };
+    }
 	
 	//Helper Function:
 	//Formats Search Query Appropriately.

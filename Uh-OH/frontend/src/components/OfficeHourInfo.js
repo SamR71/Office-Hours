@@ -7,19 +7,6 @@ import {withRouter} from 'react-router-dom';
  */
 class OfficeHourInfo extends React.Component 
 {
-	//The State holds information from the fields of the InstructorOfficeHour Class
-	//as well as loggedin to determine the account the User is logged in to.
-	state = {
-		dates: "",
-		location: "",
-		startTime: "",
-        endTime: "",
-        loggedIn: '',
-        instructorName: "",
-        instructorType: "",
-        courseName: ""
-	};
-
     constructor(props) 
     {
 		super(props);
@@ -115,8 +102,8 @@ class OfficeHourInfo extends React.Component
                 {/* For more info on customizing and adding functionality:
 					https://react-bootstrap.github.io/components/buttons/ */}
 				{/*These Are The Buttons To Add/Remove Instructor Office Hours To The User Schedule */}
-				<button onClick={(event) => this.handleClick(event, "Add")} type="button" class="btn btn-sm btn-outline-primary">Add</button>
-                {<button onClick={(event) => this.handleClick(event, "Remove")} type="button" class="btn btn-sm btn-outline-primary">Remove</button>}
+				<button onClick={(event) => this.handleClick(event, "Add")} type="button" className="btn btn-sm btn-outline-primary">Add</button>
+                {<button onClick={(event) => this.handleClick(event, "Remove")} type="button" className="btn btn-sm btn-outline-primary">Remove</button>}
             </div>
 		);
 	}
