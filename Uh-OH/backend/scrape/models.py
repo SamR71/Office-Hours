@@ -3,14 +3,14 @@ from django.core.validators import MinLengthValidator
 
 # Create your models here.
 class Search(models.Model):
-    searchValue = models.CharField(max_length=500)
-    createTime = models.DateTimeField(auto_now=True)
+	searchValue = models.CharField(max_length=500)
+	createTime = models.DateTimeField(auto_now=True)
 
-    class Meta:
-        verbose_name_plural = 'Searches'
+	class Meta:
+		verbose_name_plural = 'Searches'
 
-    def __str__(self):
-        return self.searchValue
+	def __str__(self):
+		return self.searchValue
 
 class Course(models.Model):
 	"""Course Class represents a single course as its courseName."""
@@ -37,7 +37,7 @@ class CourseSection(models.Model):
 	class Meta:
 		verbose_name = 'Course Section'
 		verbose_name_plural = 'Course Sections'
-        
+		
 	currentCourse = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='sections')
 	sectionID = models.CharField(validators=[MinLengthValidator(2)], max_length = 2)
 
@@ -52,7 +52,7 @@ class CourseMeetingTime(models.Model):
 	class Meta:
 		verbose_name = 'Course Meeting Time'
 		verbose_name_plural = 'Course Meeting Times'
-        
+		
 	meetSection = models.ForeignKey(CourseSection, on_delete=models.CASCADE, related_name='courseMeetingTimes')
 	meetType = models.CharField(max_length=3)
 	meetDates = models.CharField(max_length=7)
@@ -96,7 +96,7 @@ class InstructorOfficeHours(models.Model):
 	class Meta:
 		verbose_name = 'Instructor Office Hour'
 		verbose_name_plural = 'Instructor Office Hours'
-    
+	
 	meetInstructor = models.ForeignKey(Instructor, on_delete=models.CASCADE, related_name='iOfficeHours')
 	meetStartTime = models.CharField(max_length=7)
 	meetEndTime = models.CharField(max_length=7)

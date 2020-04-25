@@ -10,43 +10,43 @@ To View All Their Office Hours Data.
 */
 class Schedule extends React.Component
 {
-    //Initializes All Helper Functions/State Releated Data.
-    constructor(props)
+	//Initializes All Helper Functions/State Releated Data.
+	constructor(props)
 	{
-        super(props);
-        this.state =
-        {
-            rawData: [],
-            eventIntervals: [],
-        };
-        this.helpFormatStrings = this.helpFormatStrings.bind(this);
-        this.numDay = this.numDay.bind(this);
-    }
+		super(props);
+		this.state =
+		{
+			rawData: [],
+			eventIntervals: [],
+		};
+		this.helpFormatStrings = this.helpFormatStrings.bind(this);
+		this.numDay = this.numDay.bind(this);
+	}
 
-    //Main Mounting Function To Real-Time Update + Retrive + Display User Schedule Data.
-    async componentDidMount()
+	//Main Mounting Function To Real-Time Update + Retrive + Display User Schedule Data.
+	async componentDidMount()
 	{
-        //Retrieves Login Token = Current Logged In User.
-        var user = localStorage.getItem("loggedinuser");
-        
+		//Retrieves Login Token = Current Logged In User.
+		var user = localStorage.getItem("loggedinuser");
+		
 		//Send GET Request To Obtain User Schedule Data.
-        let schedule = null;
-        let url = "http://localhost:8000/schedules/get/";
-        let xhr = new XMLHttpRequest();
+		let schedule = null;
+		let url = "http://localhost:8000/schedules/get/";
+		let xhr = new XMLHttpRequest();
 
-        //Get A Callback When Backend Server Responds.
-	    xhr.addEventListener("load", () => {
-	        //Update the State of the Component with the result here.
-	        schedule = xhr.responseText;
-		    this.setState({rawData: schedule.split(",")});
-		    this.helpFormatStrings();
-	    });
+		//Get A Callback When Backend Server Responds.
+		xhr.addEventListener("load", () => {
+			//Update the State of the Component with the result here.
+			schedule = xhr.responseText;
+			this.setState({rawData: schedule.split(",")});
+			this.helpFormatStrings();
+		});
 
-        xhr.open("POST", url);
-        const form = new FormData();
-        //Send Along Login Token.
-        form.set("user",user);
-        xhr.send(form);
+		xhr.open("POST", url);
+		const form = new FormData();
+		//Send Along Login Token.
+		form.set("user",user);
+		xhr.send(form);
 	}
 
 	//Helper Function:
@@ -106,27 +106,27 @@ class Schedule extends React.Component
 	}
 
 	//Primary Rendering of User Schedule:
-    render()
-    {
-        return(
-            <div>
-                <WeekCalendar
-                    firstDay = {moment().day(1)}
-                    startTime = {moment({h:8, m:0})}
-                    endTime = {moment({h:20, m:0})}
-                    scaleUnit = {60}
-                    scaleFormat = {"h:mm a"}
-                    dayFormat = {"dd."}
-                    cellHeight = {40}
-                    numberOfDays = {7}
-                    useModal = {false}
-                    eventSpacing = {0}
-                    selectedIntervals = {this.state.eventIntervals}
-                    eventComponent = {customEvent}
-                    />
-            </div>
-        );
-    }
+	render()
+	{
+		return(
+			<div>
+				<WeekCalendar
+					firstDay = {moment().day(1)}
+					startTime = {moment({h:8, m:0})}
+					endTime = {moment({h:20, m:0})}
+					scaleUnit = {60}
+					scaleFormat = {"h:mm a"}
+					dayFormat = {"dd."}
+					cellHeight = {40}
+					numberOfDays = {7}
+					useModal = {false}
+					eventSpacing = {0}
+					selectedIntervals = {this.state.eventIntervals}
+					eventComponent = {customEvent}
+					/>
+			</div>
+		);
+	}
 }
 
 export default Schedule;

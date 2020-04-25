@@ -16,8 +16,8 @@ class CourseDropDown extends React.Component
 	}
 	
 	//Main Rendering For The Course Drop Down That Helps Display All Course Sections For A Particular Course.
-    render() 
-    {
+	render() 
+	{
 		return (
 			<div>
 				{/* The DropDown button is labeled as the name of the Course 

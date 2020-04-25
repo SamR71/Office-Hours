@@ -27,15 +27,15 @@ a{
 }
 
 .btn-primary {
-    color: #fff;
-    background-color: #d6001c;
-    border-color: #8a090a;
+	color: #fff;
+	background-color: #d6001c;
+	border-color: #8a090a;
 }
 
 .btn:hover {
-    color: #fff;
-    background-color: #d64755;
-    border-color: #8a090a;
+	color: #fff;
+	background-color: #d64755;
+	border-color: #8a090a;
 }
 
 .login-or {

@@ -8,16 +8,16 @@ The Search React Component = Main Component For User's Searching Class + Office 
 */
 class Search extends React.Component 
 {
-    constructor(props)
+	constructor(props)
 	{
-        super(props);
-        this.state =
-        {
-            courses: [],
-		    results: false,
-		    search: "",
-        };
-    }
+		super(props);
+		this.state =
+		{
+			courses: [],
+			results: false,
+			search: "",
+		};
+	}
 	
 	//Helper Function:
 	//Formats Search Query Appropriately.
@@ -34,8 +34,8 @@ class Search extends React.Component
 		return query;
 	}
 
-    async componentDidMount() 
-    {
+	async componentDidMount() 
+	{
 		try {
 			//Get URL To Send To Backend For Search API Calls.
 			var url = 'http://localhost:8000/courses/?search=';
@@ -65,7 +65,7 @@ class Search extends React.Component
 				search: this.formatSearchQuery(query)
 			});
 		}
-		 catch(e){
+		catch(e){
 			console.log(e);
 		}
 	}
