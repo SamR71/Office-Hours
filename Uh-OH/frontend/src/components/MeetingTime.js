@@ -10,7 +10,8 @@ class MeetingTime extends React.Component
 	//State Stores All Meeting Time Attributes (i.e., meetType = Lecture, Recitation, Lab, ... 
 	//meetDates = MTWRF, ..., meetInstructor = Instructor, meetStartTime = 10:00 AM, ...,
 	//meetEndTime = 12:00 PM, ... )
-	constructor(props) {
+	constructor(props)
+	{
 		super(props);
 		this.state = {type: props.meeting.meetType,
 					dates: props.meeting.meetDates,

@@ -12,7 +12,8 @@ class SignOut extends React.Component
 {
 	
 	//State Stores Current User's Username To Be Logged Out.
-	constructor(props) {
+	constructor(props)
+	{
 		super(props);
 		this.state = {
 			userName: localStorage.getItem("loggedinuser"),
