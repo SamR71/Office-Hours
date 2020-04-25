@@ -37,25 +37,25 @@ class ParserForCourse(object):
 			allTableRows = currentTable.find_all('tr')
 			for currentRow in allTableRows:
 				#Read Each Column Value From Row:
-			    allTableColumns = currentRow.find_all('td')
-			    allTableColumns = [currentColumn.text.strip() for currentColumn in allTableColumns]
-			    currentData = [currentColumn for currentColumn in allTableColumns]
-			    #Check If Data Exists.
-			    if(len(currentData) != 0):
-			    	#Assert Data Is The Same.
-			    	if(len(currentData) == 14):
-				    	if(currentData[1] != ""):
-				    		#Special Case Accounting For Error In Website Format:
-					    	if(currentData[1] == "MULTIVAR CALC & MATRIX ALG"):
-					    		currentData[1] = "MULTIVAR CALC & MATRIX ALGEBRA"
-					    	prevCourseData = currentData
-				    	else:
-				    		#Optimization For "" Course Names To Take Name + Abbrev From Previous Course.
-				    		if(prevCourseData != None):
-				    			currentData[0] = prevCourseData[0]
-				    			currentData[1] = prevCourseData[1]
-				    	#Append Data To self.allCourseData.
-				    	self.allCourseData.append(currentData)
+				allTableColumns = currentRow.find_all('td')
+				allTableColumns = [currentColumn.text.strip() for currentColumn in allTableColumns]
+				currentData = [currentColumn for currentColumn in allTableColumns]
+				#Check If Data Exists.
+				if(len(currentData) != 0):
+					#Assert Data Is The Same.
+					if(len(currentData) == 14):
+						if(currentData[1] != ""):
+							#Special Case Accounting For Error In Website Format:
+							if(currentData[1] == "MULTIVAR CALC & MATRIX ALG"):
+								currentData[1] = "MULTIVAR CALC & MATRIX ALGEBRA"
+							prevCourseData = currentData
+						else:
+							#Optimization For "" Course Names To Take Name + Abbrev From Previous Course.
+							if(prevCourseData != None):
+								currentData[0] = prevCourseData[0]
+								currentData[1] = prevCourseData[1]
+						#Append Data To self.allCourseData.
+						self.allCourseData.append(currentData)
 
 #---------------------------------------------------------------------------------------------------
 
@@ -865,23 +865,23 @@ class Scrape(object):
 #Invokes Appropriate Scrape Objects.
 def main():
 	#Error Checking For # of Arguments:
-    if(len(sys.argv) < 2):
-    	print("Incorrect Number of Arguments.")
-    	return
-    else:
-    	scrapeValue = int(sys.argv[1])
-    	currentScrape = Scrape()
-    	#"0" = Scrape Spring 2020 Course Data
-    	if(scrapeValue == 0):
-    		print("Start of Scrape Spring 2020 Course Data.")
-    		currentScrape.scrapeSpring2020Courses()
-    		print("Termination of Scrape Spring 2020 Course Data.")
-    	#"!=0" = Scrape Spring 2019 Syllabus Data
-    	else:
-    		print("Start of Scrape Spring 2019 Office Hours Data.")
-    		currentScrape.scrapeSpring2019OfficeHours()
-    		print("Termination of Scrape Spring 2019 Office Hours Data.")
+	if(len(sys.argv) < 2):
+		print("Incorrect Number of Arguments.")
+		return
+	else:
+		scrapeValue = int(sys.argv[1])
+		currentScrape = Scrape()
+		#"0" = Scrape Spring 2020 Course Data
+		if(scrapeValue == 0):
+			print("Start of Scrape Spring 2020 Course Data.")
+			currentScrape.scrapeSpring2020Courses()
+			print("Termination of Scrape Spring 2020 Course Data.")
+		#"!=0" = Scrape Spring 2019 Syllabus Data
+		else:
+			print("Start of Scrape Spring 2019 Office Hours Data.")
+			currentScrape.scrapeSpring2019OfficeHours()
+			print("Termination of Scrape Spring 2019 Office Hours Data.")
 
 #Invoke Main Driver Function main():
 if __name__ == "__main__":
-    main()
+	main()

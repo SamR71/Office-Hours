@@ -41,23 +41,23 @@ class CourseAPIView(generics.ListCreateAPIView):
 @api_view(['POST'])
 @parser_classes([MultiPartParser, FormParser])
 def InstructorAPIView(request):
-    #Extract Username of Logged In User.
-    print("Logged In User: " + str(request.data.get("user")))
-    username = request.data.get("user")
-    if(username == ''):
-        return HttpResponse("", content_type="text/plain", status=403)
-    #Extract All Existing Instructor Office Hours:
-    allExistingOH = InstructorOfficeHours.objects.filter(meetInstructor__iEmail=username)
-    resultOHData = "";
-    for k in range(0, len(allExistingOH)):
-    	currentOH = allExistingOH[k]
-    	#Append Object ID For Frontend To Maintain.
-    	resultOHData += str(currentOH) + " + " + str(currentOH.id)
-    	#Separate OH Data By ", " For Frontend To Easily Extract.
-    	if(k != len(allExistingOH)-1):
-    		resultOHData += ", "
-    #Return Sucesss:
-    return HttpResponse(resultOHData, content_type="text/plain", status=200) # Return user's schedule
+	#Extract Username of Logged In User.
+	print("Logged In User: " + str(request.data.get("user")))
+	username = request.data.get("user")
+	if(username == ''):
+		return HttpResponse("", content_type="text/plain", status=403)
+	#Extract All Existing Instructor Office Hours:
+	allExistingOH = InstructorOfficeHours.objects.filter(meetInstructor__iEmail=username)
+	resultOHData = "";
+	for k in range(0, len(allExistingOH)):
+		currentOH = allExistingOH[k]
+		#Append Object ID For Frontend To Maintain.
+		resultOHData += str(currentOH) + " + " + str(currentOH.id)
+		#Separate OH Data By ", " For Frontend To Easily Extract.
+		if(k != len(allExistingOH)-1):
+			resultOHData += ", "
+	#Return Sucesss:
+	return HttpResponse(resultOHData, content_type="text/plain", status=200) # Return user's schedule
 		
 #InstructorOHAPIView Is The View Invoked By The Frontend
 #To Update A Specific Office Hours Section.
