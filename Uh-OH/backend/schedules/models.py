@@ -8,7 +8,7 @@ class UserScheduleItem(models.Model):
 	class Meta:
 		verbose_name = 'User Schedule Item'
 		verbose_name_plural = 'User Schedule Items'
-    	
+		
 	#information about the given entry
 	meetInstructor = models.CharField(max_length=50)
 	meetStartTime = models.CharField(max_length=7)
@@ -27,7 +27,7 @@ class UserSchedules(models.Model):
 	class Meta:
 		verbose_name = 'User Schedule'
 		verbose_name_plural = 'User Schedules'
-    
+	
 	#for whom is this an entry in their schedule
 	username = models.CharField(max_length=50)
 	
