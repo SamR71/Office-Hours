@@ -8,7 +8,7 @@ A Repository for Professor and TA Office Hours at RPI.
 4. Install node/npm by following the instructions from https://docs.npmjs.com/downloading-and-installing-node-js-and-npm. 
 5. Install django by following the instructions from https://docs.djangoproject.com/en/3.0/intro/install/. 
 6. Run `npm install react-scripts --save` in a Terminal.
-7. Run `npm install react-week-calendar` in a Terminal.
+7. Run `npm install react-week-calendar --save` in a Terminal.
 8. Run `npm install moment --save` in a Terminal.
 9. Run `npm install bootstrap --save` in a Terminal.
 
