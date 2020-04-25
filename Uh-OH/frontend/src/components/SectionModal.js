@@ -8,8 +8,8 @@ import {withRouter} from "react-router-dom";
  */
 class SectionModal extends React.Component 
 {
-    constructor(props) 
-    {
+	constructor(props) 
+	{
 		super(props);
 		this.state = {name: props.name,
 						id: props.section.sectionID,
@@ -19,27 +19,27 @@ class SectionModal extends React.Component
 	}
 	
 	//Set the loggedin state to represent the account the user is logged in with.
-    componentDidMount()
-    {
+	componentDidMount()
+	{
 		var user = localStorage.getItem("loggedinuser");
 		this.setState({loggedIn: user});
 	}
 
 	//Handles Click/Opening/Closing of Modal:
 	handleClick(event)
-    {
-        event.preventDefault();
-        /*{this.state.instructors.map(item => (
-            InstructorInfo instructor=item
-            instructor.addToSchedule()
-        ))}*/
-    }
+	{
+		event.preventDefault();
+		/*{this.state.instructors.map(item => (
+			InstructorInfo instructor=item
+			instructor.addToSchedule()
+		))}*/
+	}
 
-    //Main Rendering of SectionModal For All Courses:
-    //Contains Applicable Meeting Times, Instructor Data, + InstructorOfficeHours Data
-    //As Supplied By Backend.
-    render() 
-    {
+	//Main Rendering of SectionModal For All Courses:
+	//Contains Applicable Meeting Times, Instructor Data, + InstructorOfficeHours Data
+	//As Supplied By Backend.
+	render() 
+	{
 		return (
 			<div>
 				{/* The button for the modal, labeled by the section number.

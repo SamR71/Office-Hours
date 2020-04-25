@@ -20,8 +20,8 @@ class MeetingTime extends React.Component
 	}
 	
 	//Main Rendering/Displaying of Meeting Time Data Under SectionModal.
-    render() 
-    {
+	render() 
+	{
 		return (
 			<div>
 			{/* The Body Content of the MeetingTime, currently displays just as text */}

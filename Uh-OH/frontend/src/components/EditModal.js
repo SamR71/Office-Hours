@@ -7,8 +7,8 @@ import {withRouter} from "react-router-dom";
 class EditModal extends React.Component 
 {
 	//Constructor That Creates Edit Modal Based On Properties Passed In.
-    constructor(props) 
-    {
+	constructor(props) 
+	{
 		super(props);
 		this.state = {name: props.hour.course,
 						instructorType: props.hour.instructorType,
@@ -34,16 +34,16 @@ class EditModal extends React.Component
 	}
 	
 	//Set the loggedin state to represent the account the user is logged in with.
-    componentDidMount()
-    {
+	componentDidMount()
+	{
 		var user = localStorage.getItem("loggedinuser");
 		this.setState({loggedin: user});
 	}
 
 	//Handles Click/Opening/Closing of Modal:
 	handleClick(event)
-    {
-        event.preventDefault();
+	{
+		event.preventDefault();
 		
 		//Error Checking For New Days of Week:
 		const days = this.state.newday.split("")
@@ -72,61 +72,61 @@ class EditModal extends React.Component
 		
 		var xhr1 = new XMLHttpRequest();
 		var xhr2 = new XMLHttpRequest();
-        //Open A POST Request At The Specified URL.
-        xhr1.open('POST', url1);
-        xhr2.open('POST', url2);
-        //Create A Form w/ Appropriate Old Office Hour + New Office Hours Data Padded.
-        //Used For Updating Office Hours.
-        //Provides Backend w/ Desired OH To Be Updated + New Data To Be Updated.
-        const form = new FormData();
-        form.set('currentID', this.state.id)
-        form.set('currentInstructor', this.state.instructor);
-        form.set('oldStartTime', this.state.start);
-        form.set('oldEndTime', this.state.end);
-        form.set('oldLocation', this.state.place);
-        form.set('oldDates', this.state.day);
-        form.set('newStartTime', this.state.newstart);
-        form.set('newEndTime', this.state.newend);
-        form.set('newLocation', this.state.newplace);
-        form.set('newDates', this.state.newday);
-        form.set('user', this.state.loggedin);
-        //Send The Form Data To The POST Request.
-        xhr1.send(form);
-        xhr2.send(form);
-        //Alert User + Refresh Homepage To Reflect New Changes.
-        alert("Successfully Updated Office Hours!");
-        window.location.href = '/';
-    }
+		//Open A POST Request At The Specified URL.
+		xhr1.open('POST', url1);
+		xhr2.open('POST', url2);
+		//Create A Form w/ Appropriate Old Office Hour + New Office Hours Data Padded.
+		//Used For Updating Office Hours.
+		//Provides Backend w/ Desired OH To Be Updated + New Data To Be Updated.
+		const form = new FormData();
+		form.set('currentID', this.state.id)
+		form.set('currentInstructor', this.state.instructor);
+		form.set('oldStartTime', this.state.start);
+		form.set('oldEndTime', this.state.end);
+		form.set('oldLocation', this.state.place);
+		form.set('oldDates', this.state.day);
+		form.set('newStartTime', this.state.newstart);
+		form.set('newEndTime', this.state.newend);
+		form.set('newLocation', this.state.newplace);
+		form.set('newDates', this.state.newday);
+		form.set('user', this.state.loggedin);
+		//Send The Form Data To The POST Request.
+		xhr1.send(form);
+		xhr2.send(form);
+		//Alert User + Refresh Homepage To Reflect New Changes.
+		alert("Successfully Updated Office Hours!");
+		window.location.href = '/';
+	}
 	
 	//Reacts To Clicks To Update Start Time.
-    handleChangeStart(event) 
-    {
+	handleChangeStart(event) 
+	{
 		this.setState({newstart: event.target.value});
 	}
 
 	//Reacts To Clicks To Update End Time.
-    handleChangeEnd(event) 
-    {
+	handleChangeEnd(event) 
+	{
 		this.setState({newend: event.target.value});
 	}
 	
 	//Reacts To Clicks To Update Dates.
-    handleChangeDay(event) 
-    {
+	handleChangeDay(event) 
+	{
 		this.setState({newday: event.target.value});
 	}
 	
 	//Reacts To Clicks To Update Location.
-    handleChangePlace(event) 
-    {
+	handleChangePlace(event) 
+	{
 		this.setState({newplace: event.target.value});
 	}
 	
-    //Main Rendering of EditModal For All Courses:
-    //Contains Applicable Meeting Times, Instructor Data, + InstructorOfficeHours Data
-    //As Supplied By Backend.
-    render() 
-    {
+	//Main Rendering of EditModal For All Courses:
+	//Contains Applicable Meeting Times, Instructor Data, + InstructorOfficeHours Data
+	//As Supplied By Backend.
+	render() 
+	{
 		return (
 			<div>
 				{/* The button for the modal, labeled by the section number.
