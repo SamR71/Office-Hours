@@ -10,7 +10,8 @@ class CourseDropDown extends React.Component
 {
 
 	//Initializes State Variables Based on props Passed In...
-	constructor(props) {
+	constructor(props)
+	{
 		super(props);
 		this.state = {name: props.course.courseName, sections: props.course.sections, instructors: props.course.instructors};
 	}
