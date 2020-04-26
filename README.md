@@ -8,7 +8,8 @@ Note: For Unix Based Systems, replace `pip` with `pip3`, and `python` with `pyth
 2. Install the Latest Version of Python3. To do this, download the Latest Version from https://www.python.org/downloads/ and follow the instructions in the installer. As of right now, the Latest Version is Python 3.8.2.
 3. Install Virtual Environment, pipenv, by running `pip install pipenv`. 
 4. Install NodeJS (i.e., npm) by following the instructions from here: https://docs.npmjs.com/downloading-and-installing-node-js-and-npm. 
-5. Install the Django Framework by following the instructions from here: https://docs.djangoproject.com/en/3.0/intro/install/. 
+5. Install the Django Framework by following the instructions from here: https://docs.djangoproject.com/en/3.0/intro/install/.
+6. Now, navigate to the Uh-OH/frontend Directory. 
 6. Install ReactJS by running the following command: `npm install react --save` in your Terminal. 
 6. Run `npm install react-scripts --save` in your Terminal.
 7. Run `npm install react-week-calendar --save` in your Terminal.
