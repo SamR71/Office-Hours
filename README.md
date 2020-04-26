@@ -1,5 +1,5 @@
 # Uh-OH!
-A Repository For Professor + TA Office Hours At RPI.
+A Repository For Professor + TA Office Hours At Rensselaer Polytechnic Institute (RPI).
 
 # Installation Procedure For Uh-OH!
 Currently, Uh-OH! supports all Mac, Linux, and Unix Based Operating Systems.
