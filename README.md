@@ -19,6 +19,7 @@ Note: For Unix Based Systems, replace `pip` with `pip3`, and `python` with `pyth
 # Running The Uh-OH! Website
 1. To launch the Virtual Environment for the Backend, navigate to the Main Uh-OH Directory. Now, simply run `pipenv shell`. 
 2. To launch the Backend Server, first navigate to Uh-OH/backend Directory. Once there, subsequently run `pip install django-cors-headers` as well as `pip install djangorestframework`. Finally, run `python manage.py runserver`.
-3. To launch the Frontend Client, navigate to the Uh-OH/frontend Directory. At this point, run `npm start`.
+3. To launch the Frontend Client, navigate to the Uh-OH/frontend Directory. At last, run `npm start`.
+4. You should now be able to view and interact with the Main Uh-OH! Website. Welcome To Uh-OH! 
 
 
